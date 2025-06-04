@@ -1,0 +1,10 @@
+catalog:
+  '@antfu/eslint-config': ^4.13.3
+  '@types/node': ^22.15.29
+  eslint: ^9.28.0
+  tsdown: ^0.12.6
+  tsx: ^4.19.4
+  typescript: ^5.8.3
+onlyBuiltDependencies:
+  - esbuild
+  - unrs-resolver
