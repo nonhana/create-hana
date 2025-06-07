@@ -14,21 +14,25 @@ A modern, flexible project scaffolding tool for Node.js applications.
 ## Usage
 
 ### With npm
+
 ```bash
 npm create hana@latest my-project
 ```
 
 ### With pnpm
+
 ```bash
 pnpm create hana my-project
 ```
 
 ### With yarn
+
 ```bash
 yarn create hana my-project
 ```
 
 ### With bun
+
 ```bash
 bun create hana my-project
 ```
@@ -36,6 +40,7 @@ bun create hana my-project
 ## Project Types
 
 Currently supports:
+
 - **Node.js Library**: A general-purpose Node.js library/package
 
 ## Language Support
@@ -75,40 +80,6 @@ Currently supports:
 - **ts-node**: TypeScript execution engine
 - **esno**: Fast TypeScript/ESM execution
 - **None**: Build only
-
-## Development
-
-### Setup
-
-```bash
-git clone <repository>
-cd create-hana
-pnpm install
-```
-
-### Development
-
-```bash
-pnpm dev
-```
-
-### Build
-
-```bash
-pnpm build
-```
-
-### Test
-
-```bash
-pnpm test
-```
-
-### Test with UI
-
-```bash
-pnpm test:ui
-```
 
 ## Architecture
 
