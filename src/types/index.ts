@@ -81,3 +81,6 @@ export interface GeneratedFile {
   /** File content */
   content: string
 }
+
+// Re-export question types
+export * from './questions'

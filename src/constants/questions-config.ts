@@ -1,0 +1,119 @@
+import type { QuestionsSetConfig } from '@/types'
+import {
+  NODE_BUNDLERS_OPTIONS,
+  NODE_CODE_QUALITY_TOOLS_OPTIONS,
+  NODE_LANGUAGE_OPTIONS,
+  NODE_MANAGER_OPTIONS,
+  NODE_TS_RUNTIME_OPTIONS,
+  NODE_WEBSERVER_OPTIONS,
+} from './node-project-config'
+
+/**
+ * Complete questions configuration
+ */
+export const QUESTIONS_CONFIG: QuestionsSetConfig = {
+  // Common questions (before project type selection)
+  common: [
+    {
+      id: 'projectName',
+      type: 'text',
+      message: 'Project name:',
+      field: 'targetDir',
+      defaultValue: 'hana-project',
+      placeholder: 'hana-project',
+    },
+    {
+      id: 'projectType',
+      type: 'select',
+      message: 'What project do you want to create?',
+      field: 'projectType',
+      options: [
+        { label: 'Common Node.js', value: 'node' },
+      ],
+    },
+  ],
+
+  // Project-specific questions
+  projects: [
+    {
+      projectType: 'node',
+      questions: [
+        {
+          id: 'language',
+          type: 'select',
+          message: 'Which language would you like to use?',
+          field: 'language',
+          options: NODE_LANGUAGE_OPTIONS,
+          initialValue: 'typescript',
+        },
+        {
+          id: 'pkgManager',
+          type: 'select',
+          message: 'Which package manager would you like to use?',
+          field: 'pkgManager',
+          options: NODE_MANAGER_OPTIONS,
+          initialValue: 'pnpm',
+        },
+        {
+          id: 'webserver',
+          type: 'select',
+          message: 'Would you like to install a simple web framework?',
+          field: 'webserverPkgs',
+          options: NODE_WEBSERVER_OPTIONS,
+          initialValue: 'fastify',
+        },
+        {
+          id: 'tsRuntime',
+          type: 'select',
+          message: 'Which TypeScript runtime would you like to use?',
+          field: 'tsRuntimePkgs',
+          options: NODE_TS_RUNTIME_OPTIONS,
+          initialValue: 'tsx',
+          // Only show for TypeScript projects
+          when: [
+            {
+              field: 'language',
+              value: 'typescript',
+              operator: 'eq',
+            },
+          ],
+        },
+        {
+          id: 'codeQuality',
+          type: 'select',
+          message: 'Which code quality tools would you like to use?',
+          field: 'codeQualityTools',
+          options: NODE_CODE_QUALITY_TOOLS_OPTIONS,
+          initialValue: 'eslint-prettier',
+        },
+        {
+          id: 'bundler',
+          type: 'select',
+          message: 'Which bundler would you like to use?',
+          field: 'bundler',
+          options: NODE_BUNDLERS_OPTIONS,
+          initialValue: 'tsup',
+          // Only show for TypeScript projects
+          when: [
+            {
+              field: 'language',
+              value: 'typescript',
+              operator: 'eq',
+            },
+          ],
+        },
+      ],
+    },
+  ],
+
+  // Final question (run at the end)
+  final: [
+    {
+      id: 'git',
+      type: 'confirm',
+      message: 'Do you want to initialize a git repository?',
+      field: 'git',
+      initialValue: false,
+    },
+  ],
+}
