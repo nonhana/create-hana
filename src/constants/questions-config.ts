@@ -115,5 +115,12 @@ export const QUESTIONS_CONFIG: QuestionsSetConfig = {
       field: 'git',
       initialValue: false,
     },
+    {
+      id: 'installDeps',
+      type: 'confirm',
+      message: 'Do you want to install dependencies immediately?',
+      field: 'installDeps',
+      initialValue: false,
+    },
   ],
 }

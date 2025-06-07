@@ -9,6 +9,7 @@ export type Config = {
   targetDir?: string
   projectType?: PROJECT_TYPES
   git?: boolean
+  installDeps?: boolean
 } & NodeProjectConfig
 
 export interface NodeProjectConfig {

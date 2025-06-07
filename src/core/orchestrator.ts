@@ -135,11 +135,12 @@ async function runGenerators(context: ProjectContext): Promise<void> {
  * Determine if dependencies should be installed
  */
 function shouldInstallDependencies(context: ProjectContext): boolean {
-  const { packageJson } = context
+  const { config, packageJson } = context
 
   return Boolean(
-    (packageJson.dependencies && Object.keys(packageJson.dependencies).length > 0)
-    || (packageJson.devDependencies && Object.keys(packageJson.devDependencies).length > 0),
+    config.installDeps
+    && ((packageJson.dependencies && Object.keys(packageJson.dependencies).length > 0)
+      || (packageJson.devDependencies && Object.keys(packageJson.devDependencies).length > 0)),
   )
 }
 
@@ -155,16 +156,23 @@ function showCompletionMessage(context: ProjectContext): void {
   logger.info('Next steps:')
   logger.log(`  cd ${projectName}`)
 
+  if (!config.installDeps) {
+    logger.log(`  ${config.pkgManager || 'npm'} install`)
+  }
+
   if (packageJson.scripts) {
+    const pkgManager = config.pkgManager || 'npm'
+    const runCommand = pkgManager === 'npm' ? 'run' : ''
+
     if (packageJson.scripts.dev) {
-      logger.log(`  ${config.pkgManager || 'npm'} run dev`)
+      logger.log(`  ${pkgManager} ${runCommand} dev`.trim())
     }
     else if (packageJson.scripts.start) {
-      logger.log(`  ${config.pkgManager || 'npm'} run start`)
+      logger.log(`  ${pkgManager} ${runCommand} start`.trim())
     }
 
     if (packageJson.scripts.build) {
-      logger.log(`  ${config.pkgManager || 'npm'} run build`)
+      logger.log(`  ${pkgManager} ${runCommand} build`.trim())
     }
   }
 
