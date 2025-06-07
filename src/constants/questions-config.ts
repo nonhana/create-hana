@@ -60,7 +60,7 @@ export const QUESTIONS_CONFIG: QuestionsSetConfig = {
           message: 'Would you like to install a simple web framework?',
           field: 'webserverPkgs',
           options: NODE_WEBSERVER_OPTIONS,
-          initialValue: 'fastify',
+          initialValue: 'none',
         },
         {
           id: 'tsRuntime',
@@ -68,7 +68,7 @@ export const QUESTIONS_CONFIG: QuestionsSetConfig = {
           message: 'Which TypeScript runtime would you like to use?',
           field: 'tsRuntimePkgs',
           options: NODE_TS_RUNTIME_OPTIONS,
-          initialValue: 'tsx',
+          initialValue: 'none',
           // Only show for TypeScript projects
           when: [
             {
@@ -84,7 +84,7 @@ export const QUESTIONS_CONFIG: QuestionsSetConfig = {
           message: 'Which code quality tools would you like to use?',
           field: 'codeQualityTools',
           options: NODE_CODE_QUALITY_TOOLS_OPTIONS,
-          initialValue: 'eslint-prettier',
+          initialValue: 'none',
         },
         {
           id: 'bundler',
@@ -92,7 +92,7 @@ export const QUESTIONS_CONFIG: QuestionsSetConfig = {
           message: 'Which bundler would you like to use?',
           field: 'bundler',
           options: NODE_BUNDLERS_OPTIONS,
-          initialValue: 'tsup',
+          initialValue: 'none',
           // Only show for TypeScript projects
           when: [
             {

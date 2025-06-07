@@ -162,20 +162,17 @@ function showCompletionMessage(context: ProjectContext): void {
 
   if (packageJson.scripts) {
     const pkgManager = config.pkgManager || 'npm'
-    const runCommand = pkgManager === 'npm' ? 'run' : ''
+    const runCommand = pkgManager === 'npm' ? ' run' : ''
 
     if (packageJson.scripts.dev) {
-      logger.log(`  ${pkgManager} ${runCommand} dev`.trim())
+      logger.log(`  ${pkgManager}${runCommand} dev`)
     }
     else if (packageJson.scripts.start) {
-      logger.log(`  ${pkgManager} ${runCommand} start`.trim())
+      logger.log(`  ${pkgManager}${runCommand} start`)
     }
 
     if (packageJson.scripts.build) {
-      logger.log(`  ${pkgManager} ${runCommand} build`.trim())
+      logger.log(`  ${pkgManager}${runCommand} build`)
     }
   }
-
-  logger.nextLine()
-  logger.info('Happy coding! 🎉')
 }

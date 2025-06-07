@@ -36,7 +36,7 @@ export const logger = {
    * Log step message
    */
   step(message: string): void {
-    console.log(pc.magenta('➡️'), message)
+    console.log(pc.magenta('🔄'), message)
   },
 
   /**
