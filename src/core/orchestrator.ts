@@ -151,7 +151,7 @@ function showCompletionMessage(context: ProjectContext): void {
   const projectName = config.targetDir!
 
   logger.success(`Project ${projectName} created successfully!`)
-  logger.log('')
+  logger.nextLine()
   logger.info('Next steps:')
   logger.log(`  cd ${projectName}`)
 
@@ -168,6 +168,6 @@ function showCompletionMessage(context: ProjectContext): void {
     }
   }
 
-  logger.log('')
+  logger.nextLine()
   logger.info('Happy coding! 🎉')
 }
