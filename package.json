@@ -12,6 +12,12 @@
     "lint": "eslint .",
     "lint:fix": "eslint . --fix"
   },
+  "dependencies": {
+    "@clack/prompts": "catalog:",
+    "cross-spawn": "catalog:",
+    "mri": "catalog:",
+    "picocolors": "catalog:"
+  },
   "devDependencies": {
     "@antfu/eslint-config": "catalog:",
     "@types/node": "catalog:",

@@ -15,6 +15,9 @@ catalogs:
     eslint:
       specifier: ^9.28.0
       version: 9.28.0
+    tsdown:
+      specifier: ^0.12.6
+      version: 0.12.6
     tsx:
       specifier: ^4.19.4
       version: 4.19.4
@@ -25,6 +28,19 @@ catalogs:
 importers:
 
   .:
+    dependencies:
+      '@clack/prompts':
+        specifier: ^0.11.0
+        version: 0.11.0
+      cross-spawn:
+        specifier: ^7.0.6
+        version: 7.0.6
+      mri:
+        specifier: ^1.2.0
+        version: 1.2.0
+      picocolors:
+        specifier: ^1.1.1
+        version: 1.1.1
     devDependencies:
       '@antfu/eslint-config':
         specifier: 'catalog:'
@@ -36,7 +52,7 @@ importers:
         specifier: 'catalog:'
         version: 9.28.0(jiti@2.4.2)
       tsdown:
-        specifier: ^0.12.6
+        specifier: 'catalog:'
         version: 0.12.6(typescript@5.8.3)
       tsx:
         specifier: 'catalog:'
@@ -1441,6 +1457,10 @@ packages:
 
   mlly@1.7.4:
     resolution: {integrity: sha512-qmdSIPC4bDJXgZTCR7XosJiNKySV7O215tsPtDN9iEO/7q/76b/ijtgRu/+epFXSJhijtTCCGp3DWS549P3xKw==}
+
+  mri@1.2.0:
+    resolution: {integrity: sha512-tzzskb3bG8LvYGFF/mDTpq3jpI6Q9wc3LEmBaghu+DdCssd1FakN7Bc0hVNmEyGq1bq3RgfkCb3cmQLpNPOroA==}
+    engines: {node: '>=4'}
 
   ms@2.1.3:
     resolution: {integrity: sha512-6FlzubTLZG3J2a/NVCAleEhjzq5oxgHyaCU9yYXvcLsvoVaHJq/s5xXI6/XXP6tz7R9xAOtHnSO/tXtF3WRTlA==}
@@ -3353,6 +3373,8 @@ snapshots:
       pathe: 2.0.3
       pkg-types: 1.3.1
       ufo: 1.6.1
+
+  mri@1.2.0: {}
 
   ms@2.1.3: {}
 

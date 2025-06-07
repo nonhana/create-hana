@@ -1,7 +1,11 @@
 catalog:
   '@antfu/eslint-config': ^4.13.3
+  '@clack/prompts': ^0.11.0
   '@types/node': ^22.15.29
+  cross-spawn: ^7.0.6
   eslint: ^9.28.0
+  mri: ^1.2.0
+  picocolors: ^1.1.1
   tsdown: ^0.12.6
   tsx: ^4.19.4
   typescript: ^5.8.3
