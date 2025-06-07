@@ -1,7 +1,7 @@
 import type { Config } from '@/types'
 import process from 'node:process'
 import * as prompts from '@clack/prompts'
-import { PROJECTS } from '@/constants/projectTypes'
+import { PROJECTS } from '@/constants/project-types'
 import { generateProject } from '@/core/generator'
 import { furtherQuestions } from './questions'
 
@@ -15,8 +15,8 @@ async function init() {
   if (!config.targetDir) {
     const projectName = await prompts.text({
       message: 'Project name:',
-      defaultValue: 'hana',
-      placeholder: 'hana',
+      defaultValue: 'hana-project',
+      placeholder: 'hana-project',
     })
     if (prompts.isCancel(projectName))
       return cancel()
@@ -25,7 +25,7 @@ async function init() {
 
   if (!config.projectType) {
     const tempProjectType = await prompts.select({
-      message: '您想创建什么项目？',
+      message: 'What project do you want to create?',
       options: PROJECTS.map(item => ({ ...item })),
     })
     if (prompts.isCancel(tempProjectType))
@@ -37,7 +37,7 @@ async function init() {
 
   if (!config.git) {
     const git = await prompts.confirm({
-      message: '要初始化为 git 仓库吗？',
+      message: 'Do you want to initialize a git repository?',
       initialValue: false,
     })
     if (prompts.isCancel(git))
@@ -45,9 +45,9 @@ async function init() {
     config.git = git
   }
 
-  // await generateProject(config, cwd)
+  await generateProject(config, cwd)
 
-  prompts.outro(JSON.stringify(config, null, 2))
+  prompts.outro('Project created successfully! 🎉')
 }
 
 init().catch(e => console.error(e))

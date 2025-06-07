@@ -1,5 +1,6 @@
 import type { Config, NodeProjectConfig } from '@/types'
 import * as prompts from '@clack/prompts'
+import { ErrorMessages } from '@/constants/errors'
 import {
   NODE_BUNDLERS_OPTIONS,
   NODE_CODE_QUALITY_TOOLS_OPTIONS,
@@ -7,13 +8,15 @@ import {
   NODE_MANAGER_OPTIONS,
   NODE_TS_RUNTIME_OPTIONS,
   NODE_WEBSERVER_OPTIONS,
-} from '@/constants/nodeProjectConfig'
+} from '@/constants/node-project-config'
+import { ErrorFactory } from '@/utils/error'
 
-const cancel = () => prompts.cancel('Operation cancelled')
+const cancel = () => prompts.cancel(ErrorMessages.userInput.operationCancelled())
 
 export async function furtherQuestions(config: Config) {
-  if (!config.projectType)
-    throw new Error('创建失败：未指定目标项目类型')
+  if (!config.projectType) {
+    throw ErrorFactory.validation(ErrorMessages.validation.projectTypeRequired())
+  }
 
   const furtherConfig: any = {}
 

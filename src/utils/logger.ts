@@ -1,0 +1,48 @@
+import * as pc from 'picocolors'
+
+/**
+ * Logger utility for consistent CLI output
+ */
+export const logger = {
+  /**
+   * Log info message
+   */
+  info(message: string): void {
+    console.log(pc.cyan('ℹ'), message)
+  },
+
+  /**
+   * Log success message
+   */
+  success(message: string): void {
+    console.log(pc.green('✓'), message)
+  },
+
+  /**
+   * Log warning message
+   */
+  warn(message: string): void {
+    console.log(pc.yellow('⚠'), message)
+  },
+
+  /**
+   * Log error message
+   */
+  error(message: string): void {
+    console.log(pc.red('✖'), message)
+  },
+
+  /**
+   * Log step message
+   */
+  step(message: string): void {
+    console.log(pc.magenta('→'), message)
+  },
+
+  /**
+   * Log raw message without prefix
+   */
+  log(message: string): void {
+    console.log(message)
+  },
+}

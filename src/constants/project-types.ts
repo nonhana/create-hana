@@ -1,5 +1,5 @@
 export const PROJECTS = [{
-  label: '普通 Node.js 项目',
+  label: 'Common Node.js',
   value: 'node',
 }] as const
 

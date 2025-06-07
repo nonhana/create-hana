@@ -2,15 +2,30 @@
   "name": "create-hana",
   "version": "1.0.0",
   "packageManager": "pnpm@10.11.0",
-  "description": "",
+  "description": "A modern project scaffolding tool for Node.js applications",
   "author": "",
-  "license": "ISC",
-  "keywords": [],
-  "main": "index.js",
+  "license": "MIT",
+  "keywords": ["cli", "scaffold", "generator", "typescript", "nodejs"],
+  "main": "dist/index.js",
+  "bin": {
+    "create-hana": "dist/index.js"
+  },
+  "files": [
+    "dist",
+    "templates"
+  ],
+  "engines": {
+    "node": ">=16.0.0"
+  },
   "scripts": {
     "build": "tsdown",
+    "dev": "tsx src/index.ts",
     "lint": "eslint .",
-    "lint:fix": "eslint . --fix"
+    "lint:fix": "eslint . --fix",
+    "test": "vitest",
+    "test:ui": "vitest --ui",
+    "test:coverage": "vitest --coverage",
+    "prepublishOnly": "pnpm run build"
   },
   "dependencies": {
     "@clack/prompts": "catalog:",
@@ -21,9 +36,11 @@
   "devDependencies": {
     "@antfu/eslint-config": "catalog:",
     "@types/node": "catalog:",
+    "@vitest/ui": "catalog:",
     "eslint": "catalog:",
     "tsdown": "catalog:",
     "tsx": "catalog:",
-    "typescript": "catalog:"
+    "typescript": "catalog:",
+    "vitest": "catalog:"
   }
 }
