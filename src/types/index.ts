@@ -19,6 +19,7 @@ export interface NodeProjectConfig {
   tsRuntimePkgs?: 'tsx' | 'esno' | 'ts-node' | 'none'
   preinstallPkgs?: string[]
   codeQualityTools?: 'eslint' | 'eslint-prettier' | 'biome' | 'none'
+  codeQualityConfig?: boolean
   bundler?: 'tsup' | 'tsdown' | 'none'
 }
 

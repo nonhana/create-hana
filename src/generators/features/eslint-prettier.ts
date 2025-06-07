@@ -1,7 +1,7 @@
 import type { Generator } from '@/types'
 import { addDependencies, addScripts } from '@/utils/package-json'
 
-export const eslintGenerator: Generator = {
+export const eslintPrettierGenerator: Generator = {
   generate(context) {
     const { config } = context
     const language = config.language || 'typescript'
@@ -9,10 +9,10 @@ export const eslintGenerator: Generator = {
     const eslintDeps: Record<string, string> = {
       eslint: '^9.0.0',
       globals: '^15.0.0',
-      '@stylistic/eslint-plugin': '^1.0.0',
       'eslint-plugin-import': '^2.29.0',
       'eslint-plugin-unicorn': '^46.0.0',
       'eslint-plugin-promise': '^6.1.1',
+      'eslint-config-prettier': '^9.0.0',
     }
 
     if (language === 'typescript') {
@@ -21,32 +21,91 @@ export const eslintGenerator: Generator = {
 
     addDependencies(context.packageJson, eslintDeps, 'devDependencies')
 
-    const lintPattern = language === 'typescript' ? 'src/**/*.{ts,tsx}' : 'src/**/*.{js,jsx}'
+    addDependencies(context.packageJson, {
+      prettier: '^3.0.0',
+    }, 'devDependencies')
+
+    const pattern = language === 'typescript' ? 'src/**/*.{ts,json}' : 'src/**/*.{js,json}'
+
     addScripts(context.packageJson, {
-      'lint': `eslint ${lintPattern}`,
-      'lint:fix': `eslint ${lintPattern} --fix`,
+      'format': `prettier --write ${pattern}`,
+      'format:check': `prettier --check ${pattern}`,
     })
+
+    const prettierConfig = generatePrettierConfig()
+    context.files['prettier.config.mjs'] = prettierConfig
+
+    const prettierIgnore = generatePrettierIgnore()
+    context.files['.prettierignore'] = prettierIgnore
 
     const eslintConfig = generateESLintConfig(language)
     context.files['eslint.config.mjs'] = eslintConfig
 
     if (context.config.codeQualityConfig) {
-      const eslintVscodeConfig = generateESlintVscodeConfig()
-      context.files['.vscode/settings.json'] = eslintVscodeConfig
+      const eslintPrettierVscodeConfig = generateESLintPrettierVscodeConfig()
+      context.files['.vscode/settings.json'] = eslintPrettierVscodeConfig
     }
   },
 }
 
+/**
+ * Generate Prettier configuration content
+ */
+function generatePrettierConfig(): string {
+  return `/** @type {import("prettier").Config} */
+export default {
+  semi: false,
+  singleQuote: true,
+  trailingComma: 'all',
+  printWidth: 100,
+  tabWidth: 2,
+};
+`
+}
+
+/**
+ * Generate .prettierignore content
+ */
+function generatePrettierIgnore(): string {
+  return `# Dependencies
+node_modules/
+
+# Build output
+dist/
+build/
+
+# Cache directories
+.cache/
+
+# Log files
+*.log
+
+# Environment files
+.env*
+
+# Coverage output
+coverage/
+
+# Lock files
+package-lock.json
+yarn.lock
+pnpm-lock.yaml
+`
+}
+
+/**
+ * Generate eslint.config.mjs content, especially for Prettier
+ */
 function generateESLintConfig(language: 'typescript' | 'javascript') {
   if (language === 'typescript') {
     return `// @ts-check
 import js from '@eslint/js'
-import stylistic from '@stylistic/eslint-plugin'
 import globals from 'globals'
 import tseslint from 'typescript-eslint'
 import importPlugin from 'eslint-plugin-import'
 import unicornPlugin from 'eslint-plugin-unicorn'
 import promisePlugin from 'eslint-plugin-promise'
+import prettierConfig from 'eslint-config-prettier'
 
 export default tseslint.config(
   // Global ignore patterns
@@ -61,22 +120,14 @@ export default tseslint.config(
     ],
   },
 
-  // 1. Base configuration
+  // 1. Base configuration (code quality focused)
   js.configs.recommended,
-  ...tseslint.configs.strictTypeChecked, // Use the strictest type checking rule set
+  ...tseslint.configs.strictTypeChecked,
   ...importPlugin.configs.typescript,
   unicornPlugin.configs['flat/recommended'],
   promisePlugin.configs['flat/recommended'],
 
-  // 2. Code style configuration (using @stylistic/eslint-plugin)
-  stylistic.configs.customize({
-    indent: 2,
-    quotes: 'single',
-    semi: false,
-    jsx: false, // Node.js projects typically don't use JSX
-  }),
-
-  // 3. Main rule configuration
+  // 2. Main rule configuration (no style rules included)
   {
     languageOptions: {
       globals: {
@@ -100,46 +151,47 @@ export default tseslint.config(
       '@typescript-eslint/consistent-type-imports': ['error', { prefer: 'type-imports', fixStyle: 'inline-type-imports' }],
       
       // --- Import plugin rules ---
-      'import/order': ['error', {
+      'import/order': ['error', { // import/order has style aspects but is more about logical organization, usually kept
         'groups': ['builtin', 'external', 'internal', 'parent', 'sibling', 'index', 'object', 'type'],
         'newlines-between': 'always',
         'alphabetize': { order: 'asc', caseInsensitive: true },
       }],
       'import/first': 'error',
       'import/no-mutable-exports': 'error',
-      'import/no-unresolved': 'off', // TypeScript compiler handles this
+      'import/no-unresolved': 'off', // tsc handles this check
 
-      // --- Unicorn plugin rules (useful additions) ---
-      'unicorn/prevent-abbreviations': 'off', // Sometimes abbreviations are conventional
-      'unicorn/filename-case': ['error', { case: 'kebabCase' }], // Use kebab-case for filenames
+      // --- Unicorn plugin rules ---
+      'unicorn/prevent-abbreviations': 'off',
+      'unicorn/filename-case': ['error', { case: 'kebabCase' }],
       
       // Disable rules that conflict with @typescript-eslint
       'no-unused-vars': 'off',
     },
   },
 
-  // 4. Disable type checking for JS files
+  // 3. Disable type checking for JS files
   {
     files: ['**/*.{js,cjs,mjs}'],
     ...tseslint.configs.disableTypeChecked,
   },
+
+  // 4. Prettier integration (must be last!)
+  // This configuration disables all ESLint rules that conflict with Prettier.
+  prettierConfig,
 )
 `
-  }
-  else {
+  } else {
     return `// @ts-check
 import js from '@eslint/js'
-import stylistic from '@stylistic/eslint-plugin'
 import globals from 'globals'
 import importPlugin from 'eslint-plugin-import'
 import unicornPlugin from 'eslint-plugin-unicorn'
 import promisePlugin from 'eslint-plugin-promise'
+import prettierConfig from 'eslint-config-prettier'
 
-/**
- * @type {import('eslint').Linter.FlatConfig[]}
- */
+/** @type {import('eslint').Linter.FlatConfig[]} */
 export default [
-  // 1. Global ignore patterns
+  // Global ignore patterns
   {
     ignores: [
       'dist/**',
@@ -150,23 +202,13 @@ export default [
     ],
   },
 
-  // 2. Base configuration
+  // 1. Base configuration (code quality focused)
   js.configs.recommended,
-
-  // 3. Plugin configuration
   importPlugin.configs.recommended,
   unicornPlugin.configs['flat/recommended'],
   promisePlugin.configs['flat/recommended'],
 
-  // 4. Code style configuration (using @stylistic/eslint-plugin)
-  stylistic.configs.customize({
-    indent: 2,
-    quotes: 'single',
-    semi: false,
-    jsx: false,
-  }),
-
-  // 5. Main rule configuration
+  // 2. Main rule configuration
   {
     languageOptions: {
       globals: {
@@ -189,52 +231,42 @@ export default [
       'import/first': 'error',
       'import/no-mutable-exports': 'error',
 
-      // --- Unicorn plugin rules (useful additions) ---
+      // --- Unicorn plugin rules ---
       'unicorn/prevent-abbreviations': 'off',
       'unicorn/filename-case': ['error', { case: 'kebabCase' }],
     },
   },
+
+  // 3. Prettier integration (must be last)
+  prettierConfig,
 ]
 `
   }
 }
 
-function generateESlintVscodeConfig() {
+/**
+ * Generate .vscode/settings.json content
+ */
+function generateESLintPrettierVscodeConfig() {
   const config = {
-    'editor.formatOnSave': false,
-    'editor.codeActionsOnSave': {
-      'source.fixAll.eslint': 'explicit',
-      'source.organizeImports': 'never',
+    "editor.defaultFormatter": "esbenp.prettier-vscode",
+    "editor.formatOnSave": true,
+    "editor.codeActionsOnSave": {
+      "source.fixAll.eslint": "explicit",
+      "source.organizeImports": "never"
     },
-    'prettier.enable': false,
-    '[typescript]': {
-      'editor.defaultFormatter': null,
+    "[typescript]": {
+      "editor.defaultFormatter": "esbenp.prettier-vscode"
     },
-    '[javascript]': {
-      'editor.defaultFormatter': null,
+    "[javascript]": {
+      "editor.defaultFormatter": "esbenp.prettier-vscode"
     },
-    'eslint.rules.customizations': [
-      { rule: '@stylistic/*', severity: 'off' },
-      { rule: '*-indent', severity: 'off' },
-      { rule: '*-spacing', severity: 'off' },
-      { rule: '*-spaces', severity: 'off' },
-      { rule: '*-order', severity: 'off' },
-      { rule: '*-dangle', severity: 'off' },
-      { rule: '*-newline', severity: 'off' },
-      { rule: '*-multiline', severity: 'off' },
-      { rule: '*quotes', severity: 'off' },
-      { rule: '*semi', severity: 'off' },
-    ],
-    'eslint.validate': [
-      'javascript',
-      'typescript',
-      'javascriptreact',
-      'typescriptreact',
-      'json',
-      'jsonc',
-      'yaml',
-      'markdown',
-    ],
+    "eslint.validate": [
+      "javascript",
+      "typescript",
+      "javascriptreact",
+      "typescriptreact"
+    ]
   }
 
   return JSON.stringify(config, null, 2)

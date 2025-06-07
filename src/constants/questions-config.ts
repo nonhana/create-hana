@@ -87,6 +87,13 @@ export const QUESTIONS_CONFIG: QuestionsSetConfig = {
           initialValue: 'none',
         },
         {
+          id: 'codeQualityConfig',
+          type: 'confirm',
+          message: 'Would you like to configure code quality tools for VSCode?',
+          field: 'codeQualityConfig',
+          initialValue: false,
+        },
+        {
           id: 'bundler',
           type: 'select',
           message: 'Which bundler would you like to use?',

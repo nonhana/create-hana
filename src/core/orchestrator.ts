@@ -2,7 +2,7 @@ import type { Config, ProjectContext } from '@/types'
 import { join } from 'node:path'
 import { ErrorMessages } from '@/constants/errors'
 import { bundlerGenerator } from '@/generators/bundler'
-import { biomeGenerator, eslintGenerator, prettierGenerator } from '@/generators/features'
+import { biomeGenerator, eslintGenerator, eslintPrettierGenerator } from '@/generators/features'
 // Import generators
 import { languageGenerator } from '@/generators/language'
 import { nodeLibGenerator } from '@/generators/project-type/node-lib'
@@ -111,8 +111,7 @@ async function runGenerators(context: ProjectContext): Promise<void> {
         eslintGenerator.generate(context)
         break
       case 'eslint-prettier':
-        eslintGenerator.generate(context)
-        prettierGenerator.generate(context)
+        eslintPrettierGenerator.generate(context)
         break
       case 'biome':
         biomeGenerator.generate(context)

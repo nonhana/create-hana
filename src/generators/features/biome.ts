@@ -24,6 +24,12 @@ export const biomeGenerator: Generator = {
     // Generate Biome configuration
     const biomeConfig = generateBiomeConfig()
     context.files['biome.json'] = biomeConfig
+
+    // Generate Biome VSCode configuration
+    if (context.config.codeQualityConfig) {
+      const biomeVscodeConfig = generateBiomeVscodeConfig()
+      context.files['.vscode/settings.json'] = biomeVscodeConfig
+    }
   },
 }
 
@@ -66,6 +72,48 @@ function generateBiomeConfig(): string {
       formatter: {
         enabled: true,
       },
+    },
+  }
+
+  return JSON.stringify(config, null, 2)
+}
+
+/**
+ * Generate Biome VSCode configuration
+ */
+function generateBiomeVscodeConfig() {
+  const config = {
+    // Disable Prettier & ESLint
+    'prettier.enable': false,
+    'editor.codeActionsOnSave': {},
+    'eslint.enable': false,
+
+    // Enable Biome plugin formatting functionality
+    'editor.defaultFormatter': 'biomejs.biome',
+
+    // Formatting related settings
+    'editor.formatOnSave': true,
+    'editor.formatOnPaste': true,
+    'editor.formatOnType': false,
+
+    // Enable Biome formatter for specific languages
+    '[javascript]': {
+      'editor.defaultFormatter': 'biomejs.biome',
+    },
+    '[javascriptreact]': {
+      'editor.defaultFormatter': 'biomejs.biome',
+    },
+    '[typescript]': {
+      'editor.defaultFormatter': 'biomejs.biome',
+    },
+    '[typescriptreact]': {
+      'editor.defaultFormatter': 'biomejs.biome',
+    },
+    '[json]': {
+      'editor.defaultFormatter': 'biomejs.biome',
+    },
+    '[jsonc]': {
+      'editor.defaultFormatter': 'biomejs.biome',
     },
   }
 
