@@ -7,8 +7,8 @@ export const eslintGenerator: Generator = {
     const language = config.language || 'typescript'
 
     const eslintDeps: Record<string, string> = {
-      eslint: '^9.0.0',
-      globals: '^15.0.0',
+      'eslint': '^9.0.0',
+      'globals': '^15.0.0',
       '@stylistic/eslint-plugin': '^1.0.0',
       'eslint-plugin-import': '^2.29.0',
       'eslint-plugin-unicorn': '^46.0.0',

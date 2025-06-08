@@ -1,11 +1,11 @@
-import type { Generator, ProjectContext } from '@/types'
+import type { Generator } from '@/types'
 import { addDependencies, addScripts } from '@/utils/package-json'
 
-/**
- * Biome feature generator - all-in-one tool for linting and formatting
- */
 export const biomeGenerator: Generator = {
-  generate(context: ProjectContext): void {
+  generate(context) {
+    const { config } = context
+    const language = config.language || 'typescript'
+
     // Add Biome dependencies
     addDependencies(context.packageJson, {
       '@biomejs/biome': '^1.4.0',
@@ -22,7 +22,7 @@ export const biomeGenerator: Generator = {
     })
 
     // Generate Biome configuration
-    const biomeConfig = generateBiomeConfig()
+    const biomeConfig = generateBiomeConfig(language)
     context.files['biome.json'] = biomeConfig
 
     // Generate Biome VSCode configuration
@@ -36,8 +36,8 @@ export const biomeGenerator: Generator = {
 /**
  * Generate Biome configuration content
  */
-function generateBiomeConfig(): string {
-  const config = {
+function generateBiomeConfig(language: 'typescript' | 'javascript'): string {
+  const tsConfig = {
     $schema: 'https://biomejs.dev/schemas/1.4.1/schema.json',
     organizeImports: {
       enabled: true,
@@ -48,9 +48,15 @@ function generateBiomeConfig(): string {
         recommended: true,
         style: {
           noNonNullAssertion: 'warn',
+          useSingleQuotes: 'error',
+          useSemicolons: 'off',
         },
         suspicious: {
           noExplicitAny: 'warn',
+          noCaseDeclaration: 'error',
+        },
+        complexity: {
+          noShadowRestrictedNames: 'error',
         },
       },
     },
@@ -75,7 +81,56 @@ function generateBiomeConfig(): string {
     },
   }
 
-  return JSON.stringify(config, null, 2)
+  const jsConfig = {
+    $schema: 'https://biomejs.dev/schemas/1.4.1/schema.json',
+
+    organizeImports: {
+      enabled: true,
+    },
+
+    linter: {
+      enabled: true,
+      rules: {
+        recommended: true,
+        style: {
+          useSingleQuotes: 'error',
+          useSemicolons: 'off',
+        },
+        suspicious: {
+          noUselessCatch: 'error',
+          noShadowRestrictedNames: 'error',
+        },
+        complexity: {
+          noDuplicateCase: 'error',
+          noLabelVar: 'error',
+        },
+      },
+    },
+
+    formatter: {
+      enabled: true,
+      indentStyle: 'space',
+      indentWidth: 2,
+      lineWidth: 100,
+      formatWithErrors: false,
+    },
+
+    javascript: {
+      formatter: {
+        semicolons: 'asNeeded',
+        quoteStyle: 'single',
+        trailingComma: 'es5',
+      },
+    },
+
+    json: {
+      formatter: {
+        enabled: true,
+      },
+    },
+  }
+
+  return JSON.stringify(language === 'typescript' ? tsConfig : jsConfig, null, 2)
 }
 
 /**

@@ -5,7 +5,7 @@ import { addDependencies, addScripts } from '@/utils/package-json'
  * Bundler generator - handles TypeScript bundling tools
  */
 export const bundlerGenerator: Generator = {
-  generate(context: ProjectContext): void {
+  generate(context) {
     const { config } = context
 
     if (config.language !== 'typescript' || !config.bundler || config.bundler === 'none') {

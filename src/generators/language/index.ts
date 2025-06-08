@@ -6,7 +6,7 @@ import { getFileExtension } from '@/utils/template'
  * Language generator - handles TypeScript/JavaScript configuration
  */
 export const languageGenerator: Generator = {
-  generate(context: ProjectContext): void {
+  generate(context) {
     const { config } = context
     const language = config.language || 'typescript'
 
