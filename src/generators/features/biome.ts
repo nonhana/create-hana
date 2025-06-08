@@ -8,7 +8,7 @@ export const biomeGenerator: Generator = {
 
     // Add Biome dependencies
     addDependencies(context.packageJson, {
-      '@biomejs/biome': '^1.4.0',
+      '@biomejs/biome': '^1.9.4',
     }, 'devDependencies')
 
     // Add Biome scripts
