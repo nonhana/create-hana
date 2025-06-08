@@ -6,25 +6,32 @@ export const eslintGenerator: Generator = {
     const { config } = context
     const language = config.language || 'typescript'
 
-    const eslintDeps: Record<string, string> = {
+    const commonDeps: Record<string, string> = {
       'eslint': '^9.0.0',
-      'globals': '^15.0.0',
-      '@stylistic/eslint-plugin': '^1.0.0',
-      'eslint-plugin-import': '^2.29.0',
-      'eslint-plugin-unicorn': '^46.0.0',
-      'eslint-plugin-promise': '^6.1.1',
+      '@eslint/js': '^9.0.0',
+      'eslint-plugin-n': '^17.0.0',
+      'eslint-plugin-unicorn': '^55.0.0',
+      'eslint-plugin-simple-import-sort': '^12.0.0',
+      'eslint-plugin-jsonc': '^2.16.0',
+      'eslint-plugin-yml': '^1.14.0',
+      'typescript-eslint': '^8.0.0',
+      '@eslint/markdown': '^6.0.0',
     }
 
+    let eslintDeps: Record<string, string>
+
     if (language === 'typescript') {
-      eslintDeps['typescript-eslint'] = '^8.0.0'
+      eslintDeps = { ...commonDeps }
+    }
+    else {
+      eslintDeps = { ...commonDeps, globals: '^15.0.0' }
     }
 
     addDependencies(context.packageJson, eslintDeps, 'devDependencies')
 
-    const lintPattern = language === 'typescript' ? 'src/**/*.{ts,tsx}' : 'src/**/*.{js,jsx}'
     addScripts(context.packageJson, {
-      'lint': `eslint ${lintPattern}`,
-      'lint:fix': `eslint ${lintPattern} --fix`,
+      'lint': 'eslint .',
+      'lint:fix': 'eslint . --fix',
     })
 
     const eslintConfig = generateESLintConfig(language)
@@ -40,161 +47,145 @@ export const eslintGenerator: Generator = {
 function generateESLintConfig(language: 'typescript' | 'javascript') {
   if (language === 'typescript') {
     return `// @ts-check
-import js from '@eslint/js'
-import stylistic from '@stylistic/eslint-plugin'
-import globals from 'globals'
+
+import eslint from '@eslint/js'
+import markdown from '@eslint/markdown'
+import eslintPluginJsonc from 'eslint-plugin-jsonc';
+import pluginN from 'eslint-plugin-n'
+import simpleImportSort from 'eslint-plugin-simple-import-sort';
+import eslintPluginUnicorn from 'eslint-plugin-unicorn'
+import eslintPluginYml from 'eslint-plugin-yml'
 import tseslint from 'typescript-eslint'
-import importPlugin from 'eslint-plugin-import'
-import unicornPlugin from 'eslint-plugin-unicorn'
-import promisePlugin from 'eslint-plugin-promise'
 
 export default tseslint.config(
-  // Global ignore patterns
-  {
-    ignores: [
-      'dist/**',
-      'build/**',
-      'node_modules/**',
-      '*.config.{js,mjs,ts,cjs}',
-      'coverage/**',
-      '*.d.ts',
-    ],
-  },
-
-  // 1. Base configuration
-  js.configs.recommended,
-  ...tseslint.configs.strictTypeChecked, // Use the strictest type checking rule set
-  ...importPlugin.configs.typescript,
-  unicornPlugin.configs['flat/recommended'],
-  promisePlugin.configs['flat/recommended'],
-
-  // 2. Code style configuration (using @stylistic/eslint-plugin)
-  stylistic.configs.customize({
-    indent: 2,
-    quotes: 'single',
-    semi: false,
-    jsx: false, // Node.js projects typically don't use JSX
-  }),
-
-  // 3. Main rule configuration
+  eslint.configs.recommended,
+  markdown.configs.processor,
+  tseslint.configs.strict,
+  tseslint.configs.stylistic,
+  eslintPluginUnicorn.configs.recommended,
+  pluginN.configs['flat/recommended-module'],
+  ...eslintPluginJsonc.configs['flat/recommended-with-jsonc'],
+  ...eslintPluginYml.configs['flat/recommended'],
   {
     languageOptions: {
-      globals: {
-        ...globals.node,
-        ...globals.es2022,
-      },
-      parserOptions: {
-        project: true,
-        tsconfigRootDir: import.meta.dirname,
-      },
+      sourceType: 'module',
+    },
+    plugins: {
+      'simple-import-sort': simpleImportSort,
     },
     rules: {
-      // --- Override and custom rules ---
-      'no-console': ['warn', { allow: ['warn', 'error'] }],
-      'no-var': 'error',
-      'prefer-const': 'error',
+      /* plugin rules */
+      'simple-import-sort/imports': 'error',
+      'simple-import-sort/exports': 'error',
 
-      // --- TypeScript rules ---
-      '@typescript-eslint/no-unused-vars': ['error', { argsIgnorePattern: '^_', varsIgnorePattern: '^_' }],
-      '@typescript-eslint/no-explicit-any': 'warn',
-      '@typescript-eslint/consistent-type-imports': ['error', { prefer: 'type-imports', fixStyle: 'inline-type-imports' }],
-      
-      // --- Import plugin rules ---
-      'import/order': ['error', {
-        'groups': ['builtin', 'external', 'internal', 'parent', 'sibling', 'index', 'object', 'type'],
-        'newlines-between': 'always',
-        'alphabetize': { order: 'asc', caseInsensitive: true },
-      }],
-      'import/first': 'error',
-      'import/no-mutable-exports': 'error',
-      'import/no-unresolved': 'off', // TypeScript compiler handles this
-
-      // --- Unicorn plugin rules (useful additions) ---
-      'unicorn/prevent-abbreviations': 'off', // Sometimes abbreviations are conventional
-      'unicorn/filename-case': ['error', { case: 'kebabCase' }], // Use kebab-case for filenames
-      
-      // Disable rules that conflict with @typescript-eslint
-      'no-unused-vars': 'off',
+      /* stylistic rules */
+      quotes: ['error', 'single', { avoidEscape: true }],
+      indent: ['error', 2, { SwitchCase: 1 }],
+      'key-spacing': ['error', { beforeColon: false, afterColon: true }],
+      'object-curly-spacing': ['error', 'always'],
+      'array-bracket-spacing': ['error', 'never'],
+      'computed-property-spacing': ['error', 'never'],
+      'array-element-newline': ['error', 'consistent'],
+      'comma-spacing': ['error', { before: false, after: true }],
+      'arrow-parens': ['error', 'always'],
+      'comma-dangle': ['error', 'always-multiline'],
+      'space-before-function-paren': [
+        'error',
+        {
+          anonymous: 'always',
+          named: 'never',
+          asyncArrow: 'always',
+        },
+      ],
+      'padding-line-between-statements': [
+        'error',
+        { blankLine: 'always', prev: 'multiline-block-like', next: '*' },
+        { blankLine: 'always', prev: '*', next: 'return' },
+        { blankLine: 'always', prev: 'const', next: 'function' },
+        { blankLine: 'always', prev: 'let', next: 'function' },
+        { blankLine: 'any', prev: 'const', next: 'const' },
+        { blankLine: 'any', prev: 'let', next: 'let' },
+      ],
+      'no-multi-spaces': 'error',
+      'no-multiple-empty-lines': ['error', { max: 1, maxEOF: 0 }],
+      'dot-location': ['error', 'property'],
+      'no-empty': ['error', { allowEmptyCatch: true }],
     },
-  },
-
-  // 4. Disable type checking for JS files
-  {
-    files: ['**/*.{js,cjs,mjs}'],
-    ...tseslint.configs.disableTypeChecked,
   },
 )
 `
   }
   else {
     return `// @ts-check
-import js from '@eslint/js'
-import stylistic from '@stylistic/eslint-plugin'
+
+import eslint from '@eslint/js'
+import markdown from '@eslint/markdown'
+import eslintPluginJsonc from 'eslint-plugin-jsonc'
+import pluginN from 'eslint-plugin-n'
+import simpleImportSort from 'eslint-plugin-simple-import-sort'
+import eslintPluginUnicorn from 'eslint-plugin-unicorn'
+import eslintPluginYml from 'eslint-plugin-yml'
 import globals from 'globals'
-import importPlugin from 'eslint-plugin-import'
-import unicornPlugin from 'eslint-plugin-unicorn'
-import promisePlugin from 'eslint-plugin-promise'
+import tseslint from 'typescript-eslint'
 
-/**
- * @type {import('eslint').Linter.FlatConfig[]}
- */
-export default [
-  // 1. Global ignore patterns
-  {
-    ignores: [
-      'dist/**',
-      'build/**',
-      'node_modules/**',
-      '*.config.{js,mjs,cjs}',
-      'coverage/**',
-    ],
-  },
-
-  // 2. Base configuration
-  js.configs.recommended,
-
-  // 3. Plugin configuration
-  importPlugin.configs.recommended,
-  unicornPlugin.configs['flat/recommended'],
-  promisePlugin.configs['flat/recommended'],
-
-  // 4. Code style configuration (using @stylistic/eslint-plugin)
-  stylistic.configs.customize({
-    indent: 2,
-    quotes: 'single',
-    semi: false,
-    jsx: false,
-  }),
-
-  // 5. Main rule configuration
+export default tseslint.config(
+  eslint.configs.recommended,
+  markdown.configs.processor,
+  pluginN.configs['flat/recommended-module'],
+  eslintPluginUnicorn.configs.recommended,
+  ...eslintPluginJsonc.configs['flat/recommended-with-jsonc'],
+  ...eslintPluginYml.configs['flat/recommended'],
   {
     languageOptions: {
+      ecmaVersion: 'latest',
+      sourceType: 'module',
       globals: {
         ...globals.node,
-        ...globals.es2022,
       },
     },
-    rules: {
-      // --- Override and custom rules ---
-      'no-console': ['warn', { allow: ['warn', 'error'] }],
-      'no-var': 'error',
-      'prefer-const': 'error',
 
-      // --- Import plugin rules ---
-      'import/order': ['error', {
-        groups: ['builtin', 'external', 'internal', 'parent', 'sibling', 'index', 'object', 'type'],
-        'newlines-between': 'always',
-        alphabetize: { order: 'asc', caseInsensitive: true },
-      }],
-      'import/first': 'error',
-      'import/no-mutable-exports': 'error',
-
-      // --- Unicorn plugin rules (useful additions) ---
-      'unicorn/prevent-abbreviations': 'off',
-      'unicorn/filename-case': ['error', { case: 'kebabCase' }],
+    plugins: {
+      'simple-import-sort': simpleImportSort,
     },
-  },
-]
+
+    rules: {
+      'simple-import-sort/imports': 'error',
+      'simple-import-sort/exports': 'error',
+
+      quotes: ['error', 'single', { avoidEscape: true }],
+      indent: ['error', 2, { SwitchCase: 1 }],
+      'key-spacing': ['error', { beforeColon: false, afterColon: true }],
+      'object-curly-spacing': ['error', 'always'],
+      'array-bracket-spacing': ['error', 'never'],
+      'computed-property-spacing': ['error', 'never'],
+      'array-element-newline': ['error', 'consistent'],
+      'comma-spacing': ['error', { before: false, after: true }],
+      'arrow-parens': ['error', 'always'],
+      'comma-dangle': ['error', 'always-multiline'],
+      'space-before-function-paren': [
+        'error',
+        {
+          anonymous: 'always',
+          named: 'never',
+          asyncArrow: 'always',
+        },
+      ],
+      'padding-line-between-statements': [
+        'error',
+        { blankLine: 'always', prev: 'multiline-block-like', next: '*' },
+        { blankLine: 'always', prev: '*', next: 'return' },
+        { blankLine: 'always', prev: 'const', next: 'function' },
+        { blankLine: 'always', prev: 'let', next: 'function' },
+        { blankLine: 'any', prev: 'const', next: 'const' },
+        { blankLine: 'any', prev: 'let', next: 'let' },
+      ],
+      'no-multi-spaces': 'error',
+      'no-multiple-empty-lines': ['error', { max: 1, maxEOF: 0 }],
+      'dot-location': ['error', 'property'],
+      'no-empty': ['error', { allowEmptyCatch: true }],
+    },
+  }
+)
 `
   }
 }
