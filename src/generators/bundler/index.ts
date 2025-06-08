@@ -65,7 +65,7 @@ function generateTsdownConfig(context: ProjectContext): void {
 
   // Add tsdown dependencies
   addDependencies(packageJson, {
-    tsdown: '^0.2.0',
+    tsdown: '^0.12.6',
   }, 'devDependencies')
 
   // Override build scripts
