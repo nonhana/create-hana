@@ -6,23 +6,31 @@ export const eslintPrettierGenerator: Generator = {
     const { config } = context
     const language = config.language || 'typescript'
 
-    const eslintDeps: Record<string, string> = {
-      eslint: '^9.0.0',
-      globals: '^15.0.0',
-      'eslint-plugin-import': '^2.29.0',
-      'eslint-plugin-unicorn': '^46.0.0',
-      'eslint-plugin-promise': '^6.1.1',
-      'eslint-config-prettier': '^9.0.0',
+    const commonEslintDeps: Record<string, string> = {
+      'eslint': '^9.28.0',
+      '@eslint/js': '^9.28.0',
+      'eslint-plugin-n': '^17.19.0',
+      'eslint-plugin-unicorn': '^59.0.1',
+      '@eslint/markdown': '^6.5.0',
+      'eslint-plugin-jsonc': '^2.20.1',
+      'eslint-plugin-yml': '^1.18.0',
+      'eslint-config-prettier': '^10.1.5',
     }
 
+    const eslintDeps: Record<string, string> = { ...commonEslintDeps }
+
     if (language === 'typescript') {
-      eslintDeps['typescript-eslint'] = '^8.0.0'
+      eslintDeps['typescript-eslint'] = '^8.33.1'
+    }
+    else {
+      eslintDeps.globals = '^16.2.0'
     }
 
     addDependencies(context.packageJson, eslintDeps, 'devDependencies')
 
     addDependencies(context.packageJson, {
-      prettier: '^3.0.0',
+      'prettier': '^3.5.3',
+      '@trivago/prettier-plugin-sort-imports': '^5.2.2',
     }, 'devDependencies')
 
     const pattern = language === 'typescript' ? 'src/**/*.{ts,json}' : 'src/**/*.{js,json}'
@@ -54,13 +62,85 @@ export const eslintPrettierGenerator: Generator = {
 function generatePrettierConfig(): string {
   return `/** @type {import("prettier").Config} */
 export default {
-  semi: false,
+  plugins: ['@trivago/prettier-plugin-sort-imports'],
   singleQuote: true,
-  trailingComma: 'all',
-  printWidth: 100,
   tabWidth: 2,
-};
+  trailingComma: 'all',
+  arrowParens: 'always',
+  bracketSpacing: true,
+  importOrder: ['^node:(.*)$', '<THIRD_PARTY_MODULES>', '^@/(.*)$', '^[./]'],
+  importOrderSeparation: true,
+  importOrderSortSpecifiers: true,
+}
 `
+}
+
+/**
+ * Generate eslint.config.mjs content, especially for Prettier
+ */
+function generateESLintConfig(language: 'typescript' | 'javascript') {
+  if (language === 'typescript') {
+    return `// @ts-check
+import eslint from '@eslint/js'
+import markdown from '@eslint/markdown'
+import eslintConfigPrettier from 'eslint-config-prettier'
+import eslintPluginJsonc from 'eslint-plugin-jsonc'
+import pluginN from 'eslint-plugin-n'
+import eslintPluginUnicorn from 'eslint-plugin-unicorn'
+import eslintPluginYml from 'eslint-plugin-yml'
+import tseslint from 'typescript-eslint'
+
+export default tseslint.config(
+  eslint.configs.recommended,
+  tseslint.configs.strict,
+  eslintPluginUnicorn.configs.recommended,
+  pluginN.configs['flat/recommended-module'],
+  markdown.configs.processor,
+  ...eslintPluginJsonc.configs['flat/recommended-with-jsonc'],
+  ...eslintPluginYml.configs['flat/recommended'],
+  {
+    rules: {
+      'no-empty': ['error', { allowEmptyCatch: true }],
+    },
+  },
+  eslintConfigPrettier,
+)
+`
+  }
+  else {
+    return `// @ts-check
+import eslint from '@eslint/js'
+import markdown from '@eslint/markdown'
+import eslintConfigPrettier from 'eslint-config-prettier'
+import eslintPluginJsonc from 'eslint-plugin-jsonc'
+import pluginN from 'eslint-plugin-n'
+import eslintPluginUnicorn from 'eslint-plugin-unicorn'
+import eslintPluginYml from 'eslint-plugin-yml'
+import globals from 'globals'
+
+export default [
+  eslint.configs.recommended,
+  pluginN.configs['flat/recommended-module'],
+  eslintPluginUnicorn.configs.recommended,
+  markdown.configs.processor,
+  ...eslintPluginJsonc.configs['flat/recommended-with-jsonc'],
+  ...eslintPluginYml.configs['flat/recommended'],
+  {
+    languageOptions: {
+      ecmaVersion: 'latest',
+      sourceType: 'module',
+      globals: {
+        ...globals.node,
+      },
+    },
+    rules: {
+      'no-empty': ['error', { allowEmptyCatch: true }],
+    },
+  },
+  eslintConfigPrettier,
+]
+`
+  }
 }
 
 /**
@@ -94,179 +174,28 @@ pnpm-lock.yaml
 }
 
 /**
- * Generate eslint.config.mjs content, especially for Prettier
- */
-function generateESLintConfig(language: 'typescript' | 'javascript') {
-  if (language === 'typescript') {
-    return `// @ts-check
-import js from '@eslint/js'
-import globals from 'globals'
-import tseslint from 'typescript-eslint'
-import importPlugin from 'eslint-plugin-import'
-import unicornPlugin from 'eslint-plugin-unicorn'
-import promisePlugin from 'eslint-plugin-promise'
-import prettierConfig from 'eslint-config-prettier'
-
-export default tseslint.config(
-  // Global ignore patterns
-  {
-    ignores: [
-      'dist/**',
-      'build/**',
-      'node_modules/**',
-      '*.config.{js,mjs,ts,cjs}',
-      'coverage/**',
-      '*.d.ts',
-    ],
-  },
-
-  // 1. Base configuration (code quality focused)
-  js.configs.recommended,
-  ...tseslint.configs.strictTypeChecked,
-  ...importPlugin.configs.typescript,
-  unicornPlugin.configs['flat/recommended'],
-  promisePlugin.configs['flat/recommended'],
-
-  // 2. Main rule configuration (no style rules included)
-  {
-    languageOptions: {
-      globals: {
-        ...globals.node,
-        ...globals.es2022,
-      },
-      parserOptions: {
-        project: true,
-        tsconfigRootDir: import.meta.dirname,
-      },
-    },
-    rules: {
-      // --- Override and custom rules ---
-      'no-console': ['warn', { allow: ['warn', 'error'] }],
-      'no-var': 'error',
-      'prefer-const': 'error',
-
-      // --- TypeScript rules ---
-      '@typescript-eslint/no-unused-vars': ['error', { argsIgnorePattern: '^_', varsIgnorePattern: '^_' }],
-      '@typescript-eslint/no-explicit-any': 'warn',
-      '@typescript-eslint/consistent-type-imports': ['error', { prefer: 'type-imports', fixStyle: 'inline-type-imports' }],
-      
-      // --- Import plugin rules ---
-      'import/order': ['error', { // import/order has style aspects but is more about logical organization, usually kept
-        'groups': ['builtin', 'external', 'internal', 'parent', 'sibling', 'index', 'object', 'type'],
-        'newlines-between': 'always',
-        'alphabetize': { order: 'asc', caseInsensitive: true },
-      }],
-      'import/first': 'error',
-      'import/no-mutable-exports': 'error',
-      'import/no-unresolved': 'off', // tsc handles this check
-
-      // --- Unicorn plugin rules ---
-      'unicorn/prevent-abbreviations': 'off',
-      'unicorn/filename-case': ['error', { case: 'kebabCase' }],
-      
-      // Disable rules that conflict with @typescript-eslint
-      'no-unused-vars': 'off',
-    },
-  },
-
-  // 3. Disable type checking for JS files
-  {
-    files: ['**/*.{js,cjs,mjs}'],
-    ...tseslint.configs.disableTypeChecked,
-  },
-
-  // 4. Prettier integration (must be last!)
-  // This configuration disables all ESLint rules that conflict with Prettier.
-  prettierConfig,
-)
-`
-  } else {
-    return `// @ts-check
-import js from '@eslint/js'
-import globals from 'globals'
-import importPlugin from 'eslint-plugin-import'
-import unicornPlugin from 'eslint-plugin-unicorn'
-import promisePlugin from 'eslint-plugin-promise'
-import prettierConfig from 'eslint-config-prettier'
-
-/** @type {import('eslint').Linter.FlatConfig[]} */
-export default [
-  // Global ignore patterns
-  {
-    ignores: [
-      'dist/**',
-      'build/**',
-      'node_modules/**',
-      '*.config.{js,mjs,cjs}',
-      'coverage/**',
-    ],
-  },
-
-  // 1. Base configuration (code quality focused)
-  js.configs.recommended,
-  importPlugin.configs.recommended,
-  unicornPlugin.configs['flat/recommended'],
-  promisePlugin.configs['flat/recommended'],
-
-  // 2. Main rule configuration
-  {
-    languageOptions: {
-      globals: {
-        ...globals.node,
-        ...globals.es2022,
-      },
-    },
-    rules: {
-      // --- Override and custom rules ---
-      'no-console': ['warn', { allow: ['warn', 'error'] }],
-      'no-var': 'error',
-      'prefer-const': 'error',
-
-      // --- Import plugin rules ---
-      'import/order': ['error', {
-        groups: ['builtin', 'external', 'internal', 'parent', 'sibling', 'index', 'object', 'type'],
-        'newlines-between': 'always',
-        alphabetize: { order: 'asc', caseInsensitive: true },
-      }],
-      'import/first': 'error',
-      'import/no-mutable-exports': 'error',
-
-      // --- Unicorn plugin rules ---
-      'unicorn/prevent-abbreviations': 'off',
-      'unicorn/filename-case': ['error', { case: 'kebabCase' }],
-    },
-  },
-
-  // 3. Prettier integration (must be last)
-  prettierConfig,
-]
-`
-  }
-}
-
-/**
  * Generate .vscode/settings.json content
  */
 function generateESLintPrettierVscodeConfig() {
   const config = {
-    "editor.defaultFormatter": "esbenp.prettier-vscode",
-    "editor.formatOnSave": true,
-    "editor.codeActionsOnSave": {
-      "source.fixAll.eslint": "explicit",
-      "source.organizeImports": "never"
+    'editor.defaultFormatter': 'esbenp.prettier-vscode',
+    'editor.formatOnSave': true,
+    'editor.codeActionsOnSave': {
+      'source.fixAll.eslint': 'explicit',
+      'source.organizeImports': 'never',
     },
-    "[typescript]": {
-      "editor.defaultFormatter": "esbenp.prettier-vscode"
+    '[typescript]': {
+      'editor.defaultFormatter': 'esbenp.prettier-vscode',
     },
-    "[javascript]": {
-      "editor.defaultFormatter": "esbenp.prettier-vscode"
+    '[javascript]': {
+      'editor.defaultFormatter': 'esbenp.prettier-vscode',
     },
-    "eslint.validate": [
-      "javascript",
-      "typescript",
-      "javascriptreact",
-      "typescriptreact"
-    ]
+    'eslint.validate': [
+      'javascript',
+      'typescript',
+      'javascriptreact',
+      'typescriptreact',
+    ],
   }
 
   return JSON.stringify(config, null, 2)
