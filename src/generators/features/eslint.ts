@@ -7,15 +7,15 @@ export const eslintGenerator: Generator = {
     const language = config.language || 'typescript'
 
     const commonDeps: Record<string, string> = {
-      'eslint': '^9.0.0',
-      '@eslint/js': '^9.0.0',
-      'eslint-plugin-n': '^17.0.0',
-      'eslint-plugin-unicorn': '^55.0.0',
-      'eslint-plugin-simple-import-sort': '^12.0.0',
-      'eslint-plugin-jsonc': '^2.16.0',
-      'eslint-plugin-yml': '^1.14.0',
-      'typescript-eslint': '^8.0.0',
-      '@eslint/markdown': '^6.0.0',
+      'eslint': '^9.28.0',
+      '@eslint/js': '^9.28.0',
+      'eslint-plugin-n': '^17.19.0',
+      'eslint-plugin-unicorn': '^59.0.1',
+      'eslint-plugin-simple-import-sort': '^12.1.1',
+      'eslint-plugin-jsonc': '^2.20.1',
+      'eslint-plugin-yml': '^1.18.0',
+      'typescript-eslint': '^8.33.1',
+      '@eslint/markdown': '^6.5.0',
     }
 
     let eslintDeps: Record<string, string>
@@ -24,7 +24,7 @@ export const eslintGenerator: Generator = {
       eslintDeps = { ...commonDeps }
     }
     else {
-      eslintDeps = { ...commonDeps, globals: '^15.0.0' }
+      eslintDeps = { ...commonDeps, globals: '^16.2.0' }
     }
 
     addDependencies(context.packageJson, eslintDeps, 'devDependencies')
@@ -192,12 +192,13 @@ export default tseslint.config(
 
 function generateESlintVscodeConfig() {
   const config = {
+    'prettier.enable': false,
+    'biome.enable': false,
     'editor.formatOnSave': false,
     'editor.codeActionsOnSave': {
       'source.fixAll.eslint': 'explicit',
       'source.organizeImports': 'never',
     },
-    'prettier.enable': false,
     '[typescript]': {
       'editor.defaultFormatter': null,
     },
