@@ -10,7 +10,6 @@ export const languageGenerator: Generator = {
     const { config } = context
     const language = config.language || 'typescript'
 
-    // Set file extension for other generators to use
     context.fileExtension = getFileExtension(language)
 
     if (language === 'typescript') {
@@ -73,31 +72,41 @@ function generateJavaScriptConfig(context: ProjectContext): void {
 function generateTsConfig(): string {
   const config = {
     compilerOptions: {
-      target: 'ES2020',
-      module: 'CommonJS',
-      lib: ['ES2020'],
-      declaration: true,
+      target: 'ES2022',
+      module: 'NodeNext',
+      moduleResolution: 'NodeNext',
+      lib: ['ES2022'],
       outDir: './dist',
-      rootDir: './src',
+      declaration: true,
+      declarationMap: true,
+      sourceMap: true,
       strict: true,
       noUnusedLocals: true,
       noUnusedParameters: true,
       noImplicitReturns: true,
       noFallthroughCasesInSwitch: true,
-      moduleResolution: 'node',
+      forceConsistentCasingInFileNames: true,
       baseUrl: './',
       paths: {
         '@/*': ['src/*'],
       },
-      allowSyntheticDefaultImports: true,
       esModuleInterop: true,
+      allowSyntheticDefaultImports: true,
+      skipLibCheck: true,
       experimentalDecorators: true,
       emitDecoratorMetadata: true,
-      skipLibCheck: true,
-      forceConsistentCasingInFileNames: true,
     },
-    include: ['src/**/*'],
-    exclude: ['node_modules', '**/*.test.ts', '**/*.spec.ts'],
+    include: [
+      'src/**/*.ts',
+      '*.config.ts',
+      'scripts/**/*.ts',
+    ],
+    exclude: [
+      'node_modules',
+      'dist',
+      '**/*.test.ts',
+      '**/*.spec.ts',
+    ],
   }
 
   return JSON.stringify(config, null, 2)
