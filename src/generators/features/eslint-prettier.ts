@@ -28,16 +28,19 @@ export const eslintPrettierGenerator: Generator = {
 
     addDependencies(context.packageJson, eslintDeps, 'devDependencies')
 
+    addScripts(context.packageJson, {
+      'lint': 'eslint .',
+      'lint:fix': 'eslint . --fix',
+    })
+
     addDependencies(context.packageJson, {
       'prettier': '^3.5.3',
       '@trivago/prettier-plugin-sort-imports': '^5.2.2',
     }, 'devDependencies')
 
-    const pattern = language === 'typescript' ? 'src/**/*.{ts,json}' : 'src/**/*.{js,json}'
-
     addScripts(context.packageJson, {
-      'format': `prettier --write ${pattern}`,
-      'format:check': `prettier --check ${pattern}`,
+      'format': `prettier --write .`,
+      'format:check': `prettier --check .`,
     })
 
     const prettierConfig = generatePrettierConfig()
@@ -68,6 +71,7 @@ export default {
   trailingComma: 'all',
   arrowParens: 'always',
   bracketSpacing: true,
+  semi: false,
   importOrder: ['^node:(.*)$', '<THIRD_PARTY_MODULES>', '^@/(.*)$', '^[./]'],
   importOrderSeparation: true,
   importOrderSortSpecifiers: true,
@@ -178,6 +182,7 @@ pnpm-lock.yaml
  */
 function generateESLintPrettierVscodeConfig() {
   const config = {
+    'biome.enabled': false,
     'editor.defaultFormatter': 'esbenp.prettier-vscode',
     'editor.formatOnSave': true,
     'editor.codeActionsOnSave': {
