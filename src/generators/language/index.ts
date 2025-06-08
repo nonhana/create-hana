@@ -29,8 +29,8 @@ function generateTypeScriptConfig(context: ProjectContext): void {
 
   // Add TypeScript dependencies
   addDependencies(packageJson, {
-    'typescript': '^5.0.0',
-    '@types/node': '^20.0.0',
+    'typescript': 'latest',
+    '@types/node': 'latest',
   }, 'devDependencies')
 
   // Add TypeScript scripts
