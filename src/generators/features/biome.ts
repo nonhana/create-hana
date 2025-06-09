@@ -38,27 +38,9 @@ export const biomeGenerator: Generator = {
  */
 function generateBiomeConfig(language: 'typescript' | 'javascript'): string {
   const tsConfig = {
-    $schema: 'https://biomejs.dev/schemas/1.4.1/schema.json',
+    $schema: 'https://biomejs.dev/schemas/latest/schema.json',
     organizeImports: {
       enabled: true,
-    },
-    linter: {
-      enabled: true,
-      rules: {
-        recommended: true,
-        style: {
-          noNonNullAssertion: 'warn',
-          useSingleQuotes: 'error',
-          useSemicolons: 'off',
-        },
-        suspicious: {
-          noExplicitAny: 'warn',
-          noCaseDeclaration: 'error',
-        },
-        complexity: {
-          noShadowRestrictedNames: 'error',
-        },
-      },
     },
     formatter: {
       enabled: true,
@@ -67,65 +49,87 @@ function generateBiomeConfig(language: 'typescript' | 'javascript'): string {
       indentWidth: 2,
       lineWidth: 100,
     },
+    linter: {
+      enabled: true,
+      rules: {
+        recommended: true,
+        suspicious: {
+          noExplicitAny: 'warn',
+          noShadowRestrictedNames: 'error',
+        },
+        style: {
+          noNonNullAssertion: 'warn',
+          useFilenamingConvention: 'error',
+        },
+        correctness: {
+          noSwitchDeclarations: 'error',
+        },
+      },
+    },
     javascript: {
       formatter: {
-        semicolons: 'asNeeded',
         quoteStyle: 'single',
-        trailingComma: 'es5',
+        semicolons: 'asNeeded',
+        trailingCommas: 'es5',
+        quoteProperties: 'asNeeded',
       },
     },
     json: {
+      parser: {
+        allowComments: true,
+      },
       formatter: {
         enabled: true,
+        trailingCommas: 'none',
       },
     },
   }
 
   const jsConfig = {
-    $schema: 'https://biomejs.dev/schemas/1.4.1/schema.json',
-
+    $schema: 'https://biomejs.dev/schemas/latest/schema.json',
     organizeImports: {
       enabled: true,
     },
-
+    formatter: {
+      enabled: true,
+      formatWithErrors: false,
+      indentStyle: 'space',
+      indentWidth: 2,
+      lineWidth: 100,
+    },
     linter: {
       enabled: true,
       rules: {
         recommended: true,
-        style: {
-          useSingleQuotes: 'error',
-          useSemicolons: 'off',
-        },
         suspicious: {
-          noUselessCatch: 'error',
           noShadowRestrictedNames: 'error',
         },
-        complexity: {
-          noDuplicateCase: 'error',
-          noLabelVar: 'error',
+        style: {
+          useFilenamingConvention: 'error',
+        },
+        correctness: {
+          noSwitchDeclarations: 'error',
+        },
+        nursery: {
+          useValidTypeof: 'error',
         },
       },
     },
-
-    formatter: {
-      enabled: true,
-      indentStyle: 'space',
-      indentWidth: 2,
-      lineWidth: 100,
-      formatWithErrors: false,
-    },
-
     javascript: {
       formatter: {
-        semicolons: 'asNeeded',
         quoteStyle: 'single',
-        trailingComma: 'es5',
+        semicolons: 'asNeeded',
+        trailingCommas: 'es5',
+        quoteProperties: 'asNeeded',
       },
     },
-
     json: {
+      parser: {
+        allowComments: true,
+      },
       formatter: {
         enabled: true,
+        trailingCommas: 'none',
       },
     },
   }
