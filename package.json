@@ -1,20 +1,16 @@
 {
   "name": "create-hana",
   "type": "module",
-  "version": "1.0.0",
-  "packageManager": "pnpm@10.11.0",
-  "description": "A modern project scaffolding tool for Node.js applications",
-  "author": "",
+  "version": "0.0.1",
+  "packageManager": "pnpm@10.12.1",
+  "description": "A modern project scaffolding tool for JS/TS applications",
+  "author": "non_hana",
   "license": "MIT",
-  "keywords": ["cli", "scaffold", "generator", "typescript", "nodejs"],
+  "keywords": ["cli", "scaffold", "generator", "typescript", "javascript", "nodejs"],
   "main": "dist/index.js",
   "bin": {
     "create-hana": "dist/index.js"
   },
-  "files": [
-    "dist",
-    "templates"
-  ],
   "engines": {
     "node": ">=16.0.0"
   },
