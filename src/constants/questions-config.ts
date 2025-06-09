@@ -92,6 +92,13 @@ export const QUESTIONS_CONFIG: QuestionsSetConfig = {
           message: 'Would you like to configure code quality tools for VSCode?',
           field: 'codeQualityConfig',
           initialValue: false,
+          when: [
+            {
+              field: 'codeQualityTools',
+              value: 'none',
+              operator: 'neq',
+            },
+          ],
         },
         {
           id: 'bundler',
@@ -100,7 +107,6 @@ export const QUESTIONS_CONFIG: QuestionsSetConfig = {
           field: 'bundler',
           options: NODE_BUNDLERS_OPTIONS,
           initialValue: 'none',
-          // Only show for TypeScript projects
           when: [
             {
               field: 'language',

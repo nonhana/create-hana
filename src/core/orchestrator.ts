@@ -35,14 +35,14 @@ export async function generateProject(config: Config, cwd: string): Promise<void
     // Write all files to disk
     await writeProjectFiles(context)
 
-    // Install dependencies
-    if (shouldInstallDependencies(context)) {
-      await installDependencies(config, context.projectDir)
-    }
-
     // Initialize Git repository if requested
     if (config.git) {
       await initGitRepository(context.projectDir)
+    }
+
+    // Install dependencies
+    if (shouldInstallDependencies(context)) {
+      await installDependencies(config, context.projectDir)
     }
 
     // Show completion message
