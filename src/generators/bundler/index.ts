@@ -31,7 +31,8 @@ function generateTsupConfig(context: ProjectContext): void {
 
   // Add tsup dependencies
   addDependencies(packageJson, {
-    tsup: '^8.5.0',
+    'tsup': '^8.5.0',
+    '@swc/core': '^1.11.31',
   }, 'devDependencies')
 
   // Override build scripts
@@ -42,13 +43,13 @@ function generateTsupConfig(context: ProjectContext): void {
 
   // Update package.json for dual module support
   packageJson.main = 'dist/index.js'
-  packageJson.module = 'dist/index.mjs'
+  packageJson.module = 'dist/index.js'
   packageJson.types = 'dist/index.d.ts'
   packageJson.exports = {
     '.': {
-      require: './dist/index.js',
-      import: './dist/index.mjs',
       types: './dist/index.d.ts',
+      import: './dist/index.js',
+      require: './dist/index.cjs',
     },
   }
 
@@ -76,14 +77,14 @@ function generateTsdownConfig(context: ProjectContext): void {
   })
 
   // Update package.json for dual module support
-  packageJson.main = 'dist/index.cjs'
+  packageJson.main = 'dist/index.js'
   packageJson.module = 'dist/index.js'
   packageJson.types = 'dist/index.d.ts'
   packageJson.exports = {
     '.': {
-      require: './dist/index.cjs',
-      import: './dist/index.js',
       types: './dist/index.d.ts',
+      import: './dist/index.js',
+      require: './dist/index.cjs',
     },
   }
 
