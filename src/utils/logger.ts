@@ -1,4 +1,4 @@
-import * as pc from 'picocolors'
+import pc from 'picocolors'
 
 /**
  * Logger utility for consistent CLI output, with emojis :D

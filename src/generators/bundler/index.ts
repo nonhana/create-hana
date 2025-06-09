@@ -31,7 +31,7 @@ function generateTsupConfig(context: ProjectContext): void {
 
   // Add tsup dependencies
   addDependencies(packageJson, {
-    tsup: '^8.0.0',
+    tsup: '^8.5.0',
   }, 'devDependencies')
 
   // Override build scripts
@@ -72,6 +72,7 @@ function generateTsdownConfig(context: ProjectContext): void {
   addScripts(packageJson, {
     'build': 'tsdown',
     'build:watch': 'tsdown --watch',
+    'start': 'node dist/index.js',
   })
 
   // Update package.json for dual module support
