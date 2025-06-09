@@ -80,6 +80,7 @@ async function initializeProjectContext(config: Config, cwd: string): Promise<Pr
     packageJson: {
       name: config.targetDir!,
       version: '1.0.0',
+      type: 'module',
     },
     files: {},
     fileExtension: '.js', // Will be updated by language generator
