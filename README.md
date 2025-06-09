@@ -16,70 +16,32 @@ A modern, flexible project scaffolding tool for Node.js applications.
 ### With npm
 
 ```bash
-npm create hana@latest my-project
+npm create hana@latest
 ```
 
 ### With pnpm
 
 ```bash
-pnpm create hana my-project
+pnpm create hana
 ```
 
 ### With yarn
 
 ```bash
-yarn create hana my-project
+yarn create hana
 ```
 
 ### With bun
 
 ```bash
-bun create hana my-project
+bun create hana
 ```
 
 ## Project Types
 
 Currently supports:
 
-- **Node.js Library**: A general-purpose Node.js library/package
-
-## Language Support
-
-- **TypeScript** (recommended)
-- **JavaScript**
-
-## Package Managers
-
-- **pnpm** (recommended)
-- **npm**
-- **yarn**
-- **bun**
-
-## Code Quality Tools
-
-- **ESLint**: JavaScript/TypeScript linting
-- **Prettier**: Code formatting
-- **Biome**: All-in-one tool for linting and formatting
-- **ESLint + Prettier**: Combined setup
-
-## Bundlers (TypeScript only)
-
-- **tsup**: Fast TypeScript bundler
-- **tsdown**: Lightweight TypeScript bundler
-- **tsc**: TypeScript compiler only
-
-## Web Server Support
-
-- **Express.js**: Popular Node.js web framework
-- **Fastify**: Fast and low overhead web framework
-- **None**: Library only
-
-## TypeScript Runtime
-
-- **tsx**: Fast TypeScript execution (recommended)
-- **ts-node**: TypeScript execution engine
-- **esno**: Fast TypeScript/ESM execution
-- **None**: Build only
+- **Node.js Library**: A general-purpose Node.js library/package for daily use
 
 ## Architecture
 
