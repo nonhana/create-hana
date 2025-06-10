@@ -26,14 +26,14 @@ describe('languageGenerator', () => {
 
     // Check TypeScript dependencies are added
     expect(context.packageJson.devDependencies).toEqual({
-      'typescript': '^5.0.0',
-      '@types/node': '^20.0.0',
+      'typescript': 'latest',
+      '@types/node': 'latest',
     })
 
     // Check TypeScript scripts are added
     expect(context.packageJson.scripts).toEqual({
-      build: 'tsc',
-      dev: 'tsc --watch',
+      'build': 'tsc',
+      'build:watch': 'tsc --watch',
     })
 
     // Check package.json fields for TypeScript
@@ -44,9 +44,8 @@ describe('languageGenerator', () => {
     // Check tsconfig.json is generated
     expect(context.files['tsconfig.json']).toBeDefined()
     const tsconfig = JSON.parse(context.files['tsconfig.json'] as string)
-    expect(tsconfig.compilerOptions.target).toBe('ES2020')
+    expect(tsconfig.compilerOptions.target).toBe('ES2022')
     expect(tsconfig.compilerOptions.outDir).toBe('./dist')
-    expect(tsconfig.compilerOptions.rootDir).toBe('./src')
   })
 
   it('should generate JavaScript configuration', () => {

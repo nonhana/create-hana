@@ -1,13 +1,9 @@
 import { describe, expect, it, vi } from 'vitest'
-import {
-  Assert,
-  ErrorCategory,
-  ErrorFactory,
-  ErrorHandler,
-  ErrorSeverity,
-  ErrorUtils,
-  HanaError,
-} from '../../error/factory'
+import { Assert } from '@/error/assert'
+import { ErrorFactory } from '@/error/factory'
+import { HanaError } from '@/error/hana-error'
+import { ErrorHandler } from '@/error/handler'
+import { ErrorCategory, ErrorSeverity } from '@/types/error'
 
 describe('hanaError', () => {
   it('should create error with correct properties', () => {
@@ -239,45 +235,5 @@ describe('assert', () => {
     expect(() => Assert.type('test', 'number', 'Should throw')).toThrow(HanaError)
     expect(() => Assert.type(123, 'string', 'Should throw')).toThrow(HanaError)
     expect(() => Assert.type(true, 'string', 'Should throw')).toThrow(HanaError)
-  })
-})
-
-describe('errorUtils', () => {
-  it('should check error code correctly', () => {
-    const error = ErrorFactory.validation('Test error')
-
-    expect(ErrorUtils.isErrorCode(error, 'VALIDATION_ERROR')).toBe(true)
-    expect(ErrorUtils.isErrorCode(error, 'FILE_SYSTEM_ERROR')).toBe(false)
-    expect(ErrorUtils.isErrorCode(new Error('Regular error'), 'VALIDATION_ERROR')).toBe(false)
-  })
-
-  it('should check error category correctly', () => {
-    const error = ErrorFactory.fileSystem('Test error')
-
-    expect(ErrorUtils.isErrorCategory(error, ErrorCategory.FILE_SYSTEM)).toBe(true)
-    expect(ErrorUtils.isErrorCategory(error, ErrorCategory.VALIDATION)).toBe(false)
-    expect(ErrorUtils.isErrorCategory(new Error('Regular error'), ErrorCategory.FILE_SYSTEM)).toBe(false)
-  })
-
-  it('should extract user message correctly', () => {
-    const hanaError = ErrorFactory.validation('Validation failed')
-    const regularError = new Error('Regular error')
-    const stringError = 'String error'
-
-    expect(ErrorUtils.getUserMessage(hanaError)).toBe('Validation failed')
-    expect(ErrorUtils.getUserMessage(regularError)).toBe('Regular error')
-    expect(ErrorUtils.getUserMessage(stringError)).toBe('An unexpected error occurred')
-  })
-
-  it('should determine retry correctly', () => {
-    const networkError = ErrorFactory.network('Network failed')
-    const dependencyError = ErrorFactory.dependency('Dependency failed')
-    const validationError = ErrorFactory.validation('Validation failed')
-    const regularError = new Error('Regular error')
-
-    expect(ErrorUtils.shouldRetry(networkError)).toBe(true)
-    expect(ErrorUtils.shouldRetry(dependencyError)).toBe(true)
-    expect(ErrorUtils.shouldRetry(validationError)).toBe(false)
-    expect(ErrorUtils.shouldRetry(regularError)).toBe(false)
   })
 })

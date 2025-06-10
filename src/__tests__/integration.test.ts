@@ -3,7 +3,7 @@ import { existsSync } from 'node:fs'
 import { mkdir, rm } from 'node:fs/promises'
 import { join } from 'node:path'
 import { afterEach, beforeEach, describe, expect, it } from 'vitest'
-import { generateProject } from '@/core/orchestrator'
+import { generateProject } from '@/core/generator'
 
 const TEST_DIR = join(__dirname, '../../test-output')
 
@@ -57,8 +57,8 @@ describe('project Generation Integration', () => {
     expect(existsSync(join(projectDir, 'package.json'))).toBe(true)
     expect(existsSync(join(projectDir, 'src/index.ts'))).toBe(true)
     expect(existsSync(join(projectDir, 'tsconfig.json'))).toBe(true)
-    expect(existsSync(join(projectDir, '.eslintrc.json'))).toBe(true)
-    expect(existsSync(join(projectDir, 'prettier.config.js'))).toBe(true)
+    expect(existsSync(join(projectDir, 'eslint.config.mjs'))).toBe(true)
+    expect(existsSync(join(projectDir, 'prettier.config.mjs'))).toBe(true)
     expect(existsSync(join(projectDir, '.prettierignore'))).toBe(true)
     expect(existsSync(join(projectDir, 'tsup.config.ts'))).toBe(true)
     expect(existsSync(join(projectDir, '.gitignore'))).toBe(true)
@@ -147,7 +147,7 @@ describe('project Generation Integration', () => {
     expect(packageJson.dependencies).toHaveProperty('express')
     expect(packageJson.devDependencies).toHaveProperty('@types/express')
     expect(packageJson.devDependencies).toHaveProperty('tsx')
-    expect(packageJson.scripts).toHaveProperty('dev:ts')
-    expect(packageJson.scripts).toHaveProperty('start:ts')
+    expect(packageJson.scripts).toHaveProperty('dev')
+    expect(packageJson.scripts).toHaveProperty('dev:watch')
   }, 60000)
 })

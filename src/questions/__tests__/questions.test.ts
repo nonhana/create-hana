@@ -1,7 +1,7 @@
-import type { Config } from '@/types'
+import type { QuestionSituationObj } from '@/types'
 import { describe, expect, it, vi } from 'vitest'
 import { QUESTIONS_CONFIG } from '@/constants/questions-config'
-import { furtherQuestions, runQuestions } from '../questions'
+import { runQuestions } from '..'
 
 // Mock @clack/prompts
 vi.mock('@clack/prompts', () => ({
@@ -65,11 +65,11 @@ describe('questions system', () => {
     expect(nodeProject).toBeDefined()
 
     // Find questions with conditions
-    const conditionalQuestions = nodeProject!.questions.filter(q => q.when && q.when.length > 0)
+    const conditionalQuestions = nodeProject!.questions.filter(q => q.when && q.when.situation.length > 0)
 
     for (const question of conditionalQuestions) {
       expect(question.when).toBeDefined()
-      for (const condition of question.when!) {
+      for (const condition of question.when!.situation as QuestionSituationObj[]) {
         expect(condition).toHaveProperty('field')
         expect(condition).toHaveProperty('value')
         expect(['eq', 'neq', 'in', 'notIn']).toContain(condition.operator || 'eq')
@@ -79,15 +79,5 @@ describe('questions system', () => {
 
   it('should export runQuestions function', () => {
     expect(typeof runQuestions).toBe('function')
-  })
-
-  it('should export furtherQuestions function for backward compatibility', () => {
-    expect(typeof furtherQuestions).toBe('function')
-  })
-
-  it('should handle furtherQuestions with missing projectType', async () => {
-    const config: Config = {} as Config
-
-    await expect(furtherQuestions(config)).rejects.toThrow()
   })
 })

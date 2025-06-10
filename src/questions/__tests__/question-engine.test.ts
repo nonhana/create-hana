@@ -1,6 +1,6 @@
 import type { QuestionsSetConfig } from '@/types'
 import { describe, expect, it, vi } from 'vitest'
-import { QuestionEngine } from '../question-engine'
+import { QuestionEngine } from '../engine'
 
 // Mock @clack/prompts
 vi.mock('@clack/prompts', () => ({
@@ -56,13 +56,14 @@ describe('questionEngine', () => {
               { label: 'tsup', value: 'tsup' },
               { label: 'none', value: 'none' },
             ],
-            when: [
-              {
+            when: {
+              type: 'cascade',
+              situation: [{
                 field: 'language',
                 value: 'typescript',
                 operator: 'eq',
-              },
-            ],
+              }],
+            },
           },
         ],
       },
@@ -116,7 +117,7 @@ describe('questionEngine', () => {
     })).toBe(false)
   })
 
-  it('should check if question should be shown based on conditions', () => {
+  it('should check if question should be shown based on conditions', async () => {
     const engine = new QuestionEngine(testConfig)
     const shouldShowQuestion = (engine as any).shouldShowQuestion.bind(engine)
 
@@ -128,26 +129,19 @@ describe('questionEngine', () => {
       message: 'Test',
       field: 'test' as const,
       options: [],
-      when: [
-        {
+      when: {
+        type: 'cascade',
+        situation: [{
           field: 'language' as const,
           value: 'typescript',
           operator: 'eq' as const,
-        },
-      ],
+        }],
+      },
     }
 
-    expect(shouldShowQuestion(question)).toBe(true)
+    expect((await shouldShowQuestion(question))).toBe(true)
 
     ;(engine as any).config = { language: 'javascript' }
-    expect(shouldShowQuestion(question)).toBe(false)
-  })
-
-  it('should return current config', () => {
-    const engine = new QuestionEngine(testConfig)
-    ;(engine as any).config = { targetDir: 'test', projectType: 'node' }
-
-    const config = engine.getCurrentConfig()
-    expect(config).toEqual({ targetDir: 'test', projectType: 'node' })
+    expect((await shouldShowQuestion(question))).toBe(false)
   })
 })
