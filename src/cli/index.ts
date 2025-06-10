@@ -1,7 +1,7 @@
 import process from 'node:process'
 import * as prompts from '@clack/prompts'
 import { generateProject } from '@/core/generator'
-import { runQuestions } from './questions'
+import { runQuestions } from '@/questions'
 
 const cwd = process.cwd()
 

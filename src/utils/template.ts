@@ -1,7 +1,4 @@
-/**
- * Simple template renderer for variable substitution
- */
-export function renderTemplate(template: string, variables: Record<string, string>): string {
+export function renderTemplate(template: string, variables: Record<string, string>) {
   let result = template
 
   for (const [key, value] of Object.entries(variables)) {
@@ -12,17 +9,11 @@ export function renderTemplate(template: string, variables: Record<string, strin
   return result
 }
 
-/**
- * Get file extension based on language
- */
-export function getFileExtension(language: 'typescript' | 'javascript'): string {
+export function getFileExtension(language: 'typescript' | 'javascript') {
   return language === 'typescript' ? '.ts' : '.js'
 }
 
-/**
- * Generate gitignore content for Node.js projects
- */
-export function generateGitignore(): string {
+export function generateGitignore() {
   return `# Logs
 logs
 *.log
@@ -141,10 +132,7 @@ Thumbs.db
 `
 }
 
-/**
- * Generate README template
- */
-export function generateReadmeTemplate(projectName: string, description?: string): string {
+export function generateReadmeTemplate(projectName: string, description?: string) {
   return `# ${projectName}
 
 ${description || 'A Node.js project'}

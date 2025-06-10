@@ -59,10 +59,7 @@ export const eslintPrettierGenerator: Generator = {
   },
 }
 
-/**
- * Generate Prettier configuration content
- */
-function generatePrettierConfig(): string {
+function generatePrettierConfig() {
   return `/** @type {import("prettier").Config} */
 export default {
   plugins: ['@trivago/prettier-plugin-sort-imports'],
@@ -79,9 +76,6 @@ export default {
 `
 }
 
-/**
- * Generate eslint.config.mjs content, especially for Prettier
- */
 function generateESLintConfig(language: 'typescript' | 'javascript') {
   if (language === 'typescript') {
     return `// @ts-check
@@ -147,10 +141,7 @@ export default [
   }
 }
 
-/**
- * Generate .prettierignore content
- */
-function generatePrettierIgnore(): string {
+function generatePrettierIgnore() {
   return `# Dependencies
 node_modules/
 
@@ -177,9 +168,6 @@ pnpm-lock.yaml
 `
 }
 
-/**
- * Generate .vscode/settings.json content
- */
 function generateESLintPrettierVscodeConfig() {
   const config = {
     'biome.enabled': false,

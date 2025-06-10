@@ -1,20 +1,15 @@
 import type { PackageJsonConfig } from '@/types'
 
-/**
- * Deep merge multiple package.json configurations
- */
-export function mergePackageJson(...configs: Partial<PackageJsonConfig>[]): PackageJsonConfig {
+export function mergePackageJson(...configs: Partial<PackageJsonConfig>[]) {
   const result: PackageJsonConfig = {
     name: '',
     version: '1.0.0',
   }
 
   for (const config of configs) {
-    // Merge basic properties, but exclude dependency objects
     const { dependencies, devDependencies, peerDependencies, scripts, files, keywords, ...basicProps } = config
     Object.assign(result, basicProps)
 
-    // Special handling for dependencies - merge instead of replace
     if (dependencies) {
       result.dependencies = { ...result.dependencies, ...dependencies }
     }
@@ -38,34 +33,25 @@ export function mergePackageJson(...configs: Partial<PackageJsonConfig>[]): Pack
   return result
 }
 
-/**
- * Add dependencies to package.json config
- */
 export function addDependencies(
   packageJson: PackageJsonConfig,
   dependencies: Record<string, string>,
   type: 'dependencies' | 'devDependencies' | 'peerDependencies' = 'dependencies',
-): void {
+) {
   if (!packageJson[type]) {
     packageJson[type] = {}
   }
   Object.assign(packageJson[type]!, dependencies)
 }
 
-/**
- * Add scripts to package.json config
- */
-export function addScripts(packageJson: PackageJsonConfig, scripts: Record<string, string>): void {
+export function addScripts(packageJson: PackageJsonConfig, scripts: Record<string, string>) {
   if (!packageJson.scripts) {
     packageJson.scripts = {}
   }
   Object.assign(packageJson.scripts, scripts)
 }
 
-/**
- * Sort package.json keys in conventional order
- */
-export function sortPackageJson(packageJson: PackageJsonConfig): PackageJsonConfig {
+export function sortPackageJson(packageJson: PackageJsonConfig) {
   const keyOrder = [
     'name',
     'version',
@@ -87,14 +73,12 @@ export function sortPackageJson(packageJson: PackageJsonConfig): PackageJsonConf
 
   const sorted: Partial<PackageJsonConfig> = {}
 
-  // Add keys in order
   for (const key of keyOrder) {
     if (key in packageJson) {
       (sorted as any)[key] = packageJson[key]
     }
   }
 
-  // Add any remaining keys
   for (const key in packageJson) {
     if (!keyOrder.includes(key as any)) {
       (sorted as any)[key] = packageJson[key as keyof PackageJsonConfig]

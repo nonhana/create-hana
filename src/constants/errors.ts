@@ -1,12 +1,8 @@
-/**
- * Error message constants for consistency and i18n support
- */
-
 export const ERROR_MESSAGES = {
-  // Validation errors
   VALIDATION: {
     PROJECT_TYPE_REQUIRED: 'Project type is required to continue',
     TARGET_DIR_REQUIRED: 'Project target directory is required',
+    TARGET_DIR_EXISTS: 'Project target directory already exists',
     TARGET_DIR_EMPTY: 'Project name cannot be empty',
     INVALID_PROJECT_TYPE: 'Unsupported project type: {projectType}',
     INVALID_LANGUAGE: 'Invalid language selection: {language}',
@@ -15,7 +11,6 @@ export const ERROR_MESSAGES = {
     INVALID_CODE_QUALITY_TOOL: 'Invalid code quality tool: {tool}',
   },
 
-  // File system errors
   FILE_SYSTEM: {
     FAILED_TO_CREATE_DIR: 'Failed to create directory: {path}',
     FAILED_TO_WRITE_FILE: 'Failed to write file: {path}',
@@ -27,7 +22,6 @@ export const ERROR_MESSAGES = {
     PATH_ALREADY_EXISTS: 'Path already exists: {path}',
   },
 
-  // Dependency errors
   DEPENDENCY: {
     INSTALL_FAILED: 'Failed to install dependencies with {packageManager}',
     PACKAGE_MANAGER_NOT_FOUND: 'Package manager not found: {packageManager}',
@@ -35,7 +29,6 @@ export const ERROR_MESSAGES = {
     INVALID_VERSION: 'Invalid version specified for {dependency}: {version}',
   },
 
-  // Network errors
   NETWORK: {
     CONNECTION_FAILED: 'Network connection failed',
     TIMEOUT: 'Network request timed out',
@@ -43,7 +36,6 @@ export const ERROR_MESSAGES = {
     REGISTRY_UNAVAILABLE: 'Package registry is unavailable',
   },
 
-  // Configuration errors
   CONFIGURATION: {
     INVALID_CONFIG: 'Invalid configuration provided',
     MISSING_CONFIG_FIELD: 'Missing required configuration field: {field}',
@@ -51,7 +43,6 @@ export const ERROR_MESSAGES = {
     INCOMPATIBLE_OPTIONS: 'Incompatible configuration options: {options}',
   },
 
-  // User input errors
   USER_INPUT: {
     OPERATION_CANCELLED: 'Operation was cancelled by user',
     INVALID_INPUT: 'Invalid input provided: {input}',
@@ -60,7 +51,6 @@ export const ERROR_MESSAGES = {
     INPUT_TOO_SHORT: 'Input is too short for field: {field}',
   },
 
-  // System errors
   SYSTEM: {
     UNEXPECTED_ERROR: 'An unexpected error occurred',
     INSUFFICIENT_PERMISSIONS: 'Insufficient permissions to perform operation',
@@ -69,7 +59,6 @@ export const ERROR_MESSAGES = {
     PROCESS_FAILED: 'Process execution failed: {process}',
   },
 
-  // Generator errors
   GENERATOR: {
     GENERATOR_FAILED: 'Generator failed: {generator}',
     TEMPLATE_NOT_FOUND: 'Template not found: {template}',
@@ -77,7 +66,6 @@ export const ERROR_MESSAGES = {
     MISSING_GENERATOR: 'No generator found for: {type}',
   },
 
-  // Git errors
   GIT: {
     INIT_FAILED: 'Failed to initialize Git repository',
     GIT_NOT_FOUND: 'Git is not installed or not found in PATH',
@@ -85,9 +73,6 @@ export const ERROR_MESSAGES = {
   },
 } as const
 
-/**
- * Format error message with variables
- */
 export function formatErrorMessage(
   message: string,
   variables: Record<string, string | number> = {},
@@ -98,13 +83,11 @@ export function formatErrorMessage(
   )
 }
 
-/**
- * Helper functions to get formatted error messages
- */
 export const ErrorMessages = {
   validation: {
     projectTypeRequired: () => ERROR_MESSAGES.VALIDATION.PROJECT_TYPE_REQUIRED,
     targetDirRequired: () => ERROR_MESSAGES.VALIDATION.TARGET_DIR_REQUIRED,
+    targetDirExists: () => ERROR_MESSAGES.VALIDATION.TARGET_DIR_EXISTS,
     targetDirEmpty: () => ERROR_MESSAGES.VALIDATION.TARGET_DIR_EMPTY,
     invalidProjectType: (projectType: string) =>
       formatErrorMessage(ERROR_MESSAGES.VALIDATION.INVALID_PROJECT_TYPE, { projectType }),

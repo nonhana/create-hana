@@ -1,9 +1,6 @@
 import type { Generator, ProjectContext } from '@/types'
 import { addDependencies, addScripts } from '@/utils/package-json'
 
-/**
- * Bundler generator - handles TypeScript bundling tools
- */
 export const bundlerGenerator: Generator = {
   generate(context) {
     const { config } = context
@@ -23,25 +20,19 @@ export const bundlerGenerator: Generator = {
   },
 }
 
-/**
- * Generate tsup configuration
- */
-function generateTsupConfig(context: ProjectContext): void {
+function generateTsupConfig(context: ProjectContext) {
   const { packageJson } = context
 
-  // Add tsup dependencies
   addDependencies(packageJson, {
     'tsup': '^8.5.0',
     '@swc/core': '^1.11.31',
   }, 'devDependencies')
 
-  // Override build scripts
   addScripts(packageJson, {
     'build': 'tsup',
     'build:watch': 'tsup --watch',
   })
 
-  // Update package.json for dual module support
   packageJson.main = 'dist/index.js'
   packageJson.module = 'dist/index.js'
   packageJson.types = 'dist/index.d.ts'
@@ -53,30 +44,23 @@ function generateTsupConfig(context: ProjectContext): void {
     },
   }
 
-  // Generate tsup config
   const tsupConfig = generateTsupConfigFile()
   context.files['tsup.config.ts'] = tsupConfig
 }
 
-/**
- * Generate tsdown configuration
- */
-function generateTsdownConfig(context: ProjectContext): void {
+function generateTsdownConfig(context: ProjectContext) {
   const { packageJson } = context
 
-  // Add tsdown dependencies
   addDependencies(packageJson, {
     tsdown: '^0.12.6',
   }, 'devDependencies')
 
-  // Override build scripts
   addScripts(packageJson, {
     'build': 'tsdown',
     'build:watch': 'tsdown --watch',
     'start': 'node dist/index.js',
   })
 
-  // Update package.json for dual module support
   packageJson.main = 'dist/index.js'
   packageJson.module = 'dist/index.js'
   packageJson.types = 'dist/index.d.ts'
@@ -88,14 +72,10 @@ function generateTsdownConfig(context: ProjectContext): void {
     },
   }
 
-  // Generate tsdown config
   const tsdownConfig = generateTsdownConfigFile()
   context.files['tsdown.config.ts'] = tsdownConfig
 }
 
-/**
- * Generate tsup configuration file content
- */
 function generateTsupConfigFile(): string {
   return `import { defineConfig } from 'tsup'
 
@@ -112,9 +92,6 @@ export default defineConfig({
 `
 }
 
-/**
- * Generate tsdown configuration file content
- */
 function generateTsdownConfigFile(): string {
   return `import { defineConfig } from 'tsdown'
 

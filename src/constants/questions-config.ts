@@ -8,11 +8,7 @@ import {
   NODE_WEBSERVER_OPTIONS,
 } from './node-project-config'
 
-/**
- * Complete questions configuration
- */
 export const QUESTIONS_CONFIG: QuestionsSetConfig = {
-  // Common questions (before project type selection)
   common: [
     {
       id: 'projectName',
@@ -31,9 +27,28 @@ export const QUESTIONS_CONFIG: QuestionsSetConfig = {
         { label: 'Common Node.js', value: 'node' },
       ],
     },
+    {
+      id: 'removeExistFolder',
+      type: 'select',
+      message: 'Do you want to remove the existing folder?',
+      field: 'removeExistFolder',
+      options: [
+        { label: 'Yes', value: true },
+        { label: 'No', value: false },
+      ],
+      initialValue: false,
+      when: {
+        type: 'static',
+        situation: async (config) => {
+          if (!config || !config.targetDir)
+            return false
+          const { existsSync } = await import('node:fs')
+          return existsSync(config.targetDir)
+        },
+      },
+    },
   ],
 
-  // Project-specific questions
   projects: [
     {
       projectType: 'node',
@@ -69,14 +84,14 @@ export const QUESTIONS_CONFIG: QuestionsSetConfig = {
           field: 'tsRuntimePkgs',
           options: NODE_TS_RUNTIME_OPTIONS,
           initialValue: 'none',
-          // Only show for TypeScript projects
-          when: [
-            {
+          when: {
+            type: 'cascade',
+            situation: [{
               field: 'language',
               value: 'typescript',
               operator: 'eq',
-            },
-          ],
+            }],
+          },
         },
         {
           id: 'codeQuality',
@@ -92,13 +107,14 @@ export const QUESTIONS_CONFIG: QuestionsSetConfig = {
           message: 'Would you like to configure code quality tools for VSCode?',
           field: 'codeQualityConfig',
           initialValue: false,
-          when: [
-            {
+          when: {
+            type: 'cascade',
+            situation: [{
               field: 'codeQualityTools',
               value: 'none',
               operator: 'neq',
-            },
-          ],
+            }],
+          },
         },
         {
           id: 'bundler',
@@ -107,19 +123,19 @@ export const QUESTIONS_CONFIG: QuestionsSetConfig = {
           field: 'bundler',
           options: NODE_BUNDLERS_OPTIONS,
           initialValue: 'none',
-          when: [
-            {
+          when: {
+            type: 'cascade',
+            situation: [{
               field: 'language',
               value: 'typescript',
               operator: 'eq',
-            },
-          ],
+            }],
+          },
         },
       ],
     },
   ],
 
-  // Final question (run at the end)
   final: [
     {
       id: 'git',

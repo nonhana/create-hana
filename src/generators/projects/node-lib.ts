@@ -1,25 +1,18 @@
 import type { Generator, ProjectContext } from '@/types'
 import { generateGitignore, generateReadmeTemplate } from '@/utils/template'
 
-/**
- * Node.js library project generator
- */
 export const nodeLibGenerator: Generator = {
   generate(context) {
     const { config, fileExtension } = context
 
-    // Generate main entry file
     const indexFileName = `src/index${fileExtension}`
     context.files[indexFileName] = generateIndexFile()
 
-    // Generate README.md
     const projectName = config.targetDir || 'my-project'
     context.files['README.md'] = generateReadmeTemplate(projectName, 'A Node.js library')
 
-    // Generate .gitignore
     context.files['.gitignore'] = generateGitignore()
 
-    // Set basic package.json fields
     context.packageJson.name = projectName
     context.packageJson.description = 'A Node.js library'
     context.packageJson.version = '1.0.0'
@@ -28,45 +21,27 @@ export const nodeLibGenerator: Generator = {
       node: '>=16.0.0',
     }
 
-    // Generate TypeScript runtime setup if needed
     if (config.language === 'typescript' && config.tsRuntimePkgs && config.tsRuntimePkgs !== 'none') {
       generateTypeScriptRuntime(context)
     }
 
-    // Generate web server setup if requested
     if (config.webserverPkgs && config.webserverPkgs !== 'none') {
       generateWebServerSetup(context)
     }
   },
 }
 
-/**
- * Generate main index file content
- */
 function generateIndexFile() {
-  return `/**
- * Main entry point for the library
- */
-
-/**
- * A simple hello function
- */
-export function hello(name = 'World') {
+  return `export function hello(name = 'World') {
   return \`Hello, \${name}!\`
 }
 
-/**
- * Default export
- */
 export default {
   hello,
 }
 `
 }
 
-/**
- * Generate TypeScript runtime configuration
- */
 function generateTypeScriptRuntime(context: ProjectContext) {
   const { config, packageJson } = context
   const runtime = config.tsRuntimePkgs!
@@ -99,9 +74,6 @@ function generateTypeScriptRuntime(context: ProjectContext) {
   }
 }
 
-/**
- * Generate web server setup
- */
 function generateWebServerSetup(context: ProjectContext) {
   const { config, fileExtension } = context
   const framework = config.webserverPkgs!
@@ -114,13 +86,9 @@ function generateWebServerSetup(context: ProjectContext) {
   }
 }
 
-/**
- * Generate Express.js setup
- */
 function generateExpressSetup(context: ProjectContext, fileExtension: string) {
   const { packageJson } = context
 
-  // Add Express dependencies
   packageJson.dependencies = packageJson.dependencies || {}
   packageJson.dependencies.express = '^5.1.0'
 
@@ -129,31 +97,22 @@ function generateExpressSetup(context: ProjectContext, fileExtension: string) {
     packageJson.devDependencies['@types/express'] = '^5.0.3'
   }
 
-  // Generate Express server file
   const serverContent = generateExpressServer()
 
   context.files[`src/server${fileExtension}`] = serverContent
 }
 
-/**
- * Generate Fastify setup
- */
 function generateFastifySetup(context: ProjectContext, fileExtension: string) {
   const { packageJson } = context
 
-  // Add Fastify dependencies
   packageJson.dependencies = packageJson.dependencies || {}
   packageJson.dependencies.fastify = '^5.3.3'
 
-  // Generate Fastify server file
   const serverContent = generateFastifyServer()
 
   context.files[`src/server${fileExtension}`] = serverContent
 }
 
-/**
- * Generate Express server content
- */
 function generateExpressServer() {
   return `import express from 'express'
 
@@ -172,9 +131,6 @@ app.listen(port, () => {
 `
 }
 
-/**
- * Generate Fastify server content
- */
 function generateFastifyServer() {
   return `import Fastify from 'fastify'
 

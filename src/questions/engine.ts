@@ -1,14 +1,17 @@
 import type {
   Config,
-  QuestionCondition,
   QuestionConfig,
+  QuestionSituationObj,
   QuestionsSetConfig,
 } from '@/types'
+import { existsSync } from 'node:fs'
 import process from 'node:process'
 import * as prompts from '@clack/prompts'
 import { ErrorMessages } from '@/constants/errors'
-import { ErrorFactory } from '@/utils/error'
+import { ErrorFactory } from '@/error/factory'
 
+// resolve process of questions
+// each question corresponds to a field in config
 export class QuestionEngine {
   private config: Config = {}
   private questionsConfig: QuestionsSetConfig
@@ -17,13 +20,14 @@ export class QuestionEngine {
     this.questionsConfig = questionsConfig
   }
 
-  async run(initialConfig: Config = {}): Promise<Config> {
+  // public, questions' runner trigger
+  async run(initialConfig: Config = {}) {
     this.config = { ...initialConfig }
 
-    // Run common questions first
+    // 1. common
     await this.runQuestions(this.questionsConfig.common)
 
-    // Run project-specific questions
+    // 2. project specially
     if (this.config.projectType) {
       const projectQuestions = this.questionsConfig.projects.find(
         p => p.projectType === this.config.projectType,
@@ -33,25 +37,24 @@ export class QuestionEngine {
       }
     }
 
-    // Run final questions
+    // 3. final
     await this.runQuestions(this.questionsConfig.final)
 
-    return this.config as Config
+    return this.config
   }
 
-  private async runQuestions(questions: QuestionConfig[]): Promise<void> {
+  private async runQuestions(questions: QuestionConfig[]) {
     for (const question of questions) {
       await this.runQuestion(question)
     }
   }
 
-  private async runQuestion(question: QuestionConfig): Promise<void> {
-    // Check if question should be shown
-    if (!this.shouldShowQuestion(question)) {
+  // run a single question
+  private async runQuestion(question: QuestionConfig) {
+    if (!(await this.shouldShowQuestion(question))) {
       return
     }
 
-    // Skip if value already exists in config
     if (this.config[question.field] !== undefined) {
       return
     }
@@ -100,17 +103,17 @@ export class QuestionEngine {
 
         default:
           throw ErrorFactory.configuration(
-            `Unsupported question type: ${(question as any).type}`,
+            `Unsupported question type: ${(question as QuestionConfig).type}`,
           )
       }
 
-      // Check if user cancelled
       if (prompts.isCancel(answer)) {
         prompts.cancel(ErrorMessages.userInput.operationCancelled())
         process.exit(1)
       }
 
-      // Store answer in config
+      await this.handleSpecialCase(question, answer)
+
       ;(this.config as any)[question.field] = answer
     }
     catch {
@@ -121,15 +124,33 @@ export class QuestionEngine {
     }
   }
 
-  private shouldShowQuestion(question: QuestionConfig): boolean {
-    if (!question.when || question.when.length === 0) {
+  // special case handler for some questions
+  // especially for the 'static' question
+  private async handleSpecialCase(question: QuestionConfig, answer: any) {
+    if (question.field === 'removeExistFolder') {
+      if (this.config.targetDir && existsSync(this.config.targetDir) && !answer) {
+        throw ErrorFactory.validation(ErrorMessages.validation.targetDirExists())
+      }
+    }
+  }
+
+  // check if the question should be shown
+  private async shouldShowQuestion(question: QuestionConfig) {
+    if (!question.when) {
       return true
     }
 
-    return question.when.every(condition => this.evaluateCondition(condition))
+    // the question is rely on the result of other questions
+    if (question.when.type === 'cascade') {
+      return question.when.situation.every(condition => this.evaluateCondition(condition))
+    }
+
+    // the question is rely on the current config or need some special logic
+    return await question.when.situation(this.config)
   }
 
-  private evaluateCondition(condition: QuestionCondition): boolean {
+  // evaluate the condition of the question
+  private evaluateCondition(condition: QuestionSituationObj) {
     const currentValue = this.config[condition.field]
     const { value: expectedValue, operator = 'eq' } = condition
 
@@ -155,9 +176,5 @@ export class QuestionEngine {
           `Unsupported condition operator: ${operator}`,
         )
     }
-  }
-
-  getCurrentConfig(): Config {
-    return { ...this.config }
   }
 }

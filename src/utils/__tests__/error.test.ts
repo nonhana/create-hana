@@ -7,7 +7,7 @@ import {
   ErrorSeverity,
   ErrorUtils,
   HanaError,
-} from '../error'
+} from '../../error/factory'
 
 describe('hanaError', () => {
   it('should create error with correct properties', () => {

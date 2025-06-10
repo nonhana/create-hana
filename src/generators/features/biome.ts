@@ -6,12 +6,10 @@ export const biomeGenerator: Generator = {
     const { config } = context
     const language = config.language || 'typescript'
 
-    // Add Biome dependencies
     addDependencies(context.packageJson, {
       '@biomejs/biome': '^1.9.4',
     }, 'devDependencies')
 
-    // Add Biome scripts
     addScripts(context.packageJson, {
       'lint': 'biome lint src/',
       'lint:fix': 'biome lint --apply src/',
@@ -21,11 +19,9 @@ export const biomeGenerator: Generator = {
       'check:fix': 'biome check --apply src/',
     })
 
-    // Generate Biome configuration
     const biomeConfig = generateBiomeConfig(language)
     context.files['biome.json'] = biomeConfig
 
-    // Generate Biome VSCode configuration
     if (context.config.codeQualityConfig) {
       const biomeVscodeConfig = generateBiomeVscodeConfig()
       context.files['.vscode/settings.json'] = biomeVscodeConfig
@@ -33,10 +29,7 @@ export const biomeGenerator: Generator = {
   },
 }
 
-/**
- * Generate Biome configuration content
- */
-function generateBiomeConfig(language: 'typescript' | 'javascript'): string {
+function generateBiomeConfig(language: 'typescript' | 'javascript') {
   const tsConfig = {
     $schema: 'https://biomejs.dev/schemas/latest/schema.json',
     organizeImports: {
@@ -137,25 +130,15 @@ function generateBiomeConfig(language: 'typescript' | 'javascript'): string {
   return JSON.stringify(language === 'typescript' ? tsConfig : jsConfig, null, 2)
 }
 
-/**
- * Generate Biome VSCode configuration
- */
 function generateBiomeVscodeConfig() {
   const config = {
-    // Disable Prettier & ESLint
     'prettier.enable': false,
     'editor.codeActionsOnSave': {},
     'eslint.enable': false,
-
-    // Enable Biome plugin formatting functionality
     'editor.defaultFormatter': 'biomejs.biome',
-
-    // Formatting related settings
     'editor.formatOnSave': true,
     'editor.formatOnPaste': true,
     'editor.formatOnType': false,
-
-    // Enable Biome formatter for specific languages
     '[javascript]': {
       'editor.defaultFormatter': 'biomejs.biome',
     },
