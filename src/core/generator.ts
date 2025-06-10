@@ -6,7 +6,7 @@ import { ErrorHandler } from '@/error/handler'
 import { bundlerGenerator } from '@/generators/bundler'
 import { biomeGenerator, eslintGenerator, eslintPrettierGenerator } from '@/generators/features'
 import { languageGenerator } from '@/generators/language'
-import { nodeLibGenerator } from '@/generators/projects'
+import { nodeLibGenerator, vueGenerator } from '@/generators/projects'
 import { initGitRepository } from '@/handlers/git'
 import { installDependencies } from '@/handlers/package-manager'
 import { removeIfExists, writeProjectFiles } from '@/utils/file-system'
@@ -51,7 +51,7 @@ function validateConfig(config: Config) {
     throw ErrorFactory.validation(ErrorMessages.validation.projectTypeRequired())
   }
 
-  if (config.projectType !== 'node') {
+  if (config.projectType !== 'node' && config.projectType !== 'vue') {
     throw ErrorFactory.validation(ErrorMessages.validation.invalidProjectType(config.projectType))
   }
 }
@@ -85,6 +85,9 @@ async function runGenerators(context: ProjectContext) {
   if (config.projectType === 'node') {
     nodeLibGenerator.generate(context)
   }
+  else if (config.projectType === 'vue') {
+    vueGenerator.generate(context)
+  }
 
   if (config.codeQualityTools) {
     switch (config.codeQualityTools) {
@@ -100,7 +103,7 @@ async function runGenerators(context: ProjectContext) {
     }
   }
 
-  if (config.language === 'typescript') {
+  if (config.projectType === 'node' && config.language === 'typescript') {
     bundlerGenerator.generate(context)
   }
 
