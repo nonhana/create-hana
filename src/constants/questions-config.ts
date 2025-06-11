@@ -7,6 +7,11 @@ import {
   NODE_TS_RUNTIME_OPTIONS,
   NODE_WEBSERVER_OPTIONS,
 } from './node-project-config'
+import {
+  VUE_CODE_QUALITY_TOOLS_OPTIONS,
+  VUE_LANGUAGE_OPTIONS,
+  VUE_MANAGER_OPTIONS,
+} from './vue-project-config'
 
 export const QUESTIONS_CONFIG: QuestionsSetConfig = {
   common: [
@@ -25,6 +30,7 @@ export const QUESTIONS_CONFIG: QuestionsSetConfig = {
       field: 'projectType',
       options: [
         { label: 'Common Node.js', value: 'node' },
+        { label: 'Vue Application', value: 'vue' },
       ],
     },
     {
@@ -129,6 +135,50 @@ export const QUESTIONS_CONFIG: QuestionsSetConfig = {
               field: 'language',
               value: 'typescript',
               operator: 'eq',
+            }],
+          },
+        },
+      ],
+    },
+    {
+      projectType: 'vue',
+      questions: [
+        {
+          id: 'language',
+          type: 'select',
+          message: 'Which language would you like to use?',
+          field: 'language',
+          options: VUE_LANGUAGE_OPTIONS,
+          initialValue: 'typescript',
+        },
+        {
+          id: 'pkgManager',
+          type: 'select',
+          message: 'Which package manager would you like to use?',
+          field: 'pkgManager',
+          options: VUE_MANAGER_OPTIONS,
+          initialValue: 'pnpm',
+        },
+        {
+          id: 'codeQuality',
+          type: 'select',
+          message: 'Which code quality tools would you like to use?',
+          field: 'codeQualityTools',
+          options: VUE_CODE_QUALITY_TOOLS_OPTIONS,
+          initialValue: 'eslint',
+        },
+        {
+          id: 'codeQualityConfig',
+          type: 'confirm',
+          message: 'Would you like to configure code quality tools for VSCode?',
+          field: 'codeQualityConfig',
+          initialValue: false,
+          when: {
+            type: 'cascade',
+            situation: [{
+              field: 'codeQualityTools',
+              value: 'none',
+              operator: 'neq',
             }],
           },
         },

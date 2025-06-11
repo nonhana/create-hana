@@ -1,4 +1,4 @@
-import type { NodeProjectConfig } from './project-configs'
+import type { NodeProjectConfig, VueProjectConfig } from './project-configs'
 import type { PROJECT_TYPES } from '@/constants/project-types'
 
 export type Config = {
@@ -7,7 +7,7 @@ export type Config = {
   removeExistFolder?: boolean
   git?: boolean
   installDeps?: boolean
-} & NodeProjectConfig
+} & NodeProjectConfig & VueProjectConfig
 
 export interface ProjectContext {
   config: Config
