@@ -1,46 +1,40 @@
 import type { Generator, ProjectContext } from '@/types'
-import { addDependencies } from '@/utils/package-json'
-import { addViteScripts, addVueDependencies, generateAppFile, generateCssFile, generateHelloWorldComponent, generateIndexHtml, generateMainFile, generateTypeScriptConfig, generateViteConfig, generateVueGitignore, generateVueReadmeTemplate } from '@/utils/vue/vue-template'
+import { addViteScripts, addVueDependencies, createVueTemplateFactory, generateVueGitignore, generateVueReadmeTemplate } from '@/templates/vue'
 
 export const vueGenerator: Generator = {
   generate(context) {
     const { config } = context
     const projectName = config.targetDir || 'hana-vue-project'
 
-    // 通用文件
-    context.files['README.md'] = generateVueReadmeTemplate(projectName, 'A Vue.js application with Vite')
-    context.files['.gitignore'] = generateVueGitignore()
+    generateBaseFiles(context, projectName)
 
-    // package.json
-    context.packageJson.name = projectName
-    context.packageJson.description = 'A Vue.js application'
-    context.packageJson.version = '1.0.0'
-    context.packageJson.type = 'module'
-    context.packageJson.license = 'MIT'
-    context.packageJson.engines = {
-      node: '>=18.0.0',
-    }
+    setupPackageJson(context, projectName)
 
-    // 生成基础文件
-    generateViteConfig(context)
-    generateIndexHtml(context, projectName)
-    generateMainFile(context)
-    generateAppFile(context)
-    generateHelloWorldComponent(context)
-    generateCssFile(context)
+    createVueTemplateFactory(context).generate()
 
-    // 添加基础依赖
     addVueDependencies(context)
-
-    // 添加脚本
     addViteScripts(context)
 
-    if (context.config.language === 'typescript') {
-      generateTypeScriptConfig(context)
-    }
-
-    // TODO: 根据配置添加功能
+    // TODO: 根据配置添加功能(router,pinia,css)
 
     // TODO: 针对 eslint等进行针对配置
   },
+}
+
+function setupPackageJson(context: ProjectContext, projectName: string) {
+  Object.assign(context.packageJson, {
+    name: projectName,
+    description: 'A Vue.js application',
+    version: '1.0.0',
+    type: 'module',
+    license: 'MIT',
+    engines: {
+      node: '>=18.0.0',
+    },
+  })
+}
+
+function generateBaseFiles(context: ProjectContext, projectName: string) {
+  context.files['README.md'] = generateVueReadmeTemplate(projectName, 'A Vue.js application with Vite')
+  context.files['.gitignore'] = generateVueGitignore()
 }

@@ -1,5 +1,307 @@
 import type { ProjectContext } from '@/types'
-import { addDependencies, addScripts } from '../package-json'
+import { addDependencies, addScripts } from '../utils/package-json'
+import { TemplateFactory } from './template-factory'
+
+// Vite配置模板
+const ViteConfigTemplate = {
+  id: 'vite-config',
+  getFilePath: (context: ProjectContext) => {
+    return `vite.config.${context.config.language === 'typescript' ? 'ts' : 'js'}`
+  },
+  initContent: () => {
+    return `import { defineConfig } from 'vite'
+import vue from '@vitejs/plugin-vue'
+
+// https://vite.dev/config/
+export default defineConfig({
+  plugins: [vue()],
+})
+`
+  },
+}
+
+// Main文件模板
+const MainFileTemplate = {
+  id: 'main-file',
+  getFilePath: (context: ProjectContext) => {
+    return `src/main.${context.config.language === 'typescript' ? 'ts' : 'js'}`
+  },
+  initContent: () => {
+    return `import { createApp } from 'vue'
+import './style.css'
+import App from './App.vue'
+
+createApp(App).mount('#app')
+`
+  },
+}
+
+// Index HTML模板
+const IndexHtmlTemplate = {
+  id: 'index-html',
+  getFilePath: () => 'index.html',
+  initContent: (context: ProjectContext) => {
+    const projectName = context.config.targetDir || 'Vue App'
+    const scriptExtension = context.config.language === 'typescript' ? 'ts' : 'js'
+    return `<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <link rel="icon" type="image/svg+xml" href="/vite.svg" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>${projectName}</title>
+  </head>
+  <body>
+    <div id="app"></div>
+    <script type="module" src="/src/main.${scriptExtension}"></script>
+  </body>
+</html>
+`
+  },
+}
+
+// 样式文件模板
+const StyleCssTemplate = {
+  id: 'style-css',
+  getFilePath: () => 'src/style.css',
+  initContent: () => {
+    return `:root {
+  font-family: system-ui, Avenir, Helvetica, Arial, sans-serif;
+  line-height: 1.5;
+  font-weight: 400;
+
+  color-scheme: light dark;
+  color: rgba(255, 255, 255, 0.87);
+  background-color: #242424;
+
+  font-synthesis: none;
+  text-rendering: optimizeLegibility;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+a {
+  font-weight: 500;
+  color: #646cff;
+  text-decoration: inherit;
+}
+a:hover {
+  color: #535bf2;
+}
+
+body {
+  margin: 0;
+  display: flex;
+  place-items: center;
+  min-width: 320px;
+  min-height: 100vh;
+}
+
+h1 {
+  font-size: 3.2em;
+  line-height: 1.1;
+}
+
+button {
+  border-radius: 8px;
+  border: 1px solid transparent;
+  padding: 0.6em 1.2em;
+  font-size: 1em;
+  font-weight: 500;
+  font-family: inherit;
+  background-color: #1a1a1a;
+  cursor: pointer;
+  transition: border-color 0.25s;
+}
+button:hover {
+  border-color: #646cff;
+}
+button:focus,
+button:focus-visible {
+  outline: 4px auto -webkit-focus-ring-color;
+}
+
+.card {
+  padding: 2em;
+}
+
+#app {
+  max-width: 1280px;
+  margin: 0 auto;
+  padding: 2rem;
+  text-align: center;
+}
+
+@media (prefers-color-scheme: light) {
+  :root {
+    color: #213547;
+    background-color: #ffffff;
+  }
+  a:hover {
+    color: #747bff;
+  }
+  button {
+    background-color: #f9f9f9;
+  }
+}
+`
+  },
+}
+
+// App.vue模板
+const AppVueTemplate = {
+  id: 'app-vue',
+  getFilePath: () => 'src/App.vue',
+  initContent: (context: ProjectContext) => {
+    return `${context.config.language === 'typescript' ? '<script setup lang="ts">' : '<script setup>'}
+import HelloWorld from './components/HelloWorld.vue'
+</script>
+
+<template>
+  <HelloWorld msg="hello create hana!" />
+</template>
+
+<style scoped>
+</style>
+`
+  },
+}
+
+// HelloWorld组件模板
+const HelloWorldTemplate = {
+  id: 'hello-world',
+  getFilePath: () => 'src/components/HelloWorld.vue',
+  initContent: (context: ProjectContext) => {
+    return `${context.config.language === 'typescript' ? '<script setup lang="ts">' : '<script setup>'}
+import { ref } from 'vue'
+
+defineProps<{ msg: string }>()
+
+const count = ref(0)
+</script>
+
+<template>
+  <h1>{{ msg }}</h1>
+
+  <div class="card">
+    <button type="button" @click="count++">count is {{ count }}</button>
+    <p>
+      Edit
+      <code>components/HelloWorld.vue</code> to test HMR
+    </p>
+  </div>
+</template>
+
+<style scoped>
+</style>
+`
+  },
+}
+
+// TypeScript主配置模板
+const TsConfigTemplate = {
+  id: 'tsconfig',
+  getFilePath: (_context: ProjectContext) => 'tsconfig.json',
+  initContent: (_context: ProjectContext) => {
+    return `{
+  "files": [],
+  "references": [
+    { "path": "./tsconfig.app.json" },
+    { "path": "./tsconfig.node.json" }
+  ]
+}
+`
+  },
+}
+
+// TypeScript应用配置模板
+const TsConfigAppTemplate = {
+  id: 'tsconfig-app',
+  getFilePath: () => 'tsconfig.app.json',
+  initContent: () => {
+    return `{
+  "extends": "@vue/tsconfig/tsconfig.dom.json",
+  "compilerOptions": {
+    "tsBuildInfoFile": "./node_modules/.tmp/tsconfig.app.tsbuildinfo",
+
+    /* Linting */
+    "strict": true,
+    "noUnusedLocals": true,
+    "noUnusedParameters": true,
+    "erasableSyntaxOnly": true,
+    "noFallthroughCasesInSwitch": true,
+    "noUncheckedSideEffectImports": true
+  },
+  "include": ["src/**/*.ts", "src/**/*.tsx", "src/**/*.vue"]
+}
+`
+  },
+}
+
+// TypeScript Node配置模板
+const TsConfigNodeTemplate = {
+  id: 'tsconfig-node',
+  getFilePath: () => 'tsconfig.node.json',
+  initContent: () => {
+    return `{
+  "compilerOptions": {
+    "tsBuildInfoFile": "./node_modules/.tmp/tsconfig.node.tsbuildinfo",
+    "target": "ES2022",
+    "lib": ["ES2023"],
+    "module": "ESNext",
+    "skipLibCheck": true,
+
+    /* Bundler mode */
+    "moduleResolution": "bundler",
+    "allowImportingTsExtensions": true,
+    "verbatimModuleSyntax": true,
+    "moduleDetection": "force",
+    "noEmit": true,
+
+    /* Linting */
+    "strict": true,
+    "noUnusedLocals": true,
+    "noUnusedParameters": true,
+    "erasableSyntaxOnly": true,
+    "noFallthroughCasesInSwitch": true,
+    "noUncheckedSideEffectImports": true
+  },
+  "include": ["vite.config.ts"]
+}
+`
+  },
+}
+
+// Vite环境声明模板
+const ViteEnvDtsTemplate = {
+  id: 'vite-env-dts',
+  getFilePath: () => 'src/vite-env.d.ts',
+  initContent: () => {
+    return `/// <reference types="vite/client" />
+`
+  },
+}
+
+// Vue模板工厂
+export function createVueTemplateFactory(context: ProjectContext): TemplateFactory {
+  const factory = new TemplateFactory(context)
+    .register(ViteConfigTemplate)
+    .register(MainFileTemplate)
+    .register(IndexHtmlTemplate)
+    .register(StyleCssTemplate)
+    .register(AppVueTemplate)
+    .register(HelloWorldTemplate)
+
+  if (context.config.language === 'typescript') {
+    factory
+      .register(TsConfigTemplate)
+      .register(TsConfigAppTemplate)
+      .register(TsConfigNodeTemplate)
+      .register(ViteEnvDtsTemplate)
+  }
+
+  return factory
+}
 
 export function generateVueReadmeTemplate(projectName: string, description?: string) {
   return `# ${projectName}
