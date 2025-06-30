@@ -6,7 +6,14 @@
   "description": "A modern project scaffolding tool for JS/TS applications",
   "author": "non_hana",
   "license": "MIT",
-  "keywords": ["cli", "scaffold", "generator", "typescript", "javascript", "nodejs"],
+  "keywords": [
+    "cli",
+    "scaffold",
+    "generator",
+    "typescript",
+    "javascript",
+    "nodejs"
+  ],
   "main": "dist/index.js",
   "bin": {
     "create-hana": "dist/index.js"
@@ -28,7 +35,8 @@
     "@clack/prompts": "catalog:",
     "cross-spawn": "catalog:",
     "mri": "catalog:",
-    "picocolors": "catalog:"
+    "picocolors": "catalog:",
+    "recast": "^0.23.11"
   },
   "devDependencies": {
     "@antfu/eslint-config": "catalog:",
