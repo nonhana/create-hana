@@ -2,7 +2,7 @@
   "name": "create-hana",
   "type": "module",
   "version": "0.0.2",
-  "packageManager": "pnpm@10.12.1",
+  "packageManager": "pnpm@10.12.4",
   "description": "A modern project scaffolding tool for JS/TS applications",
   "author": "non_hana",
   "license": "MIT",
@@ -36,7 +36,7 @@
     "cross-spawn": "catalog:",
     "mri": "catalog:",
     "picocolors": "catalog:",
-    "recast": "^0.23.11"
+    "recast": "catalog:"
   },
   "devDependencies": {
     "@antfu/eslint-config": "catalog:",

@@ -1,12 +1,11 @@
-import type { Generator } from '@/types'
+import type { Config, Generator } from '@/types'
+import * as recast from 'recast'
+import { viteTemplate } from '@/templates/vite'
 import { addDependencies, addScripts } from '@/utils/package-json'
 
 export const viteGenerator: Generator = {
   generate(context) {
     const { config } = context
-
-    const projectType = config.projectType!
-    const language = config.language!
 
     addDependencies(context.packageJson, {
       vite: '^7.0.0',
@@ -18,18 +17,28 @@ export const viteGenerator: Generator = {
       preview: 'vite preview',
     })
 
-    const viteConfig = generateViteConfig(projectType, language)
+    const viteConfig = generateViteConfig(config)
     context.files['vite.config.ts'] = viteConfig
   },
 }
 
-function generateViteConfig(projectType: string, language: 'typescript' | 'javascript') {
-  return `
-import { defineConfig } from 'vite'
-import ${language} from 'vite-plugin-${language}'
+function generateViteConfig(config: Config) {
+  const ast = recast.parse(viteTemplate)
 
-export default defineConfig({
-  plugins: [${language}()],
-})
-`
+  let result = ''
+
+  switch (config.projectType) {
+    case 'react':
+      recast.visit(ast, {
+        visitProgram(path) {
+          const importDeclaration = recast.parse(`import react from '@vitejs/plugin-react'\n`).program.body[0]
+          path.node.body.unshift(importDeclaration)
+          return false
+        },
+      })
+      result = recast.print(ast).code
+      break
+  }
+
+  return result
 }
