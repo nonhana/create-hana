@@ -1,0 +1,107 @@
+import type { ProjectQuestionsConfig } from '@/types'
+import { toMutableOptions } from '@/utils/fit-options'
+import { COMMON_CODE_QUALITY_TOOLS_OPTIONS, COMMON_LANGUAGE_OPTIONS, COMMON_MANAGER_OPTIONS } from '../options/common'
+import {
+  REACT_BUILD_TOOLS_OPTIONS,
+  REACT_CSS_FRAMEWORKS_OPTIONS,
+  REACT_CSS_PREPROCESSORS_OPTIONS,
+  REACT_HTTP_OPTIONS,
+  REACT_PATH_ALIASING_OPTIONS,
+  REACT_QUERY_OPTIONS,
+  REACT_ROUTING_LIBRARIES_OPTIONS,
+  REACT_STATE_MANAGEMENT_OPTIONS,
+} from '../options/react'
+
+export const reactQuestions: ProjectQuestionsConfig = {
+  projectType: 'react',
+  questions: [
+    {
+      id: 'language',
+      type: 'select',
+      message: 'Which language would you like to use?',
+      field: 'language',
+      options: toMutableOptions(COMMON_LANGUAGE_OPTIONS),
+      initialValue: 'typescript',
+    },
+    {
+      id: 'pkgManager',
+      type: 'select',
+      message: 'Which package manager would you like to use?',
+      field: 'pkgManager',
+      options: toMutableOptions(COMMON_MANAGER_OPTIONS),
+      initialValue: 'pnpm',
+    },
+    {
+      id: 'codeQuality',
+      type: 'select',
+      message: 'Which code quality tools would you like to use?',
+      field: 'codeQualityTools',
+      options: toMutableOptions(COMMON_CODE_QUALITY_TOOLS_OPTIONS),
+      initialValue: 'none',
+    },
+    {
+      id: 'codeQualityConfig',
+      type: 'confirm',
+      message: 'Would you like to configure code quality tools for VSCode?',
+      field: 'codeQualityConfig',
+      initialValue: false,
+    },
+    {
+      id: 'buildTool',
+      type: 'select',
+      message: 'Which build tool would you like to use?',
+      field: 'buildTool',
+      options: toMutableOptions(REACT_BUILD_TOOLS_OPTIONS),
+      initialValue: 'vite',
+    },
+    {
+      id: 'cssFramework',
+      type: 'select',
+      message: 'Which CSS framework would you like to use?',
+      field: 'cssFramework',
+      options: toMutableOptions(REACT_CSS_FRAMEWORKS_OPTIONS),
+    },
+    {
+      id: 'cssPreprocessor',
+      type: 'select',
+      message: 'Which CSS preprocessor would you like to use?',
+      field: 'cssPreprocessor',
+      options: toMutableOptions(REACT_CSS_PREPROCESSORS_OPTIONS),
+    },
+    {
+      id: 'routingLibrary',
+      type: 'select',
+      message: 'Which routing library would you like to use?',
+      field: 'routingLibrary',
+      options: toMutableOptions(REACT_ROUTING_LIBRARIES_OPTIONS),
+    },
+    {
+      id: 'stateManagement',
+      type: 'select',
+      message: 'Which state management library would you like to use?',
+      field: 'stateManagement',
+      options: toMutableOptions(REACT_STATE_MANAGEMENT_OPTIONS),
+    },
+    {
+      id: 'httpLibrary',
+      type: 'select',
+      message: 'Which HTTP library would you like to use?',
+      field: 'httpLibrary',
+      options: toMutableOptions(REACT_HTTP_OPTIONS),
+    },
+    {
+      id: 'queryLibrary',
+      type: 'select',
+      message: 'Which query library would you like to use?',
+      field: 'queryLibrary',
+      options: toMutableOptions(REACT_QUERY_OPTIONS),
+    },
+    {
+      id: 'modulePathAliasing',
+      type: 'select',
+      message: 'Which module path aliasing would you like to use?',
+      field: 'modulePathAliasing',
+      options: toMutableOptions(REACT_PATH_ALIASING_OPTIONS),
+    },
+  ],
+}
