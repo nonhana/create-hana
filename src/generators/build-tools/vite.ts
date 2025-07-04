@@ -1,4 +1,4 @@
-import type { Config, Generator } from '@/types'
+import type { Config, Generator, ProjectContext } from '@/types'
 import * as recast from 'recast'
 import { viteTemplate } from '@/templates/vite'
 import { addDependencies, addScripts } from '@/utils/package-json'
@@ -21,8 +21,6 @@ export const viteGenerator: Generator = {
     context.files['vite.config.ts'] = viteConfig
   },
 }
-
-function addViteDependencies() {}
 
 function generateViteConfig(config: Config) {
   const ast = recast.parse(viteTemplate)

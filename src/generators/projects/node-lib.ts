@@ -1,9 +1,13 @@
 import type { Generator, ProjectContext } from '@/types'
+import { ErrorMessages } from '@/constants/errors'
+import { ErrorFactory } from '@/error/factory'
 import { generateGitignore, generateReadmeTemplate } from '@/utils/template'
 
 export const nodeLibGenerator: Generator = {
   generate(context) {
     const { config, fileExtension } = context
+    if (config.projectType !== 'node')
+      throw ErrorFactory.validation(ErrorMessages.validation.invalidProjectType(config.projectType))
 
     const indexFileName = `src/index${fileExtension}`
     context.files[indexFileName] = generateIndexFile()
@@ -44,6 +48,9 @@ export default {
 
 function generateTypeScriptRuntime(context: ProjectContext) {
   const { config, packageJson } = context
+  if (config.projectType !== 'node')
+    throw ErrorFactory.validation(ErrorMessages.validation.invalidProjectType(config.projectType))
+
   const runtime = config.tsRuntimePkgs!
 
   switch (runtime) {
@@ -76,6 +83,9 @@ function generateTypeScriptRuntime(context: ProjectContext) {
 
 function generateWebServerSetup(context: ProjectContext) {
   const { config, fileExtension } = context
+  if (config.projectType !== 'node')
+    throw ErrorFactory.validation(ErrorMessages.validation.invalidProjectType(config.projectType))
+
   const framework = config.webserverPkgs!
 
   if (framework === 'express') {

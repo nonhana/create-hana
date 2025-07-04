@@ -1,9 +1,10 @@
-import type { Config } from './index'
+import type { AllKeys, Config } from './index'
+import type { PROJECT_TYPES } from '@/constants/project-types'
 
 export type QuestionType = 'select' | 'multiselect' | 'confirm' | 'text'
 
 export interface QuestionSituationObj {
-  field: keyof Config
+  field: AllKeys<Config>
   value: any | any[]
   operator?: 'eq' | 'neq' | 'in' | 'notIn'
 }
@@ -12,8 +13,8 @@ export type QuestionSituationFn = (config?: Config) => boolean | Promise<boolean
 
 export type QuestionSituation = QuestionSituationObj | QuestionSituationFn
 
-export type QuestionCondition =
-  | {
+export type QuestionCondition
+  = | {
     type: 'cascade'
     situation: QuestionSituationObj[]
   }
@@ -32,7 +33,7 @@ export interface BaseQuestionConfig {
   id: string
   type: QuestionType
   message: string
-  field: keyof Config
+  field: AllKeys<Config>
   defaultValue?: any
   when?: QuestionCondition
 }
@@ -62,14 +63,14 @@ export interface TextQuestionConfig extends BaseQuestionConfig {
   validate?: (value: string) => boolean | string
 }
 
-export type QuestionConfig =
-  | SelectQuestionConfig
-  | MultiSelectQuestionConfig
-  | ConfirmQuestionConfig
-  | TextQuestionConfig
+export type QuestionConfig
+  = | SelectQuestionConfig
+    | MultiSelectQuestionConfig
+    | ConfirmQuestionConfig
+    | TextQuestionConfig
 
 export interface ProjectQuestionsConfig {
-  projectType: string
+  projectType: PROJECT_TYPES
   questions: QuestionConfig[]
 }
 
