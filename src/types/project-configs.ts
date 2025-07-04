@@ -4,6 +4,11 @@ import type {
   COMMON_MANAGER_OPTIONS,
 } from '@/questions/options/common'
 import type {
+  NODE_BUNDLERS_OPTIONS,
+  NODE_TS_RUNTIME_OPTIONS,
+  NODE_WEBSERVER_OPTIONS,
+} from '@/questions/options/node'
+import type {
   REACT_BUILD_TOOLS_OPTIONS,
   REACT_CSS_FRAMEWORKS_OPTIONS,
   REACT_CSS_PREPROCESSORS_OPTIONS,
@@ -21,16 +26,12 @@ export interface CommonProjectConfig {
   codeQualityConfig?: boolean
 }
 
-export interface NodeProjectConfig {
-  language?: 'javascript' | 'typescript'
-  pkgManager?: 'pnpm' | 'yarn' | 'npm' | 'bun'
-  webserverPkgs?: 'express' | 'fastify' | 'none'
-  tsRuntimePkgs?: 'tsx' | 'esno' | 'ts-node' | 'none'
+export type NodeProjectConfig = {
+  webserverPkgs?: typeof NODE_WEBSERVER_OPTIONS[number]['value']
+  tsRuntimePkgs?: typeof NODE_TS_RUNTIME_OPTIONS[number]['value']
   preinstallPkgs?: string[]
-  codeQualityTools?: 'eslint' | 'eslint-prettier' | 'biome' | 'none'
-  codeQualityConfig?: boolean
-  bundler?: 'tsup' | 'tsdown' | 'none'
-}
+  bundler?: typeof NODE_BUNDLERS_OPTIONS[number]['value']
+} & CommonProjectConfig
 
 export type ReactProjectConfig = {
   buildTool?: typeof REACT_BUILD_TOOLS_OPTIONS[number]['value']

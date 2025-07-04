@@ -1,13 +1,14 @@
 import type { NodeProjectConfig, ReactProjectConfig } from './project-configs'
-import type { PROJECT_TYPES } from '@/constants/project-types'
 
 export type Config = {
   targetDir?: string
-  projectType?: PROJECT_TYPES
   removeExistFolder?: boolean
   git?: boolean
   installDeps?: boolean
-} & NodeProjectConfig & ReactProjectConfig
+} & (
+  | ({ projectType: 'node' } & NodeProjectConfig)
+  | ({ projectType: 'react' } & ReactProjectConfig)
+)
 
 export interface ProjectContext {
   config: Config

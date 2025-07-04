@@ -22,6 +22,8 @@ export const viteGenerator: Generator = {
   },
 }
 
+function addViteDependencies() {}
+
 function generateViteConfig(config: Config) {
   const ast = recast.parse(viteTemplate)
 
