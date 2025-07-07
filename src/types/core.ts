@@ -16,6 +16,7 @@ export interface ProjectContext {
   cwd: string
   packageJson: PackageJsonConfig
   files: Record<string, string>
+  /** .js or .ts */
   fileExtension: string
 }
 

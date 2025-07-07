@@ -13,6 +13,11 @@ export function getFileExtension(language: 'typescript' | 'javascript') {
   return language === 'typescript' ? '.ts' : '.js'
 }
 
+export function generateViteEnvFile() {
+  return `/// <reference types="vite/client" />
+`
+}
+
 export function generateGitignore() {
   return `# Logs
 logs
@@ -132,50 +137,47 @@ Thumbs.db
 `
 }
 
-export function generateReadmeTemplate(projectName: string, description?: string) {
+export function generateReadmeTemplate(projectType: string, projectName: string, description?: string) {
   return `# ${projectName}
 
-${description || 'A Node.js project'}
-
-## Installation
-
-\`\`\`bash
-npm install ${projectName}
-\`\`\`
-
-## Usage
-
-\`\`\`javascript
-import { } from '${projectName}'
-// Your usage examples here
-\`\`\`
-
-## API
-
-TODO: Add API documentation
-
-## Development
-
-### Install dependencies
-
-\`\`\`bash
-npm install
-\`\`\`
-
-### Build
-
-\`\`\`bash
-npm run build
-\`\`\`
-
-### Test
-
-\`\`\`bash
-npm test
-\`\`\`
+${description || `A ${projectType} project`}
 
 ## License
 
 MIT
+`
+}
+
+export function generateHtmlTemplate(title: string, mainScriptPath: string) {
+  return `<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <link rel="icon" type="image/svg+xml" href="/vite.svg" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>${title}</title>
+  </head>
+  <body>
+    <div id="app"></div>
+    <script type="module" src="${mainScriptPath}"></script>
+  </body>
+</html>
+`
+}
+
+// Hana Logo!
+export function generateHanaLogo() {
+  return `<svg xmlns="http://www.w3.org/2000/svg" width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-flower-icon lucide-flower">
+  <circle cx="12" cy="12" r="3"/>
+  <path d="M12 16.5A4.5 4.5 0 1 1 7.5 12 4.5 4.5 0 1 1 12 7.5a4.5 4.5 0 1 1 4.5 4.5 4.5 4.5 0 1 1-4.5 4.5"/>
+  <path d="M12 7.5V9"/>
+  <path d="M7.5 12H9"/>
+  <path d="M16.5 12H15"/>
+  <path d="M12 16.5V15"/>
+  <path d="m8 8 1.88 1.88"/>
+  <path d="M14.12 9.88 16 8"/>
+  <path d="m8 16 1.88-1.88"/>
+  <path d="M14.12 14.12 16 16"/>
+</svg>
 `
 }

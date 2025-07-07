@@ -13,7 +13,7 @@ export const nodeLibGenerator: Generator = {
     context.files[indexFileName] = generateIndexFile()
 
     const projectName = config.targetDir || 'my-project'
-    context.files['README.md'] = generateReadmeTemplate(projectName, 'A Node.js library')
+    context.files['README.md'] = generateReadmeTemplate(config.projectType, projectName, 'A Node.js library')
 
     context.files['.gitignore'] = generateGitignore()
 
