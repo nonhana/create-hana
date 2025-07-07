@@ -3,6 +3,7 @@ import { join } from 'node:path'
 import { ErrorMessages } from '@/constants/errors'
 import { ErrorFactory } from '@/error/factory'
 import { ErrorHandler } from '@/error/handler'
+import { generateViteConfigCode } from '@/generators/build-tools/vite'
 import { bundlerGenerator } from '@/generators/bundler'
 import { biomeGenerator, eslintGenerator, eslintPrettierGenerator } from '@/generators/features'
 import { languageGenerator } from '@/generators/language'
@@ -70,6 +71,9 @@ async function initializeProjectContext(config: Config, cwd: string) {
     },
     files: {},
     fileExtension: '.js',
+  }
+  if (config.projectType !== 'node' && config.buildTool === 'vite') {
+    context.viteConfigCode = generateViteConfigCode(config)
   }
 
   return context

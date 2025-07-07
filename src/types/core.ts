@@ -18,6 +18,8 @@ export interface ProjectContext {
   files: Record<string, string>
   /** .js or .ts */
   fileExtension: string
+  /** source code of vite config, only for vite project */
+  viteConfigCode?: string
 }
 
 export interface PackageJsonConfig {

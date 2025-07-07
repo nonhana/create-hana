@@ -2,6 +2,7 @@ import type { Generator, ProjectContext } from '@/types'
 import { ErrorMessages } from '@/constants/errors'
 import { ErrorFactory } from '@/error/factory'
 import { generateGitignore, generateHanaLogo, generateHtmlTemplate, generateReadmeTemplate, generateViteEnvFile } from '@/utils/template'
+import { addViteImport, addVitePlugin } from '@/utils/vite'
 
 export const reactGenerator: Generator = {
   generate(context) {
@@ -10,6 +11,11 @@ export const reactGenerator: Generator = {
       throw ErrorFactory.validation(ErrorMessages.validation.invalidProjectType(config.projectType))
 
     const projectName = config.targetDir || 'hana-project'
+
+    if (config.buildTool === 'vite') {
+      addViteImport(context, `import react from '@vitejs/plugin-react'`)
+      addVitePlugin(context, `react()`)
+    }
 
     // 1. Generate src directory structure
     const appFileName = `src/app${fileExtension}x`
@@ -98,7 +104,26 @@ export function Counter() {
 
 // Handle CSS Framework option
 function generateCssFramework(context: ProjectContext) {
-  const { config } = context
+  const { config, packageJson } = context
   if (config.projectType !== 'react')
     throw ErrorFactory.validation(ErrorMessages.validation.invalidProjectType(config.projectType))
+
+  switch (config.cssFramework) {
+    case 'tailwindcss': {
+      packageJson.devDependencies = packageJson.devDependencies || {}
+      packageJson.devDependencies.tailwindcss = '^4.1.11'
+      if (config.buildTool === 'vite') {
+        packageJson.devDependencies['@tailwindcss/vite'] = '^4.1.11'
+
+        addViteImport(context, `import tailwindcss from '@tailwindcss/vite'`)
+        addVitePlugin(context, `tailwindcss()`)
+
+        context.files['src/styles/global.css'] = `@import "tailwindcss";`
+      }
+      break
+    }
+    case 'unocss': {
+      break
+    }
+  }
 }

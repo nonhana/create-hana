@@ -9,6 +9,7 @@ export const ERROR_MESSAGES = {
     INVALID_PACKAGE_MANAGER: 'Invalid package manager: {packageManager}',
     INVALID_BUNDLER: 'Invalid bundler selection: {bundler}',
     INVALID_CODE_QUALITY_TOOL: 'Invalid code quality tool: {tool}',
+    FIELD_NOT_FOUND: 'Field not found: {field}',
   },
 
   FILE_SYSTEM: {
@@ -99,6 +100,8 @@ export const ErrorMessages = {
       formatErrorMessage(ERROR_MESSAGES.VALIDATION.INVALID_BUNDLER, { bundler }),
     invalidCodeQualityTool: (tool: string) =>
       formatErrorMessage(ERROR_MESSAGES.VALIDATION.INVALID_CODE_QUALITY_TOOL, { tool }),
+    fieldNotFound: (field: string) =>
+      formatErrorMessage(ERROR_MESSAGES.VALIDATION.FIELD_NOT_FOUND, { field }),
   },
 
   fileSystem: {
