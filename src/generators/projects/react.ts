@@ -2,7 +2,6 @@ import type { Generator, ProjectContext } from '@/types'
 import { ErrorMessages } from '@/constants/errors'
 import { ErrorFactory } from '@/error/factory'
 import { generateGitignore, generateHanaLogo, generateHtmlTemplate, generateReadmeTemplate, generateViteEnvFile } from '@/utils/template'
-import { addViteImport, addVitePlugin } from '@/utils/vite'
 
 export const reactGenerator: Generator = {
   generate(context) {
@@ -13,8 +12,8 @@ export const reactGenerator: Generator = {
     const projectName = config.targetDir || 'hana-project'
 
     if (config.buildTool === 'vite') {
-      addViteImport(context, `import react from '@vitejs/plugin-react'`)
-      addVitePlugin(context, `react()`)
+      context.viteConfigEditor!.addImport('viteConfig', `import react from '@vitejs/plugin-react'`)
+      context.viteConfigEditor!.addVitePlugin('viteConfig', `react()`)
     }
 
     // 1. Generate src directory structure
@@ -114,16 +113,49 @@ function generateCssFramework(context: ProjectContext) {
       packageJson.devDependencies.tailwindcss = '^4.1.11'
       if (config.buildTool === 'vite') {
         packageJson.devDependencies['@tailwindcss/vite'] = '^4.1.11'
-
-        addViteImport(context, `import tailwindcss from '@tailwindcss/vite'`)
-        addVitePlugin(context, `tailwindcss()`)
-
         context.files['src/styles/global.css'] = `@import "tailwindcss";`
+        context.viteConfigEditor!.addImport('viteConfig', `import tailwindcss from '@tailwindcss/vite'`)
+        context.viteConfigEditor!.addVitePlugin('viteConfig', `tailwindcss()`)
+        context.mainEditor!.addImport('main', `import './styles/global.css'`)
       }
       break
     }
     case 'unocss': {
+      packageJson.devDependencies = packageJson.devDependencies || {}
+      packageJson.devDependencies.unocss = '^66.3.3'
+      if (config.buildTool === 'vite') {
+        context.files['uno.config.ts'] = generateUnoCssConfig()
+        context.viteConfigEditor!.addImport('viteConfig', `import UnoCSS from 'unocss/vite'`)
+        context.viteConfigEditor!.addVitePlugin('viteConfig', `UnoCSS()`)
+        context.mainEditor!.addImport('main', `import 'virtual:uno.css'`)
+      }
       break
     }
   }
+}
+
+function generateUnoCssConfig() {
+  return `import {
+  defineConfig,
+  presetAttributify,
+  presetIcons,
+  presetTypography,
+  presetWebFonts,
+  presetWind3,
+  transformerDirectives,
+  transformerVariantGroup,
+} from 'unocss'
+
+export default defineConfig({
+  presets: [
+    /* Core Presets */
+    presetWind3(),
+    presetAttributify(),
+    presetIcons(),
+    presetTypography(),
+    presetWebFonts(),
+  ],
+  transformers: [transformerDirectives(), transformerVariantGroup()],
+})
+`
 }

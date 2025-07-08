@@ -1,4 +1,5 @@
 import type { NodeProjectConfig, ReactProjectConfig } from './project-configs'
+import type { MainEditor, ViteConfigEditor } from '@/editor'
 
 export type Config = {
   targetDir?: string
@@ -18,8 +19,8 @@ export interface ProjectContext {
   files: Record<string, string>
   /** .js or .ts */
   fileExtension: string
-  /** source code of vite config, only for vite project */
-  viteConfigCode?: string
+  viteConfigEditor?: InstanceType<typeof ViteConfigEditor>
+  mainEditor?: InstanceType<typeof MainEditor>
 }
 
 export interface PackageJsonConfig {

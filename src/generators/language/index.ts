@@ -1,13 +1,10 @@
 import type { Generator, ProjectContext } from '@/types'
 import { addDependencies, addScripts } from '@/utils/package-json'
-import { getFileExtension } from '@/utils/template'
 
 export const languageGenerator: Generator = {
   generate(context) {
     const { config } = context
     const language = config.language || 'typescript'
-
-    context.fileExtension = getFileExtension(language)
 
     language === 'typescript'
       ? generateTypeScriptConfig(context)

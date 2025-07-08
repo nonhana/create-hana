@@ -1,18 +1,20 @@
 import type { Config, ProjectContext } from '@/types'
 import { join } from 'node:path'
 import { ErrorMessages } from '@/constants/errors'
+import { createMainEditor, createViteConfigEditor } from '@/editor'
 import { ErrorFactory } from '@/error/factory'
 import { ErrorHandler } from '@/error/handler'
-import { generateViteConfigCode } from '@/generators/build-tools/vite'
 import { bundlerGenerator } from '@/generators/bundler'
 import { biomeGenerator, eslintGenerator, eslintPrettierGenerator } from '@/generators/features'
 import { languageGenerator } from '@/generators/language'
 import { nodeLibGenerator } from '@/generators/projects'
 import { initGitRepository } from '@/handlers/git'
 import { installDependencies } from '@/handlers/package-manager'
+import { mainReactTemplate, viteTemplate } from '@/templates'
 import { removeIfExists, writeProjectFiles } from '@/utils/file-system'
 import { logger } from '@/utils/logger'
 import { sortPackageJson } from '@/utils/package-json'
+import { getFileExtension } from '@/utils/template'
 
 export async function generateProject(config: Config, cwd: string) {
   return ErrorHandler.tryAsync(async () => {
@@ -59,6 +61,7 @@ function validateConfig(config: Config) {
 
 async function initializeProjectContext(config: Config, cwd: string) {
   const projectDir = join(cwd, config.targetDir!)
+  const language = config.language || 'typescript'
 
   const context: ProjectContext = {
     config,
@@ -70,10 +73,13 @@ async function initializeProjectContext(config: Config, cwd: string) {
       type: 'module',
     },
     files: {},
-    fileExtension: '.js',
+    fileExtension: getFileExtension(language),
   }
   if (config.projectType !== 'node' && config.buildTool === 'vite') {
-    context.viteConfigCode = generateViteConfigCode(config)
+    context.viteConfigEditor = createViteConfigEditor(viteTemplate())
+  }
+  if (config.projectType === 'react') {
+    context.mainEditor = createMainEditor(mainReactTemplate(context.fileExtension))
   }
 
   return context
