@@ -18,7 +18,7 @@ export interface ProjectContext {
   packageJson: PackageJsonConfig
   files: Record<string, string>
   /** .js or .ts */
-  fileExtension: string
+  fileExtension: '.js' | '.ts'
   viteConfigEditor?: InstanceType<typeof ViteConfigEditor>
   mainEditor?: InstanceType<typeof MainEditor>
 }

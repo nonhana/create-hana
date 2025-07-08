@@ -1,5 +1,6 @@
 import type { CoreEditor, EditableFiles } from '../core-editor'
 import * as recast from 'recast'
+import typescriptParser from 'recast/parsers/typescript'
 import { ErrorMessages } from '@/constants/errors'
 import { ErrorFactory } from '@/error/factory'
 
@@ -13,7 +14,7 @@ export function withImportFeature<T extends new (...args: any[]) => CoreEditor>(
       if (!this.contents[key])
         throw ErrorFactory.validation(ErrorMessages.validation.fieldNotFound(key))
 
-      const importAst = recast.parse(`${importCode}\n`).program.body[0]
+      const importAst = recast.parse(`${importCode}\n`, { parser: typescriptParser }).program.body[0]
       this.contents[key].ast.program.body.unshift(importAst)
       return this
     }

@@ -26,7 +26,7 @@
     "dev": "tsx src/index.ts",
     "lint": "eslint .",
     "lint:fix": "eslint . --fix",
-    "test": "vitest",
+    "test": "vitest run",
     "test:ui": "vitest --ui",
     "test:coverage": "vitest --coverage",
     "prepublishOnly": "pnpm run build"
@@ -40,6 +40,8 @@
   },
   "devDependencies": {
     "@antfu/eslint-config": "catalog:",
+    "@babel/parser": "catalog:",
+    "@babel/types": "catalog:",
     "@types/node": "catalog:",
     "@vitest/ui": "catalog:",
     "eslint": "catalog:",

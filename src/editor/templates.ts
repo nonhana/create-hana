@@ -8,11 +8,20 @@ export default defineConfig({
 `
 }
 
-export function mainReactTemplate(fileExtension: string) {
+export function mainReactTemplate(fileExtension: '.js' | '.ts') {
   return `import { createRoot } from 'react-dom/client'
 import App from './App${fileExtension}x'
 
 createRoot(document.getElementById('root')!).render(<App />)
+`
+}
+
+export function mainReactRouterTemplate() {
+  return `import { createRoot } from 'react-dom/client'
+import { RouterProvider } from 'react-router'
+import router from './router'
+
+createRoot(document.getElementById('root')!).render(<RouterProvider router={router} />)
 `
 }
 

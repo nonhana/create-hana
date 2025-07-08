@@ -2,6 +2,7 @@ import type { Config, ProjectContext } from '@/types'
 import { join } from 'node:path'
 import { ErrorMessages } from '@/constants/errors'
 import { createMainEditor, createViteConfigEditor } from '@/editor'
+import { mainReactRouterTemplate, mainReactTemplate, viteTemplate } from '@/editor/templates'
 import { ErrorFactory } from '@/error/factory'
 import { ErrorHandler } from '@/error/handler'
 import { bundlerGenerator } from '@/generators/bundler'
@@ -10,7 +11,6 @@ import { languageGenerator } from '@/generators/language'
 import { nodeLibGenerator } from '@/generators/projects'
 import { initGitRepository } from '@/handlers/git'
 import { installDependencies } from '@/handlers/package-manager'
-import { mainReactTemplate, viteTemplate } from '@/templates'
 import { removeIfExists, writeProjectFiles } from '@/utils/file-system'
 import { logger } from '@/utils/logger'
 import { sortPackageJson } from '@/utils/package-json'
@@ -75,11 +75,18 @@ async function initializeProjectContext(config: Config, cwd: string) {
     files: {},
     fileExtension: getFileExtension(language),
   }
+
+  // Global editor context
   if (config.projectType !== 'node' && config.buildTool === 'vite') {
     context.viteConfigEditor = createViteConfigEditor(viteTemplate())
   }
   if (config.projectType === 'react') {
-    context.mainEditor = createMainEditor(mainReactTemplate(context.fileExtension))
+    if (config.routingLibrary === 'react-router') {
+      context.mainEditor = createMainEditor(mainReactRouterTemplate())
+    }
+    else {
+      context.mainEditor = createMainEditor(mainReactTemplate(context.fileExtension))
+    }
   }
 
   return context

@@ -55,9 +55,12 @@ export const reactGenerator: Generator = {
       node: '>=18.12.0', // V18 LTS
     }
 
-    // 4. Generate feature files
+    // 4. Features
     if (config.cssFramework && config.cssFramework !== 'none') {
       generateCssFramework(context)
+    }
+    if (config.cssPreprocessor) {
+      generateCssPreprocessor(context)
     }
   },
 }
@@ -103,6 +106,30 @@ export function Counter() {
 
 // Handle CSS Framework option
 function generateCssFramework(context: ProjectContext) {
+  const generateUnoCssConfig = () => `import {
+    defineConfig,
+    presetAttributify,
+    presetIcons,
+    presetTypography,
+    presetWebFonts,
+    presetWind3,
+    transformerDirectives,
+    transformerVariantGroup,
+  } from 'unocss'
+  
+  export default defineConfig({
+    presets: [
+      /* Core Presets */
+      presetWind3(),
+      presetAttributify(),
+      presetIcons(),
+      presetTypography(),
+      presetWebFonts(),
+    ],
+    transformers: [transformerDirectives(), transformerVariantGroup()],
+  })
+  `
+
   const { config, packageJson } = context
   if (config.projectType !== 'react')
     throw ErrorFactory.validation(ErrorMessages.validation.invalidProjectType(config.projectType))
@@ -134,28 +161,61 @@ function generateCssFramework(context: ProjectContext) {
   }
 }
 
-function generateUnoCssConfig() {
-  return `import {
-  defineConfig,
-  presetAttributify,
-  presetIcons,
-  presetTypography,
-  presetWebFonts,
-  presetWind3,
-  transformerDirectives,
-  transformerVariantGroup,
-} from 'unocss'
+// Handle CSS Preprocessor option
+function generateCssPreprocessor(context: ProjectContext) {
+  const { config, packageJson } = context
+  if (config.projectType !== 'react')
+    throw ErrorFactory.validation(ErrorMessages.validation.invalidProjectType(config.projectType))
 
-export default defineConfig({
-  presets: [
-    /* Core Presets */
-    presetWind3(),
-    presetAttributify(),
-    presetIcons(),
-    presetTypography(),
-    presetWebFonts(),
-  ],
-  transformers: [transformerDirectives(), transformerVariantGroup()],
-})
+  switch (config.cssPreprocessor) {
+    case 'less': {
+      packageJson.devDependencies = packageJson.devDependencies || {}
+      packageJson.devDependencies.less = '^4.3.0'
+      break
+    }
+    case 'scss': {
+      packageJson.devDependencies = packageJson.devDependencies || {}
+      packageJson.devDependencies.sass = '^1.89.2'
+      break
+    }
+  }
+}
+
+// Handle Routing Library option
+function generateRoutingLibrary(context: ProjectContext) {
+  const { config, packageJson } = context
+  if (config.projectType !== 'react')
+    throw ErrorFactory.validation(ErrorMessages.validation.invalidProjectType(config.projectType))
+
+  const generateReactRouterIndex = () => `import { createBrowserRouter } from "react-router"
+
+const router = createBrowserRouter([
+  {
+    path: "/",
+    element: () => import('./pages/home'),
+  }
+])
 `
+
+  const generateDefaultPage = () => `export default function Home() {
+  return <div>This is default page</div>
+}
+`
+
+  switch (config.routingLibrary) {
+    case 'react-router': {
+      packageJson.dependencies = packageJson.dependencies || {}
+      packageJson.dependencies['react-router'] = '^7.6.3'
+
+      context.files[`src/router/index${context.fileExtension}x`] = generateReactRouterIndex()
+      context.files[`src/pages/home/index${context.fileExtension}x`] = generateDefaultPage()
+      break
+    }
+    case 'tanstack-router': {
+      break
+    }
+    case 'wouter': {
+      break
+    }
+  }
 }

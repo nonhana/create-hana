@@ -1,5 +1,7 @@
 catalog:
   '@antfu/eslint-config': ^4.16.1
+  '@babel/parser': ^7.28.0
+  '@babel/types': ^7.28.0
   '@clack/prompts': ^0.11.0
   '@types/node': ^22.15.34
   '@vitest/ui': ^2.1.9
