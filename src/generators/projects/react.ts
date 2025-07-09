@@ -18,7 +18,10 @@ export const reactGenerator: Generator = {
 
     // 1. Generate src directory structure
     const appFileName = `src/app${fileExtension}x`
-    context.files[appFileName] = generateAppFile()
+    // if routing library is react-router or tanstack-router, we use <RouterProvider /> instead of <App />
+    if (config.routingLibrary === 'wouter' || config.routingLibrary === 'none') {
+      context.files[appFileName] = generateAppFile(config.routingLibrary)
+    }
 
     const mainFileName = `src/main${fileExtension}x`
     context.files[mainFileName] = generateMainFile(appFileName)
@@ -62,18 +65,34 @@ export const reactGenerator: Generator = {
     if (config.cssPreprocessor) {
       generateCssPreprocessor(context)
     }
+    if (config.routingLibrary && config.routingLibrary !== 'none') {
+      generateRoutingLibrary(context)
+    }
   },
 }
 
-function generateAppFile() {
-  return `function App() {
+function generateAppFile(type: string) {
+  if (type === 'wouter') {
+    return `import { Route } from 'wouter'
+import { Home } from './pages/home'
+
+export default function App() {
+  return (
+    <>
+      <Route path="/"><Home /></Route>
+    </>
+  )
+}
+`
+  }
+  else {
+    return `export default function App() {
   return (
     <h1>Hello, vite + react</h1>
   )
 }
-
-export default App
 `
+  }
 }
 
 function generateMainFile(appFileName: string) {
@@ -107,28 +126,28 @@ export function Counter() {
 // Handle CSS Framework option
 function generateCssFramework(context: ProjectContext) {
   const generateUnoCssConfig = () => `import {
-    defineConfig,
-    presetAttributify,
-    presetIcons,
-    presetTypography,
-    presetWebFonts,
-    presetWind3,
-    transformerDirectives,
-    transformerVariantGroup,
-  } from 'unocss'
-  
-  export default defineConfig({
-    presets: [
-      /* Core Presets */
-      presetWind3(),
-      presetAttributify(),
-      presetIcons(),
-      presetTypography(),
-      presetWebFonts(),
-    ],
-    transformers: [transformerDirectives(), transformerVariantGroup()],
-  })
-  `
+  defineConfig,
+  presetAttributify,
+  presetIcons,
+  presetTypography,
+  presetWebFonts,
+  presetWind3,
+  transformerDirectives,
+  transformerVariantGroup,
+} from 'unocss'
+
+export default defineConfig({
+  presets: [
+    /* Core Presets */
+    presetWind3(),
+    presetAttributify(),
+    presetIcons(),
+    presetTypography(),
+    presetWebFonts(),
+  ],
+  transformers: [transformerDirectives(), transformerVariantGroup()],
+})
+`
 
   const { config, packageJson } = context
   if (config.projectType !== 'react')
@@ -187,6 +206,14 @@ function generateRoutingLibrary(context: ProjectContext) {
   if (config.projectType !== 'react')
     throw ErrorFactory.validation(ErrorMessages.validation.invalidProjectType(config.projectType))
 
+  packageJson.dependencies = packageJson.dependencies || {}
+
+  // Default page
+  const generateDefaultPage = () => `export default function Home() {
+    return <div>This is default page</div>
+  }
+  `
+
   const generateReactRouterIndex = () => `import { createBrowserRouter } from "react-router"
 
 const router = createBrowserRouter([
@@ -195,26 +222,45 @@ const router = createBrowserRouter([
     element: () => import('./pages/home'),
   }
 ])
+
+export default router
 `
 
-  const generateDefaultPage = () => `export default function Home() {
-  return <div>This is default page</div>
-}
+  const generateTanstackRouterIndex = () => `import { createRootRoute, createRoute, createRouter, Outlet } from '@tanstack/react-router'
+import { Home } from '../pages/home'
+
+const rootRoute = createRootRoute({
+  component: () => <Outlet />,
+})
+
+const homeRoute = createRoute({
+  getParentRoute: () => rootRoute,
+  path: '/',
+  component: () => <Home />,
+})
+
+export const routeTree = rootRoute.addChildren([homeRoute])
+
+const router = createRouter({ routeTree })
+
+export default router
 `
+
+  context.files[`src/pages/home${context.fileExtension}x`] = generateDefaultPage()
 
   switch (config.routingLibrary) {
     case 'react-router': {
-      packageJson.dependencies = packageJson.dependencies || {}
       packageJson.dependencies['react-router'] = '^7.6.3'
-
       context.files[`src/router/index${context.fileExtension}x`] = generateReactRouterIndex()
-      context.files[`src/pages/home/index${context.fileExtension}x`] = generateDefaultPage()
       break
     }
     case 'tanstack-router': {
+      packageJson.dependencies['@tanstack/react-router'] = '^1.125.6'
+      context.files[`src/router/index${context.fileExtension}x`] = generateTanstackRouterIndex()
       break
     }
     case 'wouter': {
+      packageJson.dependencies.wouter = '^3.7.1'
       break
     }
   }
