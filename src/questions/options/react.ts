@@ -33,7 +33,8 @@ export const REACT_STATE_MANAGEMENT_OPTIONS = [
 
 export const REACT_HTTP_OPTIONS = [
   { label: 'Axios', value: 'axios' },
-  { label: 'None', value: 'none' },
+  { label: 'Ky', value: 'ky' },
+  { label: 'None -> Native Fetch', value: 'none' },
 ] as const
 
 export const REACT_QUERY_OPTIONS = [

@@ -2,6 +2,7 @@ import type { Generator, ProjectContext } from '@/types'
 import { ErrorMessages } from '@/constants/errors'
 import { ErrorFactory } from '@/error/factory'
 import { generateGitignore, generateHanaLogo, generateHtmlTemplate, generateReadmeTemplate, generateViteEnvFile } from '@/utils/template'
+import { generateHttpLibrary } from './http-library'
 
 export const reactGenerator: Generator = {
   generate(context) {
@@ -67,6 +68,12 @@ export const reactGenerator: Generator = {
     }
     if (config.routingLibrary && config.routingLibrary !== 'none') {
       generateRoutingLibrary(context)
+    }
+    if (config.stateManagement && config.stateManagement !== 'none') {
+      generateStateManagement(context)
+    }
+    if (config.httpLibrary && config.httpLibrary !== 'none') {
+      generateHttpLibrary(context)
     }
   },
 }
