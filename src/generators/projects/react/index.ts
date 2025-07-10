@@ -14,7 +14,7 @@ export const reactGenerator: Generator = {
 
     if (config.buildTool === 'vite') {
       context.viteConfigEditor!.addImport('viteConfig', `import react from '@vitejs/plugin-react'`)
-      context.viteConfigEditor!.addVitePlugin('viteConfig', `react()`)
+      context.viteConfigEditor!.addVitePlugin(`react()`)
     }
 
     // 1. Generate src directory structure
@@ -74,6 +74,9 @@ export const reactGenerator: Generator = {
     }
     if (config.httpLibrary && config.httpLibrary !== 'none') {
       generateHttpLibrary(context)
+    }
+    if (config.modulePathAliasing && config.modulePathAliasing !== 'none') {
+      generateAlias(context)
     }
   },
 }
@@ -168,7 +171,7 @@ export default defineConfig({
         packageJson.devDependencies['@tailwindcss/vite'] = '^4.1.11'
         context.files['src/styles/global.css'] = `@import "tailwindcss";`
         context.viteConfigEditor!.addImport('viteConfig', `import tailwindcss from '@tailwindcss/vite'`)
-        context.viteConfigEditor!.addVitePlugin('viteConfig', `tailwindcss()`)
+        context.viteConfigEditor!.addVitePlugin(`tailwindcss()`)
         context.mainEditor!.addImport('main', `import './styles/global.css'`)
       }
       break
@@ -179,7 +182,7 @@ export default defineConfig({
       if (config.buildTool === 'vite') {
         context.files['uno.config.ts'] = generateUnoCssConfig()
         context.viteConfigEditor!.addImport('viteConfig', `import UnoCSS from 'unocss/vite'`)
-        context.viteConfigEditor!.addVitePlugin('viteConfig', `UnoCSS()`)
+        context.viteConfigEditor!.addVitePlugin(`UnoCSS()`)
         context.mainEditor!.addImport('main', `import 'virtual:uno.css'`)
       }
       break
@@ -370,6 +373,34 @@ export const store = configureStore({
       context.mainEditor!.addImport('main', `import { Provider } from 'react-redux'`)
       context.mainEditor!.addImport('main', `import { store } from './stores'`)
       context.mainEditor!.addJsxProvider('Provider', { store: 'store' })
+      break
+    }
+  }
+}
+
+// Handle alias option
+function generateAlias(context: ProjectContext) {
+  const { config, packageJson } = context
+  if (config.projectType !== 'react')
+    throw ErrorFactory.validation(ErrorMessages.validation.invalidProjectType(config.projectType))
+
+  packageJson.dependencies = packageJson.dependencies || {}
+
+  switch (config.modulePathAliasing) {
+    case '@': {
+      if (config.buildTool === 'vite') {
+        context.viteConfigEditor!.addViteAlias({
+          '@': 'path.resolve(__dirname, "src")',
+        })
+      }
+      break
+    }
+    case '~': {
+      if (config.buildTool === 'vite') {
+        context.viteConfigEditor!.addViteAlias({
+          '~': 'path.resolve(__dirname, "src")',
+        })
+      }
       break
     }
   }
