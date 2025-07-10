@@ -1,7 +1,7 @@
 import type { Config, Generator } from '@/types'
 import { ErrorMessages } from '@/constants/errors'
+import { viteTemplate } from '@/editor/templates'
 import { ErrorFactory } from '@/error/factory'
-import { viteTemplate } from '@/templates'
 import { addDependencies, addScripts } from '@/utils/package-json'
 
 export const viteGenerator: Generator = {
