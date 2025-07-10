@@ -77,24 +77,24 @@ export const store = configureStore({
   switch (config.stateManagement) {
     case 'zustand': {
       packageJson.dependencies.zustand = '^5.0.6'
-      context.files[`src/stores/counter.${context.fileExtension}`] = generateZustandStore()
+      context.files[`src/stores/counter${context.fileExtension}`] = generateZustandStore()
       break
     }
     case 'jotai': {
       packageJson.dependencies.jotai = '^2.12.5'
-      context.files[`src/atoms/counter.${context.fileExtension}`] = generateJotaiStore()
+      context.files[`src/atoms/counter${context.fileExtension}`] = generateJotaiStore()
       break
     }
     case 'mobx': {
       packageJson.dependencies.mobx = '^6.13.7'
-      context.files[`src/stores/counter.${context.fileExtension}`] = generateMobxStore()
+      context.files[`src/stores/counter${context.fileExtension}`] = generateMobxStore()
       break
     }
     case 'redux': {
       packageJson.dependencies['@reduxjs/toolkit'] = '^2.8.2'
       packageJson.dependencies['react-redux'] = '^9.2.0'
-      context.files[`src/stores/modules/counter.${context.fileExtension}`] = generateReduxCounter()
-      context.files[`src/stores/index.${context.fileExtension}`] = generateReduxStore()
+      context.files[`src/stores/modules/counter${context.fileExtension}`] = generateReduxCounter()
+      context.files[`src/stores/index${context.fileExtension}`] = generateReduxStore()
       context.mainEditor!.addImport('main', `import { Provider } from 'react-redux'`)
       context.mainEditor!.addImport('main', `import { store } from './stores'`)
       context.mainEditor!.addJsxProvider('Provider', { store: 'store' })

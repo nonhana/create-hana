@@ -12,17 +12,17 @@ export function generateHttpLibrary(context: ProjectContext) {
   switch (config.httpLibrary) {
     case 'axios': {
       packageJson.dependencies.axios = '^1.10.0'
-      context.files[`src/service/index.${context.fileExtension}`] = generateAxiosService(config.language ?? 'typescript')
+      context.files[`src/service/index${context.fileExtension}`] = generateAxiosService(config.language ?? 'typescript')
       if (config.language === 'typescript') {
-        context.files[`src/service/types.${context.fileExtension}`] = generateAxiosTypes()
+        context.files[`src/service/types${context.fileExtension}`] = generateAxiosTypes()
       }
       break
     }
     case 'ky': {
       packageJson.dependencies.ky = '^1.8.1'
-      context.files[`src/service/index.${context.fileExtension}`] = generateKyService(config.language ?? 'typescript')
+      context.files[`src/service/index${context.fileExtension}`] = generateKyService(config.language ?? 'typescript')
       if (config.language === 'typescript') {
-        context.files[`src/service/types.${context.fileExtension}`] = generateKyTypes()
+        context.files[`src/service/types${context.fileExtension}`] = generateKyTypes()
       }
       break
     }
@@ -303,7 +303,8 @@ const service: KyInstance = ky.create(options)
 
 export default service
 `
-  } else {
+  }
+  else {
     return `import ky from 'ky'
 
 /**

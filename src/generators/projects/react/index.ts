@@ -32,7 +32,7 @@ export const reactGenerator: Generator = {
     const mainFileName = `src/main${fileExtension}x`
     context.files[mainFileName] = generateMainFile(appFileName)
 
-    const counterFileName = `src/components/counter.${fileExtension}x`
+    const counterFileName = `src/components/counter${fileExtension}x`
     context.files[counterFileName] = generateCounterFile()
 
     if (config.language === 'typescript') {

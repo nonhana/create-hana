@@ -128,13 +128,13 @@ async function runGenerators(context: ProjectContext) {
 
 function saveEditors(context: ProjectContext) {
   if (context.viteConfigEditor) {
-    context.files[`vite.config.${context.fileExtension}`] = context.viteConfigEditor.getContent('viteConfig')
+    context.files[`vite.config${context.fileExtension}`] = context.viteConfigEditor.getContent('viteConfig')
   }
   if (context.mainEditor) {
     const suffix = context.config.projectType === 'react'
       ? `${context.fileExtension}x`
       : context.fileExtension
-    context.files[`main.${suffix}`] = context.mainEditor.getContent('main')
+    context.files[`main${suffix}`] = context.mainEditor.getContent('main')
   }
 }
 
