@@ -1,8 +1,8 @@
 import type { CoreEditor, EditableFiles } from '../core-editor'
 import * as recast from 'recast'
-import typescriptParser from 'recast/parsers/typescript'
 import { ErrorMessages } from '@/constants/errors'
 import { ErrorFactory } from '@/error/factory'
+import { parser } from '@/utils/parser'
 
 export interface IViteFeature {
   addVitePlugin: (key: EditableFiles, pluginCode: string) => this
@@ -16,7 +16,7 @@ export function withViteFeature<T extends new (...args: any[]) => CoreEditor>(Ba
 
       const ast = this.contents[key].ast
 
-      const pluginAst = recast.parse(pluginCode, { parser: typescriptParser }).program.body[0]
+      const pluginAst = recast.parse(pluginCode, { parser }).program.body[0]
       if (pluginAst.type !== 'ExpressionStatement') {
         throw new Error('pluginCode must be a single expression, e.g., "react()"')
       }
@@ -41,7 +41,7 @@ export function withViteFeature<T extends new (...args: any[]) => CoreEditor>(Ba
                 }
               }
               else {
-                const newProperty = recast.parse('({ plugins: [] })', { parser: typescriptParser }).program.body[0]
+                const newProperty = recast.parse('({ plugins: [] })', { parser }).program.body[0]
                 if (newProperty?.type === 'ExpressionStatement'
                   && newProperty.expression?.type === 'ObjectExpression') {
                   pluginsProperty = newProperty.expression.properties[0]

@@ -1,10 +1,10 @@
 import { CoreEditor } from './core-editor'
-import { withImportFeature } from './features/import'
+import { withCommonFeature } from './features/common'
 import { withJsxProviderFeature } from './features/jsx-provider'
 import { withViteFeature } from './features/vite'
 
-export const ViteConfigEditor = withViteFeature(withImportFeature(CoreEditor))
-export const MainEditor = withJsxProviderFeature(withImportFeature(CoreEditor))
+export const ViteConfigEditor = withViteFeature(withCommonFeature(CoreEditor))
+export const MainEditor = withJsxProviderFeature(withCommonFeature(CoreEditor))
 
 export function createViteConfigEditor(code: string) {
   return new ViteConfigEditor({ viteConfig: code })

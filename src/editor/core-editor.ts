@@ -1,5 +1,5 @@
-import babelParser from '@babel/parser'
 import * as recast from 'recast'
+import { parser } from '@/utils/parser'
 
 interface CodeDetail {
   source: string
@@ -24,13 +24,7 @@ export class CoreEditor {
     this.contents = Object.entries(contents ?? {}).reduce((acc, [key, value]) => {
       acc[key as EditableFiles] = {
         source: value,
-        ast: recast.parse(value, {
-          parser: {
-            parse(source: string) {
-              return babelParser.parse(source, { sourceType: 'module', plugins: ['typescript', 'jsx'] })
-            },
-          },
-        }),
+        ast: recast.parse(value, { parser }),
       }
       return acc
     }, {} as CoreEditorContents)
