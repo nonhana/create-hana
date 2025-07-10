@@ -4,8 +4,9 @@ import { ErrorFactory } from '@/error/factory'
 import { generateGitignore, generateReadmeTemplate } from '@/utils/template'
 import { generateTypeScriptRuntime } from './features/ts-runtime'
 import { generateWebServerSetup } from './features/web-server'
+import { generateBundlerConfig } from './features/bundler'
 
-export const nodeLibGenerator: Generator = {
+export const nodeGenerator: Generator = {
   generate(context) {
     const { config, fileExtension } = context
     if (config.projectType !== 'node')
@@ -33,6 +34,10 @@ export const nodeLibGenerator: Generator = {
 
     if (config.webserverPkgs && config.webserverPkgs !== 'none') {
       generateWebServerSetup(context)
+    }
+
+    if (config.bundler && config.bundler !== 'none') {
+      generateBundlerConfig(context)
     }
   },
 }

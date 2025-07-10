@@ -1,2 +1,2 @@
-export { nodeLibGenerator } from './node'
+export { nodeGenerator } from './node'
 export { reactGenerator } from './react'

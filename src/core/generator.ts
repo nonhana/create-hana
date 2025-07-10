@@ -2,13 +2,12 @@ import type { Config, ProjectContext } from '@/types'
 import { join } from 'node:path'
 import { ErrorMessages } from '@/constants/errors'
 import { createMainEditor, createViteConfigEditor } from '@/editor'
-import { mainReactRouterTemplate, mainReactTemplate, viteTemplate } from '@/editor/templates'
+import { mainReactTemplate, mainRouterProviderTemplate, viteTemplate } from '@/editor/templates'
 import { ErrorFactory } from '@/error/factory'
 import { ErrorHandler } from '@/error/handler'
-import { bundlerGenerator } from '@/generators/bundler'
 import { biomeGenerator, eslintGenerator, eslintPrettierGenerator } from '@/generators/features'
 import { languageGenerator } from '@/generators/language'
-import { nodeLibGenerator } from '@/generators/projects'
+import { nodeGenerator, reactGenerator } from '@/generators/projects'
 import { initGitRepository } from '@/handlers/git'
 import { installDependencies } from '@/handlers/package-manager'
 import { removeIfExists, writeProjectFiles } from '@/utils/file-system'
@@ -53,10 +52,6 @@ function validateConfig(config: Config) {
   if (!config.projectType) {
     throw ErrorFactory.validation(ErrorMessages.validation.projectTypeRequired())
   }
-
-  if (config.projectType !== 'node') {
-    throw ErrorFactory.validation(ErrorMessages.validation.invalidProjectType(config.projectType))
-  }
 }
 
 async function initializeProjectContext(config: Config, cwd: string) {
@@ -81,8 +76,8 @@ async function initializeProjectContext(config: Config, cwd: string) {
     context.viteConfigEditor = createViteConfigEditor(viteTemplate())
   }
   if (config.projectType === 'react') {
-    if (config.routingLibrary === 'react-router') {
-      context.mainEditor = createMainEditor(mainReactRouterTemplate())
+    if (config.routingLibrary === 'react-router' || config.routingLibrary === 'tanstack-router') {
+      context.mainEditor = createMainEditor(mainRouterProviderTemplate(config.routingLibrary))
     }
     else {
       context.mainEditor = createMainEditor(mainReactTemplate(context.fileExtension))
@@ -100,7 +95,10 @@ async function runGenerators(context: ProjectContext) {
   languageGenerator.generate(context)
 
   if (config.projectType === 'node') {
-    nodeLibGenerator.generate(context)
+    nodeGenerator.generate(context)
+  }
+  else if (config.projectType === 'react') {
+    reactGenerator.generate(context)
   }
 
   if (config.codeQualityTools) {
@@ -115,10 +113,6 @@ async function runGenerators(context: ProjectContext) {
         biomeGenerator.generate(context)
         break
     }
-  }
-
-  if (config.language === 'typescript') {
-    bundlerGenerator.generate(context)
   }
 
   context.packageJson = sortPackageJson(context.packageJson)

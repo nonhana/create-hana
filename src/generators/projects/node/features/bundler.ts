@@ -1,23 +1,25 @@
-import type { Generator, ProjectContext } from '@/types'
+import type { ProjectContext } from '@/types'
+import { ErrorMessages } from '@/constants/errors'
+import { ErrorFactory } from '@/error/factory'
 import { addDependencies, addScripts } from '@/utils/package-json'
 
-export const bundlerGenerator: Generator = {
-  generate(context) {
-    const { config } = context
+export function generateBundlerConfig(context: ProjectContext) {
+  const { config } = context
+  if (config.projectType !== 'node')
+    throw ErrorFactory.validation(ErrorMessages.validation.invalidProjectType(config.projectType))
 
-    if (config.language !== 'typescript' || !config.bundler || config.bundler === 'none') {
-      return
-    }
+  if (config.language !== 'typescript' || !config.bundler || config.bundler === 'none') {
+    return
+  }
 
-    switch (config.bundler) {
-      case 'tsup':
-        generateTsupConfig(context)
-        break
-      case 'tsdown':
-        generateTsdownConfig(context)
-        break
-    }
-  },
+  switch (config.bundler) {
+    case 'tsup':
+      generateTsupConfig(context)
+      break
+    case 'tsdown':
+      generateTsdownConfig(context)
+      break
+  }
 }
 
 function generateTsupConfig(context: ProjectContext) {

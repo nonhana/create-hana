@@ -1,7 +1,7 @@
 export const REACT_BUILD_TOOLS_OPTIONS = [
   { label: 'Vite', value: 'vite' },
-  { label: 'Rspack', value: 'rspack' },
-  { label: 'Webpack', value: 'webpack' },
+  // { label: 'Rspack', value: 'rspack' },
+  // { label: 'Webpack', value: 'webpack' },
 ] as const
 
 export const REACT_CSS_FRAMEWORKS_OPTIONS = [
