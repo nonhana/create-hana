@@ -1,47 +1,45 @@
-import type { Generator } from '@/types'
+import type { ProjectContext } from '@/types'
+import { ErrorMessages } from '@/constants/errors'
+import { ErrorFactory } from '@/error/factory'
 import { addDependencies, addScripts } from '@/utils/package-json'
 
-export const eslintGenerator: Generator = {
-  generate(context) {
-    const { config } = context
-    const language = config.language || 'typescript'
+export function generateReactESLintConfig(context: ProjectContext) {
+  const { config } = context
+  if (config.projectType !== 'react')
+    throw ErrorFactory.validation(ErrorMessages.validation.invalidProjectType(config.projectType))
 
-    const commonDeps: Record<string, string> = {
-      'eslint': '^9.28.0',
-      '@eslint/js': '^9.28.0',
-      'eslint-plugin-n': '^17.19.0',
-      'eslint-plugin-unicorn': '^59.0.1',
-      'eslint-plugin-simple-import-sort': '^12.1.1',
-      'eslint-plugin-jsonc': '^2.20.1',
-      'eslint-plugin-yml': '^1.18.0',
-      'typescript-eslint': '^8.33.1',
-      '@eslint/markdown': '^6.5.0',
-    }
+  const language = config.language || 'typescript'
 
-    let eslintDeps: Record<string, string>
+  const commonDeps: Record<string, string> = {
+    'eslint': '^9.28.0',
+    '@eslint/js': '^9.28.0',
+    'eslint-plugin-react': '^7.37.5',
+    'eslint-plugin-react-hooks': '^4.6.2',
+    'eslint-plugin-react-refresh': '^0.4.16',
+    'eslint-plugin-simple-import-sort': '^12.1.1',
+    'eslint-plugin-jsonc': '^2.20.1',
+    'eslint-plugin-yml': '^1.18.0',
+    'typescript-eslint': '^8.33.1',
+    '@eslint/markdown': '^6.5.0',
+  }
 
-    if (language === 'typescript') {
-      eslintDeps = { ...commonDeps }
-    }
-    else {
-      eslintDeps = { ...commonDeps, globals: '^16.2.0' }
-    }
+  let eslintDeps: Record<string, string>
 
-    addDependencies(context.packageJson, eslintDeps, 'devDependencies')
+  if (language === 'typescript') {
+    eslintDeps = { ...commonDeps }
+  }
+  else {
+    eslintDeps = { ...commonDeps, globals: '^16.2.0' }
+  }
 
-    addScripts(context.packageJson, {
-      'lint': 'eslint .',
-      'lint:fix': 'eslint . --fix',
-    })
+  addDependencies(context.packageJson, eslintDeps, 'devDependencies')
 
-    const eslintConfig = generateESLintConfig(language)
-    context.files['eslint.config.mjs'] = eslintConfig
+  addScripts(context.packageJson, {
+    'lint': 'eslint .',
+    'lint:fix': 'eslint . --fix',
+  })
 
-    if (context.config.codeQualityConfig) {
-      const eslintVscodeConfig = generateESlintVscodeConfig()
-      context.files['.vscode/settings.json'] = eslintVscodeConfig
-    }
-  },
+  context.files['eslint.config.mjs'] = generateESLintConfig(language)
 }
 
 function generateESLintConfig(language: 'typescript' | 'javascript') {
@@ -50,33 +48,69 @@ function generateESLintConfig(language: 'typescript' | 'javascript') {
 
 import eslint from '@eslint/js'
 import markdown from '@eslint/markdown'
-import eslintPluginJsonc from 'eslint-plugin-jsonc';
-import pluginN from 'eslint-plugin-n'
-import simpleImportSort from 'eslint-plugin-simple-import-sort';
-import eslintPluginUnicorn from 'eslint-plugin-unicorn'
+import eslintPluginJsonc from 'eslint-plugin-jsonc'
+import simpleImportSort from 'eslint-plugin-simple-import-sort'
 import eslintPluginYml from 'eslint-plugin-yml'
+import reactPlugin from 'eslint-plugin-react'
+import reactHooks from 'eslint-plugin-react-hooks'
+import reactRefresh from 'eslint-plugin-react-refresh'
 import tseslint from 'typescript-eslint'
+import globals from 'globals'
 
 export default tseslint.config(
+  {
+    ignores: ['dist', 'node_modules', '**/*.d.ts', 'build'],
+  },
   eslint.configs.recommended,
   markdown.configs.processor,
-  tseslint.configs.strict,
-  tseslint.configs.stylistic,
-  eslintPluginUnicorn.configs.recommended,
-  pluginN.configs['flat/recommended-module'],
+  ...tseslint.configs.recommended,
+  ...tseslint.configs.stylistic,
+  reactPlugin.configs.flat.recommended,
+  reactPlugin.configs.flat['jsx-runtime'],
   ...eslintPluginJsonc.configs['flat/recommended-with-jsonc'],
   ...eslintPluginYml.configs['flat/recommended'],
   {
+    files: ['**/*.{js,mjs,cjs,jsx,ts,tsx}'],
     languageOptions: {
+      ecmaVersion: 2022,
       sourceType: 'module',
+      parser: tseslint.parser,
+      parserOptions: {
+        ecmaFeatures: {
+          jsx: true,
+        },
+      },
+      globals: {
+        ...globals.browser,
+      },
     },
     plugins: {
+      'react-hooks': reactHooks,
+      'react-refresh': reactRefresh,
       'simple-import-sort': simpleImportSort,
+    },
+    settings: {
+      react: {
+        version: 'detect',
+      },
     },
     rules: {
       /* plugin rules */
       'simple-import-sort/imports': 'error',
       'simple-import-sort/exports': 'error',
+      
+      /* React hooks rules */
+      ...reactHooks.configs.recommended.rules,
+      
+      /* React refresh rules */
+      'react-refresh/only-export-components': [
+        'warn',
+        { allowConstantExport: true },
+      ],
+
+      /* React rules */
+      'react/react-in-jsx-scope': 'off',
+      'react/jsx-uses-react': 'off',
 
       /* stylistic rules */
       quotes: ['error', 'single', { avoidEscape: true }],
@@ -121,37 +155,67 @@ export default tseslint.config(
 import eslint from '@eslint/js'
 import markdown from '@eslint/markdown'
 import eslintPluginJsonc from 'eslint-plugin-jsonc'
-import pluginN from 'eslint-plugin-n'
 import simpleImportSort from 'eslint-plugin-simple-import-sort'
-import eslintPluginUnicorn from 'eslint-plugin-unicorn'
 import eslintPluginYml from 'eslint-plugin-yml'
+import reactPlugin from 'eslint-plugin-react'
+import reactHooks from 'eslint-plugin-react-hooks'
+import reactRefresh from 'eslint-plugin-react-refresh'
 import globals from 'globals'
 import tseslint from 'typescript-eslint'
 
 export default tseslint.config(
+  {
+    ignores: ['dist', 'node_modules', '**/*.d.ts', 'build'],
+  },
   eslint.configs.recommended,
   markdown.configs.processor,
-  pluginN.configs['flat/recommended-module'],
-  eslintPluginUnicorn.configs.recommended,
+  reactPlugin.configs.flat.recommended,
+  reactPlugin.configs.flat['jsx-runtime'],
   ...eslintPluginJsonc.configs['flat/recommended-with-jsonc'],
   ...eslintPluginYml.configs['flat/recommended'],
   {
+    files: ['**/*.{js,mjs,cjs,jsx}'],
     languageOptions: {
-      ecmaVersion: 'latest',
+      ecmaVersion: 2022,
       sourceType: 'module',
+      parserOptions: {
+        ecmaFeatures: {
+          jsx: true,
+        },
+      },
       globals: {
-        ...globals.node,
+        ...globals.browser,
       },
     },
-
     plugins: {
+      'react-hooks': reactHooks,
+      'react-refresh': reactRefresh,
       'simple-import-sort': simpleImportSort,
     },
-
+    settings: {
+      react: {
+        version: 'detect',
+      },
+    },
     rules: {
+      /* plugin rules */
       'simple-import-sort/imports': 'error',
       'simple-import-sort/exports': 'error',
+      
+      /* React hooks rules */
+      ...reactHooks.configs.recommended.rules,
+      
+      /* React refresh rules */
+      'react-refresh/only-export-components': [
+        'warn',
+        { allowConstantExport: true },
+      ],
 
+      /* React rules */
+      'react/react-in-jsx-scope': 'off',
+      'react/jsx-uses-react': 'off',
+
+      /* stylistic rules */
       quotes: ['error', 'single', { avoidEscape: true }],
       indent: ['error', 2, { SwitchCase: 1 }],
       'key-spacing': ['error', { beforeColon: false, afterColon: true }],
@@ -184,50 +248,8 @@ export default tseslint.config(
       'dot-location': ['error', 'property'],
       'no-empty': ['error', { allowEmptyCatch: true }],
     },
-  }
+  },
 )
 `
   }
-}
-
-function generateESlintVscodeConfig() {
-  const config = {
-    'prettier.enable': false,
-    'biome.enable': false,
-    'editor.formatOnSave': false,
-    'editor.codeActionsOnSave': {
-      'source.fixAll.eslint': 'explicit',
-      'source.organizeImports': 'never',
-    },
-    '[typescript]': {
-      'editor.defaultFormatter': null,
-    },
-    '[javascript]': {
-      'editor.defaultFormatter': null,
-    },
-    'eslint.rules.customizations': [
-      { rule: '@stylistic/*', severity: 'off' },
-      { rule: '*-indent', severity: 'off' },
-      { rule: '*-spacing', severity: 'off' },
-      { rule: '*-spaces', severity: 'off' },
-      { rule: '*-order', severity: 'off' },
-      { rule: '*-dangle', severity: 'off' },
-      { rule: '*-newline', severity: 'off' },
-      { rule: '*-multiline', severity: 'off' },
-      { rule: '*quotes', severity: 'off' },
-      { rule: '*semi', severity: 'off' },
-    ],
-    'eslint.validate': [
-      'javascript',
-      'typescript',
-      'javascriptreact',
-      'typescriptreact',
-      'json',
-      'jsonc',
-      'yaml',
-      'markdown',
-    ],
-  }
-
-  return JSON.stringify(config, null, 2)
 }

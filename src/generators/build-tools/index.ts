@@ -1,0 +1,1 @@
+export { viteGenerator } from './vite'

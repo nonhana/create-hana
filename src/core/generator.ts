@@ -5,6 +5,7 @@ import { createMainEditor, createViteConfigEditor } from '@/editor'
 import { mainReactTemplate, mainRouterProviderTemplate, viteTemplate } from '@/editor/templates'
 import { ErrorFactory } from '@/error/factory'
 import { ErrorHandler } from '@/error/handler'
+import { viteGenerator } from '@/generators/build-tools'
 import { biomeGenerator, eslintGenerator, eslintPrettierGenerator } from '@/generators/features'
 import { languageGenerator } from '@/generators/language'
 import { nodeGenerator, reactGenerator } from '@/generators/projects'
@@ -29,6 +30,8 @@ export async function generateProject(config: Config, cwd: string) {
     }
 
     await runGenerators(context)
+
+    saveEditors(context)
 
     await writeProjectFiles(context)
 
@@ -98,6 +101,9 @@ async function runGenerators(context: ProjectContext) {
     nodeGenerator.generate(context)
   }
   else if (config.projectType === 'react') {
+    if (config.buildTool === 'vite') {
+      viteGenerator.generate(context)
+    }
     reactGenerator.generate(context)
   }
 
@@ -118,6 +124,18 @@ async function runGenerators(context: ProjectContext) {
   context.packageJson = sortPackageJson(context.packageJson)
 
   logger.success('Generators completed')
+}
+
+function saveEditors(context: ProjectContext) {
+  if (context.viteConfigEditor) {
+    context.files[`vite.config.${context.fileExtension}`] = context.viteConfigEditor.getContent('viteConfig')
+  }
+  if (context.mainEditor) {
+    const suffix = context.config.projectType === 'react'
+      ? `${context.fileExtension}x`
+      : context.fileExtension
+    context.files[`main.${suffix}`] = context.mainEditor.getContent('main')
+  }
 }
 
 function shouldInstallDependencies(context: ProjectContext) {

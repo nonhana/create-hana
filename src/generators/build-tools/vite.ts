@@ -1,7 +1,4 @@
-import type { Config, Generator } from '@/types'
-import { ErrorMessages } from '@/constants/errors'
-import { viteTemplate } from '@/editor/templates'
-import { ErrorFactory } from '@/error/factory'
+import type { Generator } from '@/types'
 import { addDependencies, addScripts } from '@/utils/package-json'
 
 export const viteGenerator: Generator = {
@@ -16,11 +13,4 @@ export const viteGenerator: Generator = {
       preview: 'vite preview',
     })
   },
-}
-
-export function generateViteConfigCode(config: Config) {
-  if (config.projectType === 'node' || config.buildTool !== 'vite')
-    throw ErrorFactory.validation(ErrorMessages.validation.invalidProjectType(config.projectType))
-
-  return viteTemplate
 }
