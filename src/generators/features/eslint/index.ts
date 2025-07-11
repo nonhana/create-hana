@@ -22,7 +22,7 @@ export const eslintGenerator: Generator = {
 function generateESlintVscodeConfig() {
   const config = {
     'prettier.enable': false,
-    'biome.enable': false,
+    'biome.enabled': false,
     'editor.formatOnSave': false,
     'editor.codeActionsOnSave': {
       'source.fixAll.eslint': 'explicit',

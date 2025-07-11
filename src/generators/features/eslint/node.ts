@@ -11,15 +11,15 @@ export function generateNodeESLintConfig(context: ProjectContext) {
   const language = config.language || 'typescript'
 
   const commonDeps: Record<string, string> = {
-    'eslint': '^9.28.0',
-    '@eslint/js': '^9.28.0',
+    'eslint': '^9.30.1',
+    '@eslint/js': '^9.30.1',
     'eslint-plugin-n': '^17.19.0',
     'eslint-plugin-unicorn': '^59.0.1',
     'eslint-plugin-simple-import-sort': '^12.1.1',
     'eslint-plugin-jsonc': '^2.20.1',
     'eslint-plugin-yml': '^1.18.0',
-    'typescript-eslint': '^8.33.1',
-    '@eslint/markdown': '^6.5.0',
+    'typescript-eslint': '^8.36.0',
+    '@eslint/markdown': '^6.6.0',
   }
 
   let eslintDeps: Record<string, string>
@@ -28,7 +28,7 @@ export function generateNodeESLintConfig(context: ProjectContext) {
     eslintDeps = { ...commonDeps }
   }
   else {
-    eslintDeps = { ...commonDeps, globals: '^16.2.0' }
+    eslintDeps = { ...commonDeps, globals: '^16.3.0' }
   }
 
   addDependencies(context.packageJson, eslintDeps, 'devDependencies')

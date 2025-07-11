@@ -11,7 +11,7 @@ export function generateQueryLibrary(context: ProjectContext) {
 
   switch (config.queryLibrary) {
     case 'react-query': {
-      packageJson.dependencies['react-query'] = '^5.81.5'
+      packageJson.dependencies['@tanstack/react-query'] = '^5.81.5'
       context.mainEditor!.addImport('main', `import { QueryClient, QueryClientProvider } from '@tanstack/react-query'`)
       context.mainEditor!.addCode('main', `const queryClient = new QueryClient()`)
       context.mainEditor!.addJsxProvider('QueryClientProvider', { client: 'queryClient' })

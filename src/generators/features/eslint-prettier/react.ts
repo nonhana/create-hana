@@ -11,14 +11,14 @@ export function generateReactESLintPrettierConfig(context: ProjectContext) {
   const language = config.language || 'typescript'
 
   const commonEslintDeps: Record<string, string> = {
-    'eslint': '^9.28.0',
-    '@eslint/js': '^9.28.0',
+    'eslint': '^9.30.1',
+    '@eslint/js': '^9.30.1',
     'eslint-plugin-react': '^7.37.5',
-    'eslint-plugin-react-hooks': '^5.1.0',
-    'eslint-plugin-react-refresh': '^0.4.16',
+    'eslint-plugin-react-hooks': '^5.2.0',
+    'eslint-plugin-react-refresh': '^0.4.20',
     'eslint-plugin-jsx-a11y': '^6.10.2',
     'eslint-config-prettier': '^10.1.5',
-    'globals': '^16.2.0',
+    'globals': '^16.3.0',
   }
 
   const eslintDeps: Record<string, string> = { ...commonEslintDeps }
@@ -113,13 +113,13 @@ export default tseslint.config(
       ...eslintPluginReact.configs['jsx-runtime'].rules,
       ...eslintPluginReactHooks.configs.recommended.rules,
       ...eslintPluginJsxA11y.configs.recommended.rules,
-      
+
       // React Refresh
       'react-refresh/only-export-components': [
         'warn',
         { allowConstantExport: true },
       ],
-      
+
       // Custom overrides
       'react/prop-types': 'off', // TypeScript handles this
       '@typescript-eslint/no-unused-vars': [
@@ -129,6 +129,8 @@ export default tseslint.config(
           varsIgnorePattern: '^_',
         },
       ],
+      '@typescript-eslint/no-explicit-any': 'off',
+      '@typescript-eslint/no-non-null-assertion': 'off',
     },
   },
   eslintConfigPrettier,

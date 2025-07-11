@@ -37,14 +37,14 @@ export const reactQuestions: ProjectQuestionsConfig = {
       message: 'Which code quality tools would you like to use?',
       field: 'codeQualityTools',
       options: toMutableOptions(COMMON_CODE_QUALITY_TOOLS_OPTIONS),
-      initialValue: 'none',
+      initialValue: 'eslint',
     },
     {
       id: 'codeQualityConfig',
       type: 'confirm',
       message: 'Would you like to configure code quality tools for VSCode?',
       field: 'codeQualityConfig',
-      initialValue: false,
+      initialValue: true,
     },
     {
       id: 'buildTool',
@@ -60,6 +60,7 @@ export const reactQuestions: ProjectQuestionsConfig = {
       message: 'Which CSS framework would you like to use?',
       field: 'cssFramework',
       options: toMutableOptions(REACT_CSS_FRAMEWORKS_OPTIONS),
+      initialValue: 'tailwindcss',
     },
     {
       id: 'cssPreprocessor',
@@ -67,6 +68,7 @@ export const reactQuestions: ProjectQuestionsConfig = {
       message: 'Which CSS preprocessor would you like to use?',
       field: 'cssPreprocessor',
       options: toMutableOptions(REACT_CSS_PREPROCESSORS_OPTIONS),
+      initialValue: 'css',
     },
     {
       id: 'routingLibrary',
@@ -74,6 +76,7 @@ export const reactQuestions: ProjectQuestionsConfig = {
       message: 'Which routing library would you like to use?',
       field: 'routingLibrary',
       options: toMutableOptions(REACT_ROUTING_LIBRARIES_OPTIONS),
+      initialValue: 'react-router',
     },
     {
       id: 'stateManagement',
@@ -81,6 +84,7 @@ export const reactQuestions: ProjectQuestionsConfig = {
       message: 'Which state management library would you like to use?',
       field: 'stateManagement',
       options: toMutableOptions(REACT_STATE_MANAGEMENT_OPTIONS),
+      initialValue: 'zustand',
     },
     {
       id: 'httpLibrary',
@@ -88,6 +92,7 @@ export const reactQuestions: ProjectQuestionsConfig = {
       message: 'Which HTTP library would you like to use?',
       field: 'httpLibrary',
       options: toMutableOptions(REACT_HTTP_OPTIONS),
+      initialValue: 'axios',
     },
     {
       id: 'queryLibrary',
@@ -95,6 +100,7 @@ export const reactQuestions: ProjectQuestionsConfig = {
       message: 'Which query library would you like to use?',
       field: 'queryLibrary',
       options: toMutableOptions(REACT_QUERY_OPTIONS),
+      initialValue: 'swr',
     },
     {
       id: 'modulePathAliasing',
@@ -102,6 +108,7 @@ export const reactQuestions: ProjectQuestionsConfig = {
       message: 'Which module path aliasing would you like to use?',
       field: 'modulePathAliasing',
       options: toMutableOptions(REACT_PATH_ALIASING_OPTIONS),
+      initialValue: '@',
     },
   ],
 }

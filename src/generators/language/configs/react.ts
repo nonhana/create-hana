@@ -7,7 +7,8 @@ export function generateReactTSConfig(context: ProjectContext) {
   const { config, packageJson } = context
 
   addDependencies(packageJson, {
-    typescript: 'latest',
+    'typescript': 'latest',
+    '@types/node': 'latest',
   }, 'devDependencies')
 
   context.files['tsconfig.json'] = generateTsConfigFile(config)
@@ -42,8 +43,9 @@ function generateTsConfigFile(config: Config) {
   }
 
   if (config.modulePathAliasing && config.modulePathAliasing !== 'none') {
+    tsConfig.compilerOptions.baseUrl = './'
     tsConfig.compilerOptions.paths = {
-      [config.modulePathAliasing]: ['src/*'],
+      [`${config.modulePathAliasing}/*`]: ['src/*'],
     }
   }
 

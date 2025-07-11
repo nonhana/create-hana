@@ -7,16 +7,36 @@ export function generateStateManagement(context: ProjectContext) {
   if (config.projectType !== 'react')
     throw ErrorFactory.validation(ErrorMessages.validation.invalidProjectType(config.projectType))
 
+  const language = config.language ?? 'typescript'
+
   packageJson.dependencies = packageJson.dependencies || {}
 
   // Zustand Generator
-  const generateZustandStore = () => `import { create } from 'zustand'
+  const generateZustandStore = (language: 'typescript' | 'javascript') => {
+    if (language === 'typescript') {
+      return `import { create } from 'zustand'
+
+interface State {
+  count: number
+  inc: () => void
+}
+
+export const useStore = create<State>((set) => ({
+  count: 1,
+  inc: () => set((state) => ({ count: state.count + 1 })),
+}))
+`
+    }
+    else {
+      return `import { create } from 'zustand'
 
 export const useStore = create()((set) => ({
   count: 1,
   inc: () => set((state) => ({ count: state.count + 1 })),
 }))
 `
+    }
+  }
 
   // Jotai Generator
   const generateJotaiStore = () => `import { atom } from 'jotai'
@@ -77,7 +97,7 @@ export const store = configureStore({
   switch (config.stateManagement) {
     case 'zustand': {
       packageJson.dependencies.zustand = '^5.0.6'
-      context.files[`src/stores/counter${context.fileExtension}`] = generateZustandStore()
+      context.files[`src/stores/counter${context.fileExtension}`] = generateZustandStore(language)
       break
     }
     case 'jotai': {

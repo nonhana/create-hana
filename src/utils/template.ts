@@ -148,17 +148,22 @@ MIT
 `
 }
 
-export function generateHtmlTemplate(title: string, mainScriptPath: string) {
-  return `<!doctype html>
+interface SPAHtmlTemplateProps {
+  title: string
+  bodyId: string
+  mainScriptPath: string
+}
+export function generateSPAHtmlTemplate({ title, bodyId, mainScriptPath }: SPAHtmlTemplateProps) {
+  return `<!DOCTYPE html>
 <html lang="en">
   <head>
     <meta charset="UTF-8" />
-    <link rel="icon" type="image/svg+xml" href="/vite.svg" />
+    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>${title}</title>
   </head>
   <body>
-    <div id="app"></div>
+    <div id="${bodyId}"></div>
     <script type="module" src="${mainScriptPath}"></script>
   </body>
 </html>

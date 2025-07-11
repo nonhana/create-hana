@@ -9,6 +9,8 @@ export function generateAlias(context: ProjectContext) {
 
   packageJson.dependencies = packageJson.dependencies || {}
 
+  context.viteConfigEditor!.addImport('viteConfig', `import path from 'node:path'`)
+
   switch (config.modulePathAliasing) {
     case '@': {
       if (config.buildTool === 'vite') {

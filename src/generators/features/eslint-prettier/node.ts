@@ -11,11 +11,11 @@ export function generateNodeESLintPrettierConfig(context: ProjectContext) {
   const language = config.language || 'typescript'
 
   const commonEslintDeps: Record<string, string> = {
-    'eslint': '^9.28.0',
-    '@eslint/js': '^9.28.0',
+    'eslint': '^9.30.1',
+    '@eslint/js': '^9.30.1',
     'eslint-plugin-n': '^17.19.0',
     'eslint-plugin-unicorn': '^59.0.1',
-    '@eslint/markdown': '^6.5.0',
+    '@eslint/markdown': '^6.6.0',
     'eslint-plugin-jsonc': '^2.20.1',
     'eslint-plugin-yml': '^1.18.0',
     'eslint-config-prettier': '^10.1.5',
@@ -27,7 +27,7 @@ export function generateNodeESLintPrettierConfig(context: ProjectContext) {
     eslintDeps['typescript-eslint'] = '^8.33.1'
   }
   else {
-    eslintDeps.globals = '^16.2.0'
+    eslintDeps.globals = '^16.3.0'
   }
 
   addDependencies(context.packageJson, eslintDeps, 'devDependencies')

@@ -33,19 +33,22 @@ export function generateRoutingLibrary(context: ProjectContext) {
 
 function generateDefaultPage() {
   return `export default function Home() {
-    return <div>This is default page</div>
-  }
-  `
+  return <div>This is default page</div>
+}
+`
 }
 
 function generateReactRouterIndex(pathAlias: string) {
-  return `import { createBrowserRouter } from "react-router"
+  return `import { lazy } from 'react'
+import { createBrowserRouter } from 'react-router'
+
+const Home = lazy(() => import('${pathAlias}/pages/home'))
 
 const router = createBrowserRouter([
   {
-    path: "/",
-    element: () => import('${pathAlias}/pages/home'),
-  }
+    path: '/',
+    element: <Home />,
+  },
 ])
 
 export default router

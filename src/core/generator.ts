@@ -134,7 +134,7 @@ function saveEditors(context: ProjectContext) {
     const suffix = context.config.projectType === 'react'
       ? `${context.fileExtension}x`
       : context.fileExtension
-    context.files[`main${suffix}`] = context.mainEditor.getContent('main')
+    context.files[`src/main${suffix}`] = context.mainEditor.getContent('main')
   }
 }
 

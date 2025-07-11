@@ -1,23 +1,33 @@
 import type { Generator } from '@/types'
 import { ErrorMessages } from '@/constants/errors'
 import { ErrorFactory } from '@/error/factory'
-import { generateGitignore, generateHanaLogo, generateHtmlTemplate, generateReadmeTemplate, generateViteEnvFile } from '@/utils/template'
+import { addDependencies } from '@/utils/package-json'
+import { generateGitignore, generateHanaLogo, generateReadmeTemplate, generateSPAHtmlTemplate, generateViteEnvFile } from '@/utils/template'
 import { generateAlias } from './features/alias'
 import { generateCssFramework } from './features/css-framework'
 import { generateCssPreprocessor } from './features/css-preprocessor'
 import { generateHttpLibrary } from './features/http'
+import { generateQueryLibrary } from './features/query'
 import { generateRoutingLibrary } from './features/route'
 import { generateStateManagement } from './features/state-management'
 
 export const reactGenerator: Generator = {
   generate(context) {
-    const { config, fileExtension } = context
+    const { config, fileExtension, packageJson } = context
     if (config.projectType !== 'react')
       throw ErrorFactory.validation(ErrorMessages.validation.invalidProjectType(config.projectType))
 
     const projectName = config.targetDir || 'hana-project'
 
+    addDependencies(packageJson, {
+      'react': '^19.1.0',
+      'react-dom': '^19.1.0',
+      '@types/react': '^19.1.8',
+      '@types/react-dom': '^19.1.6',
+    })
+
     if (config.buildTool === 'vite') {
+      addDependencies(packageJson, { '@vitejs/plugin-react': '^4.6.0' })
       context.viteConfigEditor!.addImport('viteConfig', `import react from '@vitejs/plugin-react'`)
       context.viteConfigEditor!.addVitePlugin(`react()`)
     }
@@ -29,9 +39,6 @@ export const reactGenerator: Generator = {
       context.files[appFileName] = generateAppFile(config.routingLibrary)
     }
 
-    const mainFileName = `src/main${fileExtension}x`
-    context.files[mainFileName] = generateMainFile(appFileName)
-
     const counterFileName = `src/components/counter${fileExtension}x`
     context.files[counterFileName] = generateCounterFile()
 
@@ -42,10 +49,11 @@ export const reactGenerator: Generator = {
     // 2. Generate root files
     context.files['public/favicon.svg'] = generateHanaLogo()
 
-    context.files['index.html'] = generateHtmlTemplate(
-      'react project',
-      `/${mainFileName}`,
-    )
+    context.files['index.html'] = generateSPAHtmlTemplate({
+      title: 'react project',
+      bodyId: 'root',
+      mainScriptPath: `/src/main${fileExtension}x`,
+    })
 
     context.files['README.md'] = generateReadmeTemplate(
       config.projectType,
@@ -80,6 +88,9 @@ export const reactGenerator: Generator = {
     if (config.httpLibrary && config.httpLibrary !== 'none') {
       generateHttpLibrary(context)
     }
+    if (config.queryLibrary && config.queryLibrary !== 'none') {
+      generateQueryLibrary(context)
+    }
     if (config.modulePathAliasing && config.modulePathAliasing !== 'none') {
       generateAlias(context)
     }
@@ -110,14 +121,6 @@ export default function App() {
 }
 `
   }
-}
-
-function generateMainFile(appFileName: string) {
-  return `import { createRoot } from 'react-dom/client'
-import App from './${appFileName}'
-
-createRoot(document.getElementById('root')!).render(<App />)
-`
 }
 
 function generateCounterFile() {

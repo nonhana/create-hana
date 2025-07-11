@@ -11,16 +11,16 @@ export function generateReactESLintConfig(context: ProjectContext) {
   const language = config.language || 'typescript'
 
   const commonDeps: Record<string, string> = {
-    'eslint': '^9.28.0',
-    '@eslint/js': '^9.28.0',
+    'eslint': '^9.30.1',
+    '@eslint/js': '^9.30.1',
     'eslint-plugin-react': '^7.37.5',
-    'eslint-plugin-react-hooks': '^4.6.2',
-    'eslint-plugin-react-refresh': '^0.4.16',
+    'eslint-plugin-react-hooks': '^5.2.0',
+    'eslint-plugin-react-refresh': '^0.4.20',
     'eslint-plugin-simple-import-sort': '^12.1.1',
     'eslint-plugin-jsonc': '^2.20.1',
     'eslint-plugin-yml': '^1.18.0',
-    'typescript-eslint': '^8.33.1',
-    '@eslint/markdown': '^6.5.0',
+    'typescript-eslint': '^8.36.0',
+    '@eslint/markdown': '^6.6.0',
   }
 
   let eslintDeps: Record<string, string>
@@ -29,7 +29,7 @@ export function generateReactESLintConfig(context: ProjectContext) {
     eslintDeps = { ...commonDeps }
   }
   else {
-    eslintDeps = { ...commonDeps, globals: '^16.2.0' }
+    eslintDeps = { ...commonDeps, globals: '^16.3.0' }
   }
 
   addDependencies(context.packageJson, eslintDeps, 'devDependencies')
@@ -49,13 +49,12 @@ function generateESLintConfig(language: 'typescript' | 'javascript') {
 import eslint from '@eslint/js'
 import markdown from '@eslint/markdown'
 import eslintPluginJsonc from 'eslint-plugin-jsonc'
-import simpleImportSort from 'eslint-plugin-simple-import-sort'
-import eslintPluginYml from 'eslint-plugin-yml'
 import reactPlugin from 'eslint-plugin-react'
 import reactHooks from 'eslint-plugin-react-hooks'
 import reactRefresh from 'eslint-plugin-react-refresh'
+import simpleImportSort from 'eslint-plugin-simple-import-sort'
+import eslintPluginYml from 'eslint-plugin-yml'
 import tseslint from 'typescript-eslint'
-import globals from 'globals'
 
 export default tseslint.config(
   {
@@ -80,9 +79,6 @@ export default tseslint.config(
           jsx: true,
         },
       },
-      globals: {
-        ...globals.browser,
-      },
     },
     plugins: {
       'react-hooks': reactHooks,
@@ -95,12 +91,16 @@ export default tseslint.config(
       },
     },
     rules: {
+      /* TypeScript rules */
+      '@typescript-eslint/no-explicit-any': 'off',
+
       /* plugin rules */
       'simple-import-sort/imports': 'error',
       'simple-import-sort/exports': 'error',
       
       /* React hooks rules */
-      ...reactHooks.configs.recommended.rules,
+      'react-hooks/rules-of-hooks': 'error',
+      'react-hooks/exhaustive-deps': 'warn',
       
       /* React refresh rules */
       'react-refresh/only-export-components': [
