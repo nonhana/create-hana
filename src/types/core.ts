@@ -7,6 +7,7 @@ export type Config = {
   git?: boolean
   installDeps?: boolean
 } & (
+  | ({ projectType?: undefined })
   | ({ projectType: 'node' } & NodeProjectConfig)
   | ({ projectType: 'react' } & ReactProjectConfig)
 )

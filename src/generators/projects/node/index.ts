@@ -2,9 +2,9 @@ import type { Generator } from '@/types'
 import { ErrorMessages } from '@/constants/errors'
 import { ErrorFactory } from '@/error/factory'
 import { generateGitignore, generateReadmeTemplate } from '@/utils/template'
+import { generateBundlerConfig } from './features/bundler'
 import { generateTypeScriptRuntime } from './features/ts-runtime'
 import { generateWebServerSetup } from './features/web-server'
-import { generateBundlerConfig } from './features/bundler'
 
 export const nodeGenerator: Generator = {
   generate(context) {

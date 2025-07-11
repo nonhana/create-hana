@@ -55,7 +55,7 @@ export class QuestionEngine {
       return
     }
 
-    if (this.config[question.field] !== undefined) {
+    if ((this.config as any)[question.field] !== undefined) {
       return
     }
 
@@ -151,7 +151,7 @@ export class QuestionEngine {
 
   // evaluate the condition of the question
   private evaluateCondition(condition: QuestionSituationObj) {
-    const currentValue = this.config[condition.field]
+    const currentValue = (this.config as any)[condition.field]
     const { value: expectedValue, operator = 'eq' } = condition
 
     switch (operator) {

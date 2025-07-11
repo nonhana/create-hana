@@ -4,24 +4,34 @@ import { ErrorFactory } from '@/error/factory'
 
 export function generateRoutingLibrary(context: ProjectContext) {
   const { config, packageJson } = context
-  if (config.projectType !== 'react')
-    throw ErrorFactory.validation(ErrorMessages.validation.invalidProjectType(config.projectType))
+  if (config.projectType !== 'react') {
+    throw ErrorFactory.validation(
+      ErrorMessages.validation.invalidProjectType(config.projectType),
+    )
+  }
 
-  const alias = config.modulePathAliasing && config.modulePathAliasing !== 'none' ? config.modulePathAliasing : '..'
+  const alias
+    = config.modulePathAliasing && config.modulePathAliasing !== 'none'
+      ? config.modulePathAliasing
+      : '..'
 
   packageJson.dependencies = packageJson.dependencies || {}
 
-  context.files[`src/pages/home${context.fileExtension}x`] = generateDefaultPage()
+  context.files[`src/pages/home${context.fileExtension}x`]
+    = generateDefaultPage()
 
   switch (config.routingLibrary) {
     case 'react-router': {
       packageJson.dependencies['react-router'] = '^7.6.3'
-      context.files[`src/router/index${context.fileExtension}x`] = generateReactRouterIndex(alias)
+      context.files[`src/router/index${context.fileExtension}x`]
+        = generateReactRouterIndex(alias)
       break
     }
+
     case 'tanstack-router': {
       packageJson.dependencies['@tanstack/react-router'] = '^1.125.6'
-      context.files[`src/router/index${context.fileExtension}x`] = generateTanstackRouterIndex(alias)
+      context.files[`src/router/index${context.fileExtension}x`]
+        = generateTanstackRouterIndex(alias)
       break
     }
     case 'wouter': {
