@@ -15,6 +15,8 @@ export function generateReactTSConfig(context: ProjectContext) {
 }
 
 function generateTsConfigFile(config: Config) {
+  if (!config.projectType)
+    throw ErrorFactory.validation(ErrorMessages.validation.projectTypeRequired())
   if (config.projectType !== 'react')
     throw ErrorFactory.validation(ErrorMessages.validation.invalidProjectType(config.projectType))
 

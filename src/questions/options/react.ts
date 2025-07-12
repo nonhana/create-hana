@@ -18,7 +18,7 @@ export const REACT_CSS_PREPROCESSORS_OPTIONS = [
 
 export const REACT_ROUTING_LIBRARIES_OPTIONS = [
   { label: 'React Router', value: 'react-router' },
-  { label: 'TanStack Router', value: 'tanstack-router' },
+  { label: 'TanStack Router', value: '@tanstack/react-router' },
   { label: 'Wouter', value: 'wouter' },
   { label: 'None', value: 'none' },
 ] as const

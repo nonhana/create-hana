@@ -4,6 +4,8 @@ import { ErrorFactory } from '@/error/factory'
 
 export function generateAlias(context: ProjectContext) {
   const { config, packageJson } = context
+  if (!config.projectType)
+    throw ErrorFactory.validation(ErrorMessages.validation.projectTypeRequired())
   if (config.projectType !== 'react')
     throw ErrorFactory.validation(ErrorMessages.validation.invalidProjectType(config.projectType))
 

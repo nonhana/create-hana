@@ -1,11 +1,20 @@
 import type { NodeProjectConfig, ReactProjectConfig } from './project-configs'
 import type { MainEditor, ViteConfigEditor } from '@/editor'
+import type {
+  COMMON_CODE_QUALITY_TOOLS_OPTIONS,
+  COMMON_LANGUAGE_OPTIONS,
+  COMMON_MANAGER_OPTIONS,
+} from '@/questions/options/common'
 
 export type Config = {
   targetDir?: string
   removeExistFolder?: boolean
   git?: boolean
   installDeps?: boolean
+  language?: typeof COMMON_LANGUAGE_OPTIONS[number]['value']
+  pkgManager?: typeof COMMON_MANAGER_OPTIONS[number]['value']
+  codeQualityTools?: typeof COMMON_CODE_QUALITY_TOOLS_OPTIONS[number]['value']
+  codeQualityConfig?: boolean
 } & (
   | ({ projectType?: undefined })
   | ({ projectType: 'node' } & NodeProjectConfig)

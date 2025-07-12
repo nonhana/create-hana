@@ -9,6 +9,8 @@ import { generateWebServerSetup } from './features/web-server'
 export const nodeGenerator: Generator = {
   generate(context) {
     const { config, fileExtension } = context
+    if (!config.projectType)
+      throw ErrorFactory.validation(ErrorMessages.validation.projectTypeRequired())
     if (config.projectType !== 'node')
       throw ErrorFactory.validation(ErrorMessages.validation.invalidProjectType(config.projectType))
 

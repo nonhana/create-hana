@@ -14,6 +14,8 @@ import { generateStateManagement } from './features/state-management'
 export const reactGenerator: Generator = {
   generate(context) {
     const { config, fileExtension, packageJson } = context
+    if (!config.projectType)
+      throw ErrorFactory.validation(ErrorMessages.validation.projectTypeRequired())
     if (config.projectType !== 'react')
       throw ErrorFactory.validation(ErrorMessages.validation.invalidProjectType(config.projectType))
 

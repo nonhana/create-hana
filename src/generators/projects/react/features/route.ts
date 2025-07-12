@@ -4,11 +4,10 @@ import { ErrorFactory } from '@/error/factory'
 
 export function generateRoutingLibrary(context: ProjectContext) {
   const { config, packageJson } = context
-  if (config.projectType !== 'react') {
-    throw ErrorFactory.validation(
-      ErrorMessages.validation.invalidProjectType(config.projectType),
-    )
-  }
+  if (!config.projectType)
+    throw ErrorFactory.validation(ErrorMessages.validation.projectTypeRequired())
+  if (config.projectType !== 'react')
+    throw ErrorFactory.validation(ErrorMessages.validation.invalidProjectType(config.projectType))
 
   const alias
     = config.modulePathAliasing && config.modulePathAliasing !== 'none'
@@ -28,7 +27,7 @@ export function generateRoutingLibrary(context: ProjectContext) {
       break
     }
 
-    case 'tanstack-router': {
+    case '@tanstack/react-router': {
       packageJson.dependencies['@tanstack/react-router'] = '^1.125.6'
       context.files[`src/router/index${context.fileExtension}x`]
         = generateTanstackRouterIndex(alias)
@@ -67,7 +66,7 @@ export default router
 
 function generateTanstackRouterIndex(pathAlias: string) {
   return `import { createRootRoute, createRoute, createRouter, Outlet } from '@tanstack/react-router'
-import { Home } from '${pathAlias}/pages/home'
+import Home from '${pathAlias}/pages/home'
 
 const rootRoute = createRootRoute({
   component: () => <Outlet />,

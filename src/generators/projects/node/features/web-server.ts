@@ -4,6 +4,8 @@ import { ErrorFactory } from '@/error/factory'
 
 export function generateWebServerSetup(context: ProjectContext) {
   const { config, fileExtension } = context
+  if (!config.projectType)
+    throw ErrorFactory.validation(ErrorMessages.validation.projectTypeRequired())
   if (config.projectType !== 'node')
     throw ErrorFactory.validation(ErrorMessages.validation.invalidProjectType(config.projectType))
 

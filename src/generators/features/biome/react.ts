@@ -4,6 +4,8 @@ import { ErrorFactory } from '@/error/factory'
 
 export function generateReactBiomeConfig(context: ProjectContext) {
   const { config } = context
+  if (!config.projectType)
+    throw ErrorFactory.validation(ErrorMessages.validation.projectTypeRequired())
   if (config.projectType !== 'react')
     throw ErrorFactory.validation(ErrorMessages.validation.invalidProjectType(config.projectType))
 
@@ -14,7 +16,7 @@ export function generateReactBiomeConfig(context: ProjectContext) {
 
 function generateBiomeConfig(language: 'typescript' | 'javascript') {
   const tsConfig = {
-    $schema: 'https://biomejs.dev/schemas/latest/schema.json',
+    $schema: 'https://biomejs.dev/schemas/1.9.4/schema.json',
     files: {
       ignore: [
         'dist/',
@@ -53,7 +55,7 @@ function generateBiomeConfig(language: 'typescript' | 'javascript') {
           useAwait: 'error',
         },
         style: {
-          noNonNullAssertion: 'warn',
+          noNonNullAssertion: 'off',
           useFilenamingConvention: 'error',
           useForOf: 'error',
           useShorthandArrayType: 'error',
@@ -72,7 +74,6 @@ function generateBiomeConfig(language: 'typescript' | 'javascript') {
     javascript: {
       parser: {
         unsafeParameterDecoratorsEnabled: false,
-        jsxEverywhere: true,
       },
       jsxRuntime: 'transparent',
       formatter: {
@@ -99,7 +100,7 @@ function generateBiomeConfig(language: 'typescript' | 'javascript') {
   }
 
   const jsConfig = {
-    $schema: 'https://biomejs.dev/schemas/latest/schema.json',
+    $schema: 'https://biomejs.dev/schemas/1.9.4/schema.json',
     files: {
       ignore: [
         'dist/',
@@ -153,7 +154,6 @@ function generateBiomeConfig(language: 'typescript' | 'javascript') {
     javascript: {
       parser: {
         unsafeParameterDecoratorsEnabled: false,
-        jsxEverywhere: true,
       },
       jsxRuntime: 'transparent',
       formatter: {

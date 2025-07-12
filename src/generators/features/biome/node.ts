@@ -4,6 +4,8 @@ import { ErrorFactory } from '@/error/factory'
 
 export function generateNodeBiomeConfig(context: ProjectContext) {
   const { config } = context
+  if (!config.projectType)
+    throw ErrorFactory.validation(ErrorMessages.validation.projectTypeRequired())
   if (config.projectType !== 'node')
     throw ErrorFactory.validation(ErrorMessages.validation.invalidProjectType(config.projectType))
 
@@ -14,7 +16,7 @@ export function generateNodeBiomeConfig(context: ProjectContext) {
 
 function generateBiomeConfig(language: 'typescript' | 'javascript') {
   const tsConfig = {
-    $schema: 'https://biomejs.dev/schemas/latest/schema.json',
+    $schema: 'https://biomejs.dev/schemas/1.9.4/schema.json',
     organizeImports: {
       enabled: true,
     },
@@ -34,7 +36,7 @@ function generateBiomeConfig(language: 'typescript' | 'javascript') {
           noShadowRestrictedNames: 'error',
         },
         style: {
-          noNonNullAssertion: 'warn',
+          noNonNullAssertion: 'off',
           useFilenamingConvention: 'error',
         },
         correctness: {
@@ -62,7 +64,7 @@ function generateBiomeConfig(language: 'typescript' | 'javascript') {
   }
 
   const jsConfig = {
-    $schema: 'https://biomejs.dev/schemas/latest/schema.json',
+    $schema: 'https://biomejs.dev/schemas/1.9.4/schema.json',
     organizeImports: {
       enabled: true,
     },

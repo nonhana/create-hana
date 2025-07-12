@@ -74,12 +74,15 @@ async function initializeProjectContext(config: Config, cwd: string) {
     fileExtension: getFileExtension(language),
   }
 
+  if (!config.projectType)
+    throw ErrorFactory.validation(ErrorMessages.validation.projectTypeRequired())
+
   // Global editor context
   if (config.projectType !== 'node' && config.buildTool === 'vite') {
     context.viteConfigEditor = createViteConfigEditor(viteTemplate())
   }
   if (config.projectType === 'react') {
-    if (config.routingLibrary === 'react-router' || config.routingLibrary === 'tanstack-router') {
+    if (config.routingLibrary === 'react-router' || config.routingLibrary === '@tanstack/react-router') {
       context.mainEditor = createMainEditor(mainRouterProviderTemplate(config.routingLibrary))
     }
     else {
