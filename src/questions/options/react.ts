@@ -11,7 +11,7 @@ export const REACT_CSS_FRAMEWORKS_OPTIONS = [
 ] as const
 
 export const REACT_CSS_PREPROCESSORS_OPTIONS = [
-  { label: 'CSS', value: 'css' },
+  { label: 'None -> CSS', value: 'none' },
   { label: 'LESS', value: 'less' },
   { label: 'SCSS', value: 'scss' },
 ] as const

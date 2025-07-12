@@ -78,7 +78,7 @@ export const reactGenerator: Generator = {
     if (config.cssFramework && config.cssFramework !== 'none') {
       generateCssFramework(context)
     }
-    if (config.cssPreprocessor) {
+    if (config.cssPreprocessor && config.cssPreprocessor !== 'none') {
       generateCssPreprocessor(context)
     }
     if (config.routingLibrary && config.routingLibrary !== 'none') {
