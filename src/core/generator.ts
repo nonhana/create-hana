@@ -2,13 +2,13 @@ import type { Config, ProjectContext } from '@/types'
 import { join } from 'node:path'
 import { ErrorMessages } from '@/constants/errors'
 import { createMainEditor, createViteConfigEditor } from '@/editor'
-import { mainReactTemplate, mainRouterProviderTemplate, viteTemplate } from '@/editor/templates'
+import { mainReactRouterProviderTemplate, mainReactTemplate, mainVueTemplate, viteTemplate } from '@/editor/templates'
 import { ErrorFactory } from '@/error/factory'
 import { ErrorHandler } from '@/error/handler'
 import { viteGenerator } from '@/generators/build-tools'
 import { biomeGenerator, eslintGenerator, eslintPrettierGenerator } from '@/generators/features'
 import { languageGenerator } from '@/generators/language'
-import { nodeGenerator, reactGenerator } from '@/generators/projects'
+import { nodeGenerator, reactGenerator, vueGenerator } from '@/generators/projects'
 import { initGitRepository } from '@/handlers/git'
 import { installDependencies } from '@/handlers/package-manager'
 import { removeIfExists, writeProjectFiles } from '@/utils/file-system'
@@ -83,11 +83,14 @@ async function initializeProjectContext(config: Config, cwd: string) {
   }
   if (config.projectType === 'react') {
     if (config.routingLibrary === 'react-router' || config.routingLibrary === '@tanstack/react-router') {
-      context.mainEditor = createMainEditor(mainRouterProviderTemplate(config.routingLibrary))
+      context.mainEditor = createMainEditor(mainReactRouterProviderTemplate(config.routingLibrary))
     }
     else {
       context.mainEditor = createMainEditor(mainReactTemplate(context.fileExtension))
     }
+  }
+  if (config.projectType === 'vue') {
+    context.mainEditor = createMainEditor(mainVueTemplate(config.useRouter, config.usePinia))
   }
 
   return context
@@ -108,6 +111,12 @@ async function runGenerators(context: ProjectContext) {
       viteGenerator.generate(context)
     }
     reactGenerator.generate(context)
+  }
+  else if (config.projectType === 'vue') {
+    if (config.buildTool === 'vite') {
+      viteGenerator.generate(context)
+    }
+    vueGenerator.generate(context)
   }
 
   if (config.codeQualityTools) {

@@ -4,6 +4,9 @@ export const PROJECTS = [{
 }, {
   label: 'React',
   value: 'react',
+}, {
+  label: 'Vue',
+  value: 'vue',
 }] as const
 
 export type PROJECT_TYPES = typeof PROJECTS[number]['value']

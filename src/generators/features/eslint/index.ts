@@ -1,6 +1,7 @@
 import type { Generator } from '@/types'
 import { generateNodeESLintConfig } from './node'
 import { generateReactESLintConfig } from './react'
+import { generateVueESLintConfig } from './vue'
 
 export const eslintGenerator: Generator = {
   generate(context) {
@@ -11,6 +12,9 @@ export const eslintGenerator: Generator = {
     }
     else if (config.projectType === 'react') {
       generateReactESLintConfig(context)
+    }
+    else if (config.projectType === 'vue') {
+      generateVueESLintConfig(context)
     }
 
     if (config.codeQualityConfig) {
@@ -34,6 +38,9 @@ function generateESlintVscodeConfig() {
     '[javascript]': {
       'editor.defaultFormatter': null,
     },
+    '[vue]': {
+      'editor.defaultFormatter': null,
+    },
     'eslint.rules.customizations': [
       { rule: '@stylistic/*', severity: 'off' },
       { rule: '*-indent', severity: 'off' },
@@ -51,6 +58,7 @@ function generateESlintVscodeConfig() {
       'typescript',
       'javascriptreact',
       'typescriptreact',
+      'vue',
       'json',
       'jsonc',
       'yaml',

@@ -13,6 +13,7 @@ import type {
   REACT_ROUTING_LIBRARIES_OPTIONS,
   REACT_STATE_MANAGEMENT_OPTIONS,
 } from '@/questions/options/react'
+import type { VUE_BUILD_TOOLS_OPTIONS, VUE_CSS_FRAMEWORKS_OPTIONS, VUE_CSS_PREPROCESSORS_OPTIONS, VUE_HTTP_OPTIONS, VUE_PATH_ALIASING_OPTIONS } from '@/questions/options/vue'
 
 export interface NodeProjectConfig {
   webserverPkgs?: typeof NODE_WEBSERVER_OPTIONS[number]['value']
@@ -30,4 +31,14 @@ export interface ReactProjectConfig {
   httpLibrary?: typeof REACT_HTTP_OPTIONS[number]['value']
   queryLibrary?: typeof REACT_QUERY_OPTIONS[number]['value']
   modulePathAliasing?: typeof REACT_PATH_ALIASING_OPTIONS[number]['value']
+}
+
+export interface VueProjectConfig {
+  buildTool?: typeof VUE_BUILD_TOOLS_OPTIONS[number]['value']
+  cssFramework?: typeof VUE_CSS_FRAMEWORKS_OPTIONS[number]['value']
+  cssPreprocessor?: typeof VUE_CSS_PREPROCESSORS_OPTIONS[number]['value']
+  useRouter?: boolean
+  usePinia?: boolean
+  httpLibrary?: typeof VUE_HTTP_OPTIONS[number]['value']
+  modulePathAliasing?: typeof VUE_PATH_ALIASING_OPTIONS[number]['value']
 }

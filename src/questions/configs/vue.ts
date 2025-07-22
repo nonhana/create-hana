@@ -1,19 +1,10 @@
 import type { ProjectQuestionsConfig } from '@/types'
 import { toMutableOptions } from '@/utils/fit-options'
 import { COMMON_CODE_QUALITY_TOOLS_OPTIONS, COMMON_LANGUAGE_OPTIONS, COMMON_MANAGER_OPTIONS } from '../options/common'
-import {
-  REACT_BUILD_TOOLS_OPTIONS,
-  REACT_CSS_FRAMEWORKS_OPTIONS,
-  REACT_CSS_PREPROCESSORS_OPTIONS,
-  REACT_HTTP_OPTIONS,
-  REACT_PATH_ALIASING_OPTIONS,
-  REACT_QUERY_OPTIONS,
-  REACT_ROUTING_LIBRARIES_OPTIONS,
-  REACT_STATE_MANAGEMENT_OPTIONS,
-} from '../options/react'
+import { VUE_BUILD_TOOLS_OPTIONS, VUE_CSS_FRAMEWORKS_OPTIONS, VUE_CSS_PREPROCESSORS_OPTIONS, VUE_HTTP_OPTIONS, VUE_PATH_ALIASING_OPTIONS } from '../options/vue'
 
-export const reactQuestions: ProjectQuestionsConfig = {
-  projectType: 'react',
+export const vueQuestions: ProjectQuestionsConfig = {
+  projectType: 'vue',
   questions: [
     {
       id: 'language',
@@ -51,7 +42,7 @@ export const reactQuestions: ProjectQuestionsConfig = {
       type: 'select',
       message: 'Which build tool would you like to use?',
       field: 'buildTool',
-      options: toMutableOptions(REACT_BUILD_TOOLS_OPTIONS),
+      options: toMutableOptions(VUE_BUILD_TOOLS_OPTIONS),
       initialValue: 'vite',
     },
     {
@@ -59,7 +50,7 @@ export const reactQuestions: ProjectQuestionsConfig = {
       type: 'select',
       message: 'Which CSS framework would you like to use?',
       field: 'cssFramework',
-      options: toMutableOptions(REACT_CSS_FRAMEWORKS_OPTIONS),
+      options: toMutableOptions(VUE_CSS_FRAMEWORKS_OPTIONS),
       initialValue: 'tailwindcss',
     },
     {
@@ -67,47 +58,37 @@ export const reactQuestions: ProjectQuestionsConfig = {
       type: 'select',
       message: 'Which CSS preprocessor would you like to use?',
       field: 'cssPreprocessor',
-      options: toMutableOptions(REACT_CSS_PREPROCESSORS_OPTIONS),
+      options: toMutableOptions(VUE_CSS_PREPROCESSORS_OPTIONS),
       initialValue: 'none',
     },
     {
       id: 'routingLibrary',
-      type: 'select',
-      message: 'Which routing library would you like to use?',
-      field: 'routingLibrary',
-      options: toMutableOptions(REACT_ROUTING_LIBRARIES_OPTIONS),
-      initialValue: 'react-router',
+      type: 'confirm',
+      message: 'Would you like to use Vue Router?',
+      field: 'useRouter',
+      initialValue: true,
     },
     {
       id: 'stateManagement',
-      type: 'select',
-      message: 'Which state management library would you like to use?',
-      field: 'stateManagement',
-      options: toMutableOptions(REACT_STATE_MANAGEMENT_OPTIONS),
-      initialValue: 'zustand',
+      type: 'confirm',
+      message: 'Would you like to use Pinia for state management?',
+      field: 'usePinia',
+      initialValue: true,
     },
     {
       id: 'httpLibrary',
       type: 'select',
       message: 'Which HTTP library would you like to use?',
       field: 'httpLibrary',
-      options: toMutableOptions(REACT_HTTP_OPTIONS),
+      options: toMutableOptions(VUE_HTTP_OPTIONS),
       initialValue: 'axios',
-    },
-    {
-      id: 'queryLibrary',
-      type: 'select',
-      message: 'Which query library would you like to use?',
-      field: 'queryLibrary',
-      options: toMutableOptions(REACT_QUERY_OPTIONS),
-      initialValue: 'swr',
     },
     {
       id: 'modulePathAliasing',
       type: 'select',
       message: 'Which module path aliasing would you like to use?',
       field: 'modulePathAliasing',
-      options: toMutableOptions(REACT_PATH_ALIASING_OPTIONS),
+      options: toMutableOptions(VUE_PATH_ALIASING_OPTIONS),
       initialValue: '@',
     },
   ],

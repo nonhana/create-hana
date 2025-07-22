@@ -1,6 +1,7 @@
 import type { Generator } from '@/types'
 import { generateNodeESLintPrettierConfig } from './node'
 import { generateReactESLintPrettierConfig } from './react'
+import { generateVueESLintPrettierConfig } from './vue'
 
 export const eslintPrettierGenerator: Generator = {
   generate(context) {
@@ -11,6 +12,9 @@ export const eslintPrettierGenerator: Generator = {
     }
     else if (config.projectType === 'react') {
       generateReactESLintPrettierConfig(context)
+    }
+    else if (config.projectType === 'vue') {
+      generateVueESLintPrettierConfig(context)
     }
 
     if (config.codeQualityConfig) {
@@ -34,11 +38,15 @@ function generateESLintPrettierVscodeConfig() {
     '[javascript]': {
       'editor.defaultFormatter': 'esbenp.prettier-vscode',
     },
+    '[vue]': {
+      'editor.defaultFormatter': 'esbenp.prettier-vscode',
+    },
     'eslint.validate': [
       'javascript',
       'typescript',
       'javascriptreact',
       'typescriptreact',
+      'vue',
     ],
   }
 
