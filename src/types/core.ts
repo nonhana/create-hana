@@ -1,4 +1,4 @@
-import type { NodeProjectConfig, ReactProjectConfig } from './project-configs'
+import type { NodeProjectConfig, ReactProjectConfig, VueProjectConfig } from './project-configs'
 import type { MainEditor, ViteConfigEditor } from '@/editor'
 import type {
   COMMON_CODE_QUALITY_TOOLS_OPTIONS,
@@ -19,6 +19,7 @@ export type Config = {
   | ({ projectType?: undefined })
   | ({ projectType: 'node' } & NodeProjectConfig)
   | ({ projectType: 'react' } & ReactProjectConfig)
+  | ({ projectType: 'vue' } & VueProjectConfig)
 )
 
 export interface ProjectContext {

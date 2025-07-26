@@ -1,6 +1,7 @@
 import type { Generator } from '@/types'
 import { generateNodeJSConfig, generateNodeTSConfig } from './configs/node'
 import { generateReactTSConfig } from './configs/react'
+import { generateVueTSConfig } from './configs/vue'
 
 export const languageGenerator: Generator = {
   generate(context) {
@@ -18,6 +19,11 @@ export const languageGenerator: Generator = {
       case 'react': {
         if (language === 'typescript')
           generateReactTSConfig(context)
+        break
+      }
+      case 'vue': {
+        if (language === 'typescript')
+          generateVueTSConfig(context)
         break
       }
     }

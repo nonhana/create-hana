@@ -16,7 +16,7 @@ createRoot(document.getElementById('root')!).render(<App />)
 `
 }
 
-export function mainRouterProviderTemplate(routingLibrary: string) {
+export function mainReactRouterProviderTemplate(routingLibrary: string) {
   return `import { createRoot } from 'react-dom/client'
 import { RouterProvider } from '${routingLibrary}'
 import router from './router'
@@ -25,10 +25,24 @@ createRoot(document.getElementById('root')!).render(<RouterProvider router={rout
 `
 }
 
-export function mainVueTemplate() {
-  return `import { createApp } from 'vue'
-import App from './App.vue'
+export function mainVueTemplate(useRouter?: boolean, usePinia?: boolean) {
+  const imports = ['import { createApp } from \'vue\'', 'import App from \'./App.vue\'']
+  let appChain = 'createApp(App)'
 
-createApp(App).mount('#app')
+  if (useRouter) {
+    imports.push('import router from \'./router\'')
+    appChain += '.use(router)'
+  }
+
+  if (usePinia) {
+    imports.push('import { createPinia } from \'pinia\'')
+    appChain += '.use(createPinia())'
+  }
+
+  appChain += '.mount(\'#app\')'
+
+  return `${imports.join('\n')}
+
+${appChain}
 `
 }
