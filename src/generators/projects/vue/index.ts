@@ -97,16 +97,16 @@ export const vueGenerator: Generator = {
 function generateAppFile(language?: string, cssPreprocessor?: 'none' | 'less' | 'scss') {
   const styleAttr = cssPreprocessor && cssPreprocessor !== 'none' ? ` lang="${cssPreprocessor}"` : ''
 
-  return `<template>
+  return `<script setup${language === 'typescript' ? ' lang="ts"' : ''}>
+import Counter from './components/Counter.vue'
+</script>
+
+<template>
   <div>
     <h1>Hello, vite + vue</h1>
     <Counter />
   </div>
 </template>
-
-<script setup${language === 'typescript' ? ' lang="ts"' : ''}>
-import Counter from './components/Counter.vue'
-</script>
 
 <style${styleAttr}>
 /* Add your global styles here */
@@ -117,15 +117,13 @@ import Counter from './components/Counter.vue'
 function generateAppFileWithRouter(language?: string, cssPreprocessor?: 'none' | 'less' | 'scss') {
   const styleAttr = cssPreprocessor && cssPreprocessor !== 'none' ? ` lang="${cssPreprocessor}"` : ''
 
-  return `<template>
-  <div>
-    <RouterView />
-  </div>
-</template>
-
-<script setup${language === 'typescript' ? ' lang="ts"' : ''}>
+  return `<script setup${language === 'typescript' ? ' lang="ts"' : ''}>
 import { RouterView } from 'vue-router'
 </script>
+  
+<template>
+  <RouterView />
+</template>
 
 <style${styleAttr}>
 /* Add your global styles here */
@@ -136,19 +134,19 @@ import { RouterView } from 'vue-router'
 function generateCounterFile(language?: string, cssPreprocessor?: 'none' | 'less' | 'scss') {
   const styleAttr = cssPreprocessor && cssPreprocessor !== 'none' ? ` lang="${cssPreprocessor}"` : ''
 
-  return `<template>
+  return `<script setup${language === 'typescript' ? ' lang="ts"' : ''}>
+import { ref } from 'vue'
+
+const count = ref(0)
+</script>
+  
+<template>
   <div>
     <h1>Count: {{ count }}</h1>
     <button type="button" @click="count++">+</button>
     <button type="button" @click="count--">-</button>
   </div>
 </template>
-
-<script setup${language === 'typescript' ? ' lang="ts"' : ''}>
-import { ref } from 'vue'
-
-const count = ref(0)
-</script>
 
 <style scoped${styleAttr}>
 div {
