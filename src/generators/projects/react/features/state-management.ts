@@ -123,9 +123,6 @@ export const store = configureStore({
       if (context.mainEditor instanceof ReactMainEditor) {
         context.mainEditor.addJsxProvider('Provider', { store: 'store' })
       }
-      else {
-        throw ErrorFactory.validation(ErrorMessages.validation.invalidProjectType(config.projectType))
-      }
       break
     }
   }

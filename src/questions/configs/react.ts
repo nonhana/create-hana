@@ -1,12 +1,8 @@
 import type { ProjectQuestionsConfig } from '@/types'
 import { toMutableOptions } from '@/utils/fit-options'
-import { COMMON_CODE_QUALITY_TOOLS_OPTIONS, COMMON_LANGUAGE_OPTIONS, COMMON_MANAGER_OPTIONS } from '../options/common'
+import { COMMON_CODE_QUALITY_TOOLS_OPTIONS, COMMON_CSS_FRAMEWORKS_OPTIONS, COMMON_CSS_PREPROCESSORS_OPTIONS, COMMON_HTTP_OPTIONS, COMMON_LANGUAGE_OPTIONS, COMMON_MANAGER_OPTIONS, COMMON_PATH_ALIASING_OPTIONS } from '../options/common'
 import {
   REACT_BUILD_TOOLS_OPTIONS,
-  REACT_CSS_FRAMEWORKS_OPTIONS,
-  REACT_CSS_PREPROCESSORS_OPTIONS,
-  REACT_HTTP_OPTIONS,
-  REACT_PATH_ALIASING_OPTIONS,
   REACT_QUERY_OPTIONS,
   REACT_ROUTING_LIBRARIES_OPTIONS,
   REACT_STATE_MANAGEMENT_OPTIONS,
@@ -59,7 +55,7 @@ export const reactQuestions: ProjectQuestionsConfig = {
       type: 'select',
       message: 'Which CSS framework would you like to use?',
       field: 'cssFramework',
-      options: toMutableOptions(REACT_CSS_FRAMEWORKS_OPTIONS),
+      options: toMutableOptions(COMMON_CSS_FRAMEWORKS_OPTIONS),
       initialValue: 'tailwindcss',
     },
     {
@@ -67,7 +63,7 @@ export const reactQuestions: ProjectQuestionsConfig = {
       type: 'select',
       message: 'Which CSS preprocessor would you like to use?',
       field: 'cssPreprocessor',
-      options: toMutableOptions(REACT_CSS_PREPROCESSORS_OPTIONS),
+      options: toMutableOptions(COMMON_CSS_PREPROCESSORS_OPTIONS),
       initialValue: 'none',
     },
     {
@@ -91,7 +87,7 @@ export const reactQuestions: ProjectQuestionsConfig = {
       type: 'select',
       message: 'Which HTTP library would you like to use?',
       field: 'httpLibrary',
-      options: toMutableOptions(REACT_HTTP_OPTIONS),
+      options: toMutableOptions(COMMON_HTTP_OPTIONS),
       initialValue: 'axios',
     },
     {
@@ -107,7 +103,7 @@ export const reactQuestions: ProjectQuestionsConfig = {
       type: 'select',
       message: 'Which module path aliasing would you like to use?',
       field: 'modulePathAliasing',
-      options: toMutableOptions(REACT_PATH_ALIASING_OPTIONS),
+      options: toMutableOptions(COMMON_PATH_ALIASING_OPTIONS),
       initialValue: '@',
     },
   ],
