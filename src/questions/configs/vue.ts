@@ -1,7 +1,7 @@
 import type { ProjectQuestionsConfig } from '@/types'
 import { toMutableOptions } from '@/utils/fit-options'
 import { COMMON_CODE_QUALITY_TOOLS_OPTIONS, COMMON_CSS_FRAMEWORKS_OPTIONS, COMMON_CSS_PREPROCESSORS_OPTIONS, COMMON_HTTP_OPTIONS, COMMON_LANGUAGE_OPTIONS, COMMON_MANAGER_OPTIONS, COMMON_PATH_ALIASING_OPTIONS } from '../options/common'
-import { VUE_BUILD_TOOLS_OPTIONS } from '../options/vue'
+import { VUE_BUILD_TOOLS_OPTIONS, VUE_CODE_QUALITY_TOOLS_OPTIONS } from '../options/vue'
 
 export const vueQuestions: ProjectQuestionsConfig = {
   projectType: 'vue',
@@ -27,7 +27,7 @@ export const vueQuestions: ProjectQuestionsConfig = {
       type: 'select',
       message: 'Which code quality tools would you like to use?',
       field: 'codeQualityTools',
-      options: toMutableOptions(COMMON_CODE_QUALITY_TOOLS_OPTIONS),
+      options: toMutableOptions(VUE_CODE_QUALITY_TOOLS_OPTIONS),
       initialValue: 'eslint',
     },
     {
