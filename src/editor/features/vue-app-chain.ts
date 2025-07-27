@@ -1,6 +1,5 @@
 import type { CoreEditor } from '../core-editor'
 import type { ICommonFeature } from './common'
-import * as recast from 'recast'
 import { ErrorMessages } from '@/constants/errors'
 import { ErrorFactory } from '@/error/factory'
 
@@ -39,10 +38,6 @@ export function withVueAppChainFeature<T extends new (...args: any[]) => CoreEdi
       chain += '.mount(\'#app\')'
 
       this.addCode('main', chain)
-
-      if (this.contents.main) {
-        this.contents.main.source = recast.print(this.contents.main.ast).code
-      }
 
       return this
     }

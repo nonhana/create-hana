@@ -31,6 +31,7 @@ export class CoreEditor {
   }
 
   public getContent(key: EditableFiles): string {
-    return this.contents[key]?.source ?? ''
+    if (!this.contents[key]) return ''
+    return recast.print(this.contents[key].ast).code
   }
 }
