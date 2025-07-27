@@ -1,5 +1,6 @@
 import type { ProjectContext } from '@/types'
 import { ErrorMessages } from '@/constants/errors'
+import { ReactMainEditor } from '@/editor'
 import { ErrorFactory } from '@/error/factory'
 
 export function generateStateManagement(context: ProjectContext) {
@@ -119,7 +120,12 @@ export const store = configureStore({
       context.files[`src/stores/index${context.fileExtension}`] = generateReduxStore()
       context.mainEditor!.addImport('main', `import { Provider } from 'react-redux'`)
       context.mainEditor!.addImport('main', `import { store } from './stores'`)
-      context.mainEditor!.addJsxProvider('Provider', { store: 'store' })
+      if (context.mainEditor instanceof ReactMainEditor) {
+        context.mainEditor.addJsxProvider('Provider', { store: 'store' })
+      }
+      else {
+        throw ErrorFactory.validation(ErrorMessages.validation.invalidProjectType(config.projectType))
+      }
       break
     }
   }

@@ -1,8 +1,8 @@
 import type { Config, ProjectContext } from '@/types'
 import { join } from 'node:path'
 import { ErrorMessages } from '@/constants/errors'
-import { createMainEditor, createViteConfigEditor } from '@/editor'
-import { mainReactRouterProviderTemplate, mainReactTemplate, mainVueTemplate, viteTemplate } from '@/editor/templates'
+import { createReactMainEditor, createViteConfigEditor, createVueMainEditor } from '@/editor'
+import { mainReactRouterProviderTemplate, mainReactTemplate, viteTemplate } from '@/editor/templates'
 import { ErrorFactory } from '@/error/factory'
 import { ErrorHandler } from '@/error/handler'
 import { viteGenerator } from '@/generators/build-tools'
@@ -83,14 +83,19 @@ async function initializeProjectContext(config: Config, cwd: string) {
   }
   if (config.projectType === 'react') {
     if (config.routingLibrary === 'react-router' || config.routingLibrary === '@tanstack/react-router') {
-      context.mainEditor = createMainEditor(mainReactRouterProviderTemplate(config.routingLibrary))
+      context.mainEditor = createReactMainEditor(mainReactRouterProviderTemplate(config.routingLibrary))
     }
     else {
-      context.mainEditor = createMainEditor(mainReactTemplate(context.fileExtension))
+      context.mainEditor = createReactMainEditor(mainReactTemplate(context.fileExtension))
     }
   }
   if (config.projectType === 'vue') {
-    context.mainEditor = createMainEditor(mainVueTemplate(config.useRouter, config.usePinia))
+    context.mainEditor = createVueMainEditor()
+    // 有点奇怪，必须显示定义undefined，用?:都会报类型错
+    context.mainEditor.configureVueApp({
+      useRouter: config.useRouter,
+      usePinia: config.usePinia,
+    })
   }
 
   return context
@@ -142,11 +147,13 @@ function saveEditors(context: ProjectContext) {
   if (context.viteConfigEditor) {
     context.files[`vite.config${context.fileExtension}`] = context.viteConfigEditor.getContent('viteConfig')
   }
-  if (context.mainEditor) {
-    const suffix = context.config.projectType === 'react'
-      ? `${context.fileExtension}x`
-      : context.fileExtension
-    context.files[`src/main${suffix}`] = context.mainEditor.getContent('main')
+
+  // 对应类型生成 main 文件
+  if (context.config.projectType === 'react' && context.mainEditor) {
+    context.files[`src/main${context.fileExtension}x`] = context.mainEditor.getContent('main')
+  }
+  if (context.config.projectType === 'vue' && context.mainEditor) {
+    context.files[`src/main${context.fileExtension}`] = context.mainEditor.getContent('main')
   }
 }
 

@@ -1,5 +1,6 @@
 import type { Generator } from '@/types'
 import { ErrorMessages } from '@/constants/errors'
+import { createVueFileEditor } from '@/editor'
 import { ErrorFactory } from '@/error/factory'
 import { addDependencies } from '@/utils/package-json'
 import { generateGitignore, generateHanaLogo, generateReadmeTemplate, generateSPAHtmlTemplate, generateViteEnvFile } from '@/utils/template'
@@ -30,19 +31,17 @@ export const vueGenerator: Generator = {
       context.viteConfigEditor!.addVitePlugin(`vue()`)
     }
 
-    // 1. Generate src directory structure
+    // 1. Generate src directory structure and files
     const appFileName = 'src/App.vue'
-    // if routing library is vue-router, we use <RouterView /> instead of basic content
-    config.useRouter
-      ? context.files[appFileName] = generateAppFileWithRouter(config.language, config.cssPreprocessor)
-      : context.files[appFileName] = generateAppFile(config.language, config.cssPreprocessor)
 
+    // App.vue
+    const appFileContent = config.useRouter
+      ? generateAppFileWithRouter()
+      : generateAppFile()
+
+    // Counter.vue
     const counterFileName = 'src/components/Counter.vue'
-    context.files[counterFileName] = generateCounterFile(config.language, config.cssPreprocessor)
-
-    if (config.language === 'typescript') {
-      context.files['src/vite-env.d.ts'] = generateViteEnvFile()
-    }
+    const counterFileContent = generateCounterFile()
 
     // 2. Generate root files
     context.files['public/favicon.svg'] = generateHanaLogo()
@@ -53,6 +52,25 @@ export const vueGenerator: Generator = {
       mainScriptPath: `/src/main${fileExtension}`,
     })
 
+    // 3. Edit .vue files
+    const createAndEditVueFile = (code: string) => {
+      const editor = createVueFileEditor(code)
+      if (config.language === 'typescript') {
+        editor.setScriptLang('ts')
+      }
+      if (config.cssPreprocessor && config.cssPreprocessor !== 'none') {
+        editor.setStyleLang(config.cssPreprocessor as 'scss' | 'less')
+      }
+      return editor.getSource()
+    }
+
+    context.files[appFileName] = createAndEditVueFile(appFileContent)
+    context.files[counterFileName] = createAndEditVueFile(counterFileContent)
+
+    if (config.language === 'typescript') {
+      context.files['src/vite-env.d.ts'] = generateViteEnvFile()
+    }
+
     context.files['README.md'] = generateReadmeTemplate(
       config.projectType,
       projectName,
@@ -61,7 +79,7 @@ export const vueGenerator: Generator = {
 
     context.files['.gitignore'] = generateGitignore()
 
-    // 3. Modify package.json
+    // 4. Modify package.json
     context.packageJson.name = projectName
     context.packageJson.description = 'A Vue project'
     context.packageJson.version = '1.0.0'
@@ -70,7 +88,7 @@ export const vueGenerator: Generator = {
       node: '>=18.12.0', // V18 LTS
     }
 
-    // 4. Features
+    // 5. Features
     if (config.cssFramework && config.cssFramework !== 'none') {
       generateCssFramework(context)
     }
@@ -94,9 +112,7 @@ export const vueGenerator: Generator = {
 
 /* File generators */
 
-function generateAppFile(language?: string, cssPreprocessor?: 'none' | 'less' | 'scss') {
-  const styleAttr = cssPreprocessor && cssPreprocessor !== 'none' ? ` lang="${cssPreprocessor}"` : ''
-
+function generateAppFile() {
   return `<template>
   <div>
     <h1>Hello, vite + vue</h1>
@@ -104,38 +120,34 @@ function generateAppFile(language?: string, cssPreprocessor?: 'none' | 'less' | 
   </div>
 </template>
 
-<script setup${language === 'typescript' ? ' lang="ts"' : ''}>
+<script setup>
 import Counter from './components/Counter.vue'
 </script>
 
-<style${styleAttr}>
+<style>
 /* Add your global styles here */
 </style>
 `
 }
 
-function generateAppFileWithRouter(language?: string, cssPreprocessor?: 'none' | 'less' | 'scss') {
-  const styleAttr = cssPreprocessor && cssPreprocessor !== 'none' ? ` lang="${cssPreprocessor}"` : ''
-
+function generateAppFileWithRouter() {
   return `<template>
   <div>
     <RouterView />
   </div>
 </template>
 
-<script setup${language === 'typescript' ? ' lang="ts"' : ''}>
+<script setup>
 import { RouterView } from 'vue-router'
 </script>
 
-<style${styleAttr}>
+<style>
 /* Add your global styles here */
 </style>
 `
 }
 
-function generateCounterFile(language?: string, cssPreprocessor?: 'none' | 'less' | 'scss') {
-  const styleAttr = cssPreprocessor && cssPreprocessor !== 'none' ? ` lang="${cssPreprocessor}"` : ''
-
+function generateCounterFile() {
   return `<template>
   <div>
     <h1>Count: {{ count }}</h1>
@@ -144,13 +156,13 @@ function generateCounterFile(language?: string, cssPreprocessor?: 'none' | 'less
   </div>
 </template>
 
-<script setup${language === 'typescript' ? ' lang="ts"' : ''}>
+<script setup>
 import { ref } from 'vue'
 
 const count = ref(0)
 </script>
 
-<style scoped${styleAttr}>
+<style scoped>
 div {
   text-align: center;
   padding: 2rem;

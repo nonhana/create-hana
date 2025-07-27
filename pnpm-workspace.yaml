@@ -5,6 +5,7 @@ catalog:
   '@clack/prompts': ^0.11.0
   '@types/node': ^22.15.34
   '@vitest/ui': ^2.1.9
+  '@vue/compiler-sfc': ^3.5.18
   cross-spawn: ^7.0.6
   eslint: ^9.30.0
   mri: ^1.2.0
