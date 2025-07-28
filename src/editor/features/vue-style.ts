@@ -1,4 +1,3 @@
-import type { SFCStyleBlock } from '@vue/compiler-sfc'
 import type { VueSFCEditor } from '../vue-sfc-editor'
 import { ErrorMessages } from '@/constants/errors'
 import { ErrorFactory } from '@/error/factory'
@@ -10,27 +9,23 @@ export interface IVueStyleFeature {
 
 export function withVueStyleFeature<T extends new (...args: any[]) => VueSFCEditor>(Base: T) {
   return class extends Base implements IVueStyleFeature {
-    constructor(...args: any[]) {
-      super(...args)
-      this.block = this.getBlock('style')
-    }
-
-    block: SFCStyleBlock | undefined
     addStyleAttribute(attribute: string, value?: string, styleIndex = 0): this {
-      if (!this.block)
+      const block = this.getBlock('style')
+      if (!block)
         throw ErrorFactory.validation(ErrorMessages.validation.fieldNotFound('<style>'))
       // 已经存在
-      if (this.block.attrs[attribute] !== undefined)
+      if (block.attrs[attribute] !== undefined)
         return this
-      const newAttrs: Record<string, string | boolean> = { ...this.block.attrs, [attribute]: value ?? true }
+      const newAttrs: Record<string, string | boolean> = { ...block.attrs, [attribute]: value ?? true }
       this.updateBlockAttrs('style', newAttrs, styleIndex)
       return this
     }
 
     setStyleLang(lang: 'scss' | 'less' | 'css', styleIndex = 0): this {
-      if (!this.block)
+      const block = this.getBlock('style')
+      if (!block)
         throw ErrorFactory.validation(ErrorMessages.validation.fieldNotFound('<style>'))
-      const newAttrs: Record<string, string | boolean> = { ...this.block.attrs }
+      const newAttrs: Record<string, string | boolean> = { ...block.attrs }
       if (lang === 'css')
         delete newAttrs.lang
       else newAttrs.lang = lang

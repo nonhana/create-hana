@@ -1,6 +1,7 @@
 import type { Generator } from '@/types'
 import { ErrorMessages } from '@/constants/errors'
 import { createVueFileEditor } from '@/editor'
+import { createAndEditVueFile } from '@/editor/features/helper'
 import { ErrorFactory } from '@/error/factory'
 import { generateAlias } from '@/generators/projects/common/alias'
 import { generateCssFramework } from '@/generators/projects/common/css-framework'
@@ -53,19 +54,8 @@ export const vueGenerator: Generator = {
     })
 
     // 3. Edit .vue files
-    const createAndEditVueFile = (code: string) => {
-      const editor = createVueFileEditor(code)
-      if (config.language === 'typescript') {
-        editor.setScriptLang('ts')
-      }
-      if (config.cssPreprocessor && config.cssPreprocessor !== 'none') {
-        editor.setStyleLang(config.cssPreprocessor as 'scss' | 'less')
-      }
-      return editor.getSource()
-    }
-
-    context.files[appFileName] = createAndEditVueFile(appFileContent)
-    context.files[counterFileName] = createAndEditVueFile(counterFileContent)
+    context.files[appFileName] = createAndEditVueFile(appFileContent, config)
+    context.files[counterFileName] = createAndEditVueFile(counterFileContent, config)
 
     if (config.language === 'typescript') {
       context.files['src/vite-env.d.ts'] = generateViteEnvFile()
@@ -113,16 +103,16 @@ export const vueGenerator: Generator = {
 /* File generators */
 
 function generateAppFile() {
-  return `<template>
+  return `<script setup>
+import Counter from './components/Counter.vue'
+</script>
+
+<template>
   <div>
     <h1>Hello, vite + vue</h1>
     <Counter />
   </div>
 </template>
-
-<script setup>
-import Counter from './components/Counter.vue'
-</script>
 
 <style>
 /* Add your global styles here */
@@ -131,15 +121,15 @@ import Counter from './components/Counter.vue'
 }
 
 function generateAppFileWithRouter() {
-  return `<template>
+  return `<script setup>
+import { RouterView } from 'vue-router'
+</script>
+
+<template>
   <div>
     <RouterView />
   </div>
 </template>
-
-<script setup>
-import { RouterView } from 'vue-router'
-</script>
 
 <style>
 /* Add your global styles here */
@@ -148,19 +138,19 @@ import { RouterView } from 'vue-router'
 }
 
 function generateCounterFile() {
-  return `<template>
+  return `<script setup>
+import { ref } from 'vue'
+
+const count = ref(0)
+</script>
+
+<template>
   <div>
     <h1>Count: {{ count }}</h1>
     <button type="button" @click="count++">+</button>
     <button type="button" @click="count--">-</button>
   </div>
 </template>
-
-<script setup>
-import { ref } from 'vue'
-
-const count = ref(0)
-</script>
 
 <style scoped>
 div {

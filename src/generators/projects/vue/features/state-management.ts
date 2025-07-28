@@ -1,5 +1,6 @@
 import type { ProjectContext } from '@/types'
 import { ErrorMessages } from '@/constants/errors'
+import { createAndEditVueFile } from '@/editor/features/helper'
 import { ErrorFactory } from '@/error/factory'
 
 export function generateStateManagement(context: ProjectContext) {
@@ -58,7 +59,13 @@ export const useCounterStore = defineStore('counter', () => {
   }
 
   const generateCounter = () => {
-    return `<template>
+    return `<script setup lang="ts">
+import { useCounterStore } from '../stores/counter'
+
+const counter = useCounterStore()
+</script>
+    
+<template>
   <div class="counter">
     <h2>Pinia Counter Store Example</h2>
     <div class="info">
@@ -70,12 +77,6 @@ export const useCounterStore = defineStore('counter', () => {
     </div>
   </div>
 </template>
-
-<script setup lang="ts">
-import { useCounterStore } from '../stores/counter'
-
-const counter = useCounterStore()
-</script>
 
 <style scoped>
 .counter {
@@ -129,5 +130,5 @@ button:hover {
 
   context.files[`src/stores/counter${fileExtension}`] = generatePiniaStore(language)
 
-  context.files['src/components/CounterExample.vue'] = generateCounter()
+  context.files['src/components/CounterExample.vue'] = createAndEditVueFile(generateCounter(), config)
 }
