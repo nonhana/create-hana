@@ -6,7 +6,7 @@ import { mainReactRouterProviderTemplate, mainReactTemplate, mainVueTemplate, vi
 import { ErrorFactory } from '@/error/factory'
 import { ErrorHandler } from '@/error/handler'
 import { viteGenerator } from '@/generators/build-tools'
-import { biomeGenerator, eslintGenerator, eslintPrettierGenerator } from '@/generators/features'
+import { biomeGenerator, eslintGenerator, eslintPrettierGenerator, oxlintPrettierGenerator } from '@/generators/features'
 import { languageGenerator } from '@/generators/language'
 import { nodeGenerator, reactGenerator, vueGenerator } from '@/generators/projects'
 import { initGitRepository } from '@/handlers/git'
@@ -129,6 +129,9 @@ async function runGenerators(context: ProjectContext) {
         break
       case 'biome':
         biomeGenerator.generate(context)
+        break
+      case 'oxlint-prettier':
+        oxlintPrettierGenerator.generate(context)
         break
     }
   }
