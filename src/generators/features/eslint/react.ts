@@ -146,7 +146,6 @@ export default tseslint.config(
       'no-multiple-empty-lines': ['error', { max: 1, maxEOF: 0 }],
       'dot-location': ['error', 'property'],
       'no-empty': ['error', { allowEmptyCatch: true }],
-    },
   },
 )
 `

@@ -2,6 +2,7 @@ import type { ProjectContext } from '@/types'
 import { ErrorMessages } from '@/constants/errors'
 import { ErrorFactory } from '@/error/factory'
 import { addDependencies, addScripts } from '@/utils/package-json'
+import { addPrettierDependencies, addPrettierScripts, generatePrettierConfig } from '../prettier'
 
 export function generateVueESLintPrettierConfig(context: ProjectContext) {
   const { config } = context
@@ -37,50 +38,11 @@ export function generateVueESLintPrettierConfig(context: ProjectContext) {
     'lint:fix': 'eslint . --fix',
   })
 
-  addDependencies(context.packageJson, {
-    'prettier': '^3.5.3',
-    '@trivago/prettier-plugin-sort-imports': '^5.2.2',
-  }, 'devDependencies')
+  addPrettierDependencies(context)
+  addPrettierScripts(context)
 
-  addScripts(context.packageJson, {
-    'format': `prettier --write .`,
-    'format:check': `prettier --check .`,
-  })
-
-  context.files['prettier.config.mjs'] = generatePrettierConfig()
+  context.files['prettier.config.mjs'] = generatePrettierConfig({ projectType: 'vue' })
   context.files['eslint.config.mjs'] = generateESLintConfig(language)
-}
-
-function generatePrettierConfig() {
-  return `/** @type {import("prettier").Config} */
-export default {
-  plugins: ['@trivago/prettier-plugin-sort-imports'],
-  // Basic formatting
-  printWidth: 100,
-  tabWidth: 2,
-  useTabs: false,
-  semi: false,
-  singleQuote: true,
-  quoteProps: 'as-needed',
-  trailingComma: 'all',
-  bracketSpacing: true,
-  bracketSameLine: false,
-  arrowParens: 'always',
-  
-  // Vue-specific formatting
-  vueIndentScriptAndStyle: false, // Follow official recommendation: don't indent script/style tags
-  htmlWhitespaceSensitivity: 'css',
-  singleAttributePerLine: true,
-  
-  // Line endings
-  endOfLine: 'lf',
-  
-  // Import ordering
-  importOrder: ['^node:(.*)$', '<THIRD_PARTY_MODULES>', '^@/(.*)$', '^[./]'],
-  importOrderSeparation: true,
-  importOrderSortSpecifiers: true,
-}
-`
 }
 
 function generateESLintConfig(language: 'typescript' | 'javascript') {
@@ -260,7 +222,6 @@ export default [
         {
           argsIgnorePattern: '^_',
           varsIgnorePattern: '^_',
-          caughtErrorsIgnorePattern: '^_',
         },
       ],
       'prefer-const': 'error',

@@ -2,6 +2,7 @@ import type { ProjectContext } from '@/types'
 import { ErrorMessages } from '@/constants/errors'
 import { ErrorFactory } from '@/error/factory'
 import { addDependencies, addScripts } from '@/utils/package-json'
+import { addPrettierDependencies, addPrettierScripts, generatePrettierConfig } from '../prettier'
 
 export function generateReactESLintPrettierConfig(context: ProjectContext) {
   const { config } = context
@@ -36,35 +37,11 @@ export function generateReactESLintPrettierConfig(context: ProjectContext) {
     'lint:fix': 'eslint . --fix',
   })
 
-  addDependencies(context.packageJson, {
-    'prettier': '^3.5.3',
-    '@trivago/prettier-plugin-sort-imports': '^5.2.2',
-  }, 'devDependencies')
+  addPrettierDependencies(context)
+  addPrettierScripts(context)
 
-  addScripts(context.packageJson, {
-    'format': `prettier --write .`,
-    'format:check': `prettier --check .`,
-  })
-
-  context.files['prettier.config.mjs'] = generatePrettierConfig()
+  context.files['prettier.config.mjs'] = generatePrettierConfig({ projectType: 'react' })
   context.files['eslint.config.mjs'] = generateESLintConfig(language)
-}
-
-function generatePrettierConfig() {
-  return `/** @type {import("prettier").Config} */
-export default {
-  plugins: ['@trivago/prettier-plugin-sort-imports'],
-  singleQuote: true,
-  tabWidth: 2,
-  trailingComma: 'all',
-  arrowParens: 'always',
-  bracketSpacing: true,
-  semi: false,
-  importOrder: ['^node:(.*)$', '<THIRD_PARTY_MODULES>', '^@/(.*)$', '^[./]'],
-  importOrderSeparation: true,
-  importOrderSortSpecifiers: true,
-}
-`
 }
 
 function generateESLintConfig(language: 'typescript' | 'javascript') {

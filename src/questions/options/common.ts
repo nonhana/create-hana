@@ -12,6 +12,7 @@ export const COMMON_MANAGER_OPTIONS = [
 
 export const COMMON_CODE_QUALITY_TOOLS_OPTIONS = [
   { label: 'ESLint', value: 'eslint' },
+  { label: 'OxLint and Prettier', value: 'oxlint-prettier' },
   { label: 'ESLint and Prettier', value: 'eslint-prettier' },
   { label: 'Biome', value: 'biome' },
   { label: 'None', value: 'none' },
