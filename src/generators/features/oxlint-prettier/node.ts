@@ -57,7 +57,7 @@ function generateOxlintConfig(language: 'typescript' | 'javascript') {
     categories: {
       correctness: 'error',
       suspicious: 'warn',
-      style: 'error',
+      style: 'off',
     },
 
     // Only override specific rules when necessary
