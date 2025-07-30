@@ -1,3 +1,4 @@
+import type { PROJECT_TYPES } from '@/constants/project-types'
 import type { ProjectContext } from '@/types'
 import { addDependencies, addScripts } from '@/utils/package-json'
 
@@ -8,7 +9,6 @@ export interface PrettierOptions {
 }
 
 export function addPrettierDependencies(context: ProjectContext) {
-  console.log('Adding Prettier dependencies...', context.config)
   addDependencies(context.packageJson, {
     'prettier': '^3.5.3',
     '@trivago/prettier-plugin-sort-imports': '^5.2.2',
@@ -46,7 +46,7 @@ export function generatePrettierConfig(options: PrettierOptions = {}) {
   }
 
   // Project-specific configurations
-  const projectConfigs = {
+  const projectConfigs: Record<PROJECT_TYPES, Record<string, any>> = {
     node: {},
     react: {
       jsxSingleQuote: true,

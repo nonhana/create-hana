@@ -13,12 +13,10 @@ export function generateNodeOxlintPrettierConfig(context: ProjectContext) {
 
   const language = config.language || 'typescript'
 
-  const oxlintDeps: Record<string, string> = {
+  addDependencies(context.packageJson, {
     'oxlint': '^1.9.0',
     '@prettier/plugin-oxc': '^0.0.4',
-  }
-
-  addDependencies(context.packageJson, oxlintDeps, 'devDependencies')
+  }, 'devDependencies')
 
   addScripts(context.packageJson, {
     'lint': 'oxlint .',
