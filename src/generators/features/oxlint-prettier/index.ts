@@ -25,7 +25,9 @@ export const oxlintPrettierGenerator: Generator = {
 
 function generateOxlintPrettierVscodeConfig() {
   const config = {
-    'oxlint.enable': true,
+    'oxc.enable': true,
+    'oxc.requireConfig': true,
+    'oxc.lint.run': 'onType',
     'biome.enabled': false,
     'eslint.enable': false,
     'editor.defaultFormatter': 'esbenp.prettier-vscode',
@@ -43,13 +45,6 @@ function generateOxlintPrettierVscodeConfig() {
     '[vue]': {
       'editor.defaultFormatter': 'esbenp.prettier-vscode',
     },
-    'oxlint.validate': [
-      'javascript',
-      'typescript',
-      'javascriptreact',
-      'typescriptreact',
-      'vue',
-    ],
   }
 
   return JSON.stringify(config, null, 2)
