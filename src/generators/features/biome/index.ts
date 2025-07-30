@@ -2,7 +2,6 @@ import type { Generator } from '@/types'
 import { addDependencies, addScripts } from '@/utils/package-json'
 import { generateNodeBiomeConfig } from './node'
 import { generateReactBiomeConfig } from './react'
-import { generateVueBiomeConfig } from './vue'
 
 export const biomeGenerator: Generator = {
   generate(context) {
@@ -26,9 +25,6 @@ export const biomeGenerator: Generator = {
     }
     else if (config.projectType === 'react') {
       generateReactBiomeConfig(context)
-    }
-    else if (config.projectType === 'vue') {
-      generateVueBiomeConfig(context)
     }
 
     if (context.config.codeQualityConfig) {

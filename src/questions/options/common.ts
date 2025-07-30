@@ -17,3 +17,27 @@ export const COMMON_CODE_QUALITY_TOOLS_OPTIONS = [
   { label: 'Biome', value: 'biome' },
   { label: 'None', value: 'none' },
 ] as const
+
+export const COMMON_CSS_FRAMEWORKS_OPTIONS = [
+  { label: 'Tailwind CSS', value: 'tailwindcss' },
+  { label: 'UnoCSS', value: 'unocss' },
+  { label: 'None', value: 'none' },
+] as const
+
+export const COMMON_CSS_PREPROCESSORS_OPTIONS = [
+  { label: 'None -> CSS', value: 'none' },
+  { label: 'LESS', value: 'less' },
+  { label: 'SCSS', value: 'scss' },
+] as const
+
+export const COMMON_HTTP_OPTIONS = [
+  { label: 'Axios', value: 'axios' },
+  { label: 'Ky', value: 'ky' },
+  { label: 'None -> Native Fetch', value: 'none' },
+] as const
+
+export const COMMON_PATH_ALIASING_OPTIONS = [
+  { label: '@/xxx', value: '@' },
+  { label: '~/xxx', value: '~' },
+  { label: 'None', value: 'none' },
+] as const

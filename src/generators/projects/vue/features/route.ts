@@ -1,5 +1,6 @@
 import type { ProjectContext } from '@/types'
 import { ErrorMessages } from '@/constants/errors'
+import { createAndEditVueFile } from '@/editor/features/helper'
 import { ErrorFactory } from '@/error/factory'
 
 export function generateRoutingLibrary(context: ProjectContext) {
@@ -12,9 +13,6 @@ export function generateRoutingLibrary(context: ProjectContext) {
   if (!config.useRouter)
     return
 
-  const language = config.language ?? 'typescript'
-  const cssPreprocessor = config.cssPreprocessor ?? 'none'
-
   const alias
   = config.modulePathAliasing && config.modulePathAliasing !== 'none'
     ? config.modulePathAliasing
@@ -25,8 +23,8 @@ export function generateRoutingLibrary(context: ProjectContext) {
 
   context.files[`src/router/index${context.fileExtension}`] = generateRouterIndex(alias)
 
-  context.files['src/views/Home.vue'] = generateHomePage(language, cssPreprocessor, alias)
-  context.files['src/views/About.vue'] = generateAboutPage(language, cssPreprocessor)
+  context.files['src/views/Home.vue'] = createAndEditVueFile(generateHomePage(config.usePinia, alias), config)
+  context.files['src/views/About.vue'] = createAndEditVueFile(generateAboutPage(), config)
 }
 
 function generateRouterIndex(pathAlias: string) {
@@ -54,28 +52,8 @@ export default router
 `
 }
 
-function generateHomePage(
-  language: 'typescript' | 'javascript',
-  cssPreprocessor: 'none' | 'less' | 'scss',
-  pathAlias: string,
-) {
-  const styleAttr = cssPreprocessor && cssPreprocessor !== 'none' ? ` lang="${cssPreprocessor}"` : ''
-
-  return `<script setup${language === 'typescript' ? ' lang="ts"' : ''}>
-import Counter from '${pathAlias}/components/Counter.vue'
-</script>
-    
-<template>
-  <div class="home">
-    <h1>Welcome to Home Page</h1>
-    <p>This is the home page with Pinia state management demo.</p>
-    <router-link to="/about">Go to About</router-link>
-    
-    <Counter />
-  </div>
-</template>
-
-<style scoped${styleAttr}>
+function generateHomePage(usePinia?: boolean, pathAlias: string = '..') {
+  const styleScope = `<style scoped>
 .home {
   text-align: center;
   padding: 2rem;
@@ -96,16 +74,47 @@ a:hover {
   text-decoration: underline;
 }
 </style>
+  `
+  if (usePinia) {
+    return `<script setup>
+import Counter from '${pathAlias}/components/Counter.vue'
+</script>
+
+<template>
+  <div class="home">
+    <h1>Welcome to Home Page</h1>
+    <p>This is the home page with Pinia state management demo.</p>
+    <router-link to="/about">Go to About</router-link>
+    
+    <Counter />
+  </div>
+</template>
+
+${styleScope}
+`
+  }
+
+  return `<script setup>
+// Home page logic here
+</script>
+
+<template>
+  <div class="home">
+    <h1>Welcome to Home Page</h1>
+    <p>This is the home page.</p>
+    <router-link to="/about">Go to About</router-link>
+  </div>
+</template>
+
+${styleScope}
 `
 }
 
-function generateAboutPage(language?: 'typescript' | 'javascript', cssPreprocessor?: 'none' | 'less' | 'scss') {
-  const styleAttr = cssPreprocessor && cssPreprocessor !== 'none' ? ` lang="${cssPreprocessor}"` : ''
-
-  return `<script setup${language === 'typescript' ? ' lang="ts"' : ''}>
+function generateAboutPage() {
+  return `<script setup>
 // About page logic here
 </script>
-  
+
 <template>
   <div class="about">
     <h1>About Page</h1>
@@ -114,7 +123,7 @@ function generateAboutPage(language?: 'typescript' | 'javascript', cssPreprocess
   </div>
 </template>
 
-<style scoped${styleAttr}>
+<style scoped>
 .about {
   text-align: center;
   padding: 2rem;

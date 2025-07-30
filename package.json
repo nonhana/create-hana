@@ -33,6 +33,7 @@
   },
   "dependencies": {
     "@clack/prompts": "catalog:",
+    "@vue/compiler-sfc": "catalog:",
     "cross-spawn": "catalog:",
     "mri": "catalog:",
     "picocolors": "catalog:",
