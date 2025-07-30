@@ -4,7 +4,7 @@ import { ErrorFactory } from '@/error/factory'
 
 export function generateCssFramework(context: ProjectContext) {
   const { config, packageJson } = context
-  if (config.projectType !== 'vue') {
+  if (config.projectType !== 'react' && config.projectType !== 'vue') {
     throw ErrorFactory.validation(
       ErrorMessages.validation.invalidProjectType(config.projectType!),
     )
@@ -16,13 +16,13 @@ export function generateCssFramework(context: ProjectContext) {
       packageJson.devDependencies.tailwindcss = '^4.1.11'
       if (config.buildTool === 'vite') {
         packageJson.devDependencies['@tailwindcss/vite'] = '^4.1.11'
-        context.files['src/styles/main.css'] = `@import "tailwindcss";`
+        context.files['src/styles/global.css'] = `@import "tailwindcss";`
         context.viteConfigEditor!.addImport(
           'viteConfig',
           `import tailwindcss from '@tailwindcss/vite'`,
         )
         context.viteConfigEditor!.addVitePlugin(`tailwindcss()`)
-        context.mainEditor!.addImport('main', `import './styles/main.css'`)
+        context.mainEditor!.addImport('main', `import './styles/global.css'`)
       }
       break
     }

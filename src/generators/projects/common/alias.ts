@@ -6,7 +6,7 @@ export function generateAlias(context: ProjectContext) {
   const { config, packageJson } = context
   if (!config.projectType)
     throw ErrorFactory.validation(ErrorMessages.validation.projectTypeRequired())
-  if (config.projectType !== 'react')
+  if (config.projectType !== 'react' && config.projectType !== 'vue')
     throw ErrorFactory.validation(ErrorMessages.validation.invalidProjectType(config.projectType))
 
   packageJson.dependencies = packageJson.dependencies || {}

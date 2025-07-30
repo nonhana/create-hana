@@ -1,7 +1,7 @@
 import type { ProjectQuestionsConfig } from '@/types'
 import { toMutableOptions } from '@/utils/fit-options'
-import { COMMON_CODE_QUALITY_TOOLS_OPTIONS, COMMON_LANGUAGE_OPTIONS, COMMON_MANAGER_OPTIONS } from '../options/common'
-import { VUE_BUILD_TOOLS_OPTIONS, VUE_CSS_FRAMEWORKS_OPTIONS, VUE_CSS_PREPROCESSORS_OPTIONS, VUE_HTTP_OPTIONS, VUE_PATH_ALIASING_OPTIONS } from '../options/vue'
+import { COMMON_CODE_QUALITY_TOOLS_OPTIONS, COMMON_CSS_FRAMEWORKS_OPTIONS, COMMON_CSS_PREPROCESSORS_OPTIONS, COMMON_HTTP_OPTIONS, COMMON_LANGUAGE_OPTIONS, COMMON_MANAGER_OPTIONS, COMMON_PATH_ALIASING_OPTIONS } from '../options/common'
+import { VUE_BUILD_TOOLS_OPTIONS, VUE_CODE_QUALITY_TOOLS_OPTIONS } from '../options/vue'
 
 export const vueQuestions: ProjectQuestionsConfig = {
   projectType: 'vue',
@@ -27,7 +27,7 @@ export const vueQuestions: ProjectQuestionsConfig = {
       type: 'select',
       message: 'Which code quality tools would you like to use?',
       field: 'codeQualityTools',
-      options: toMutableOptions(COMMON_CODE_QUALITY_TOOLS_OPTIONS),
+      options: toMutableOptions(VUE_CODE_QUALITY_TOOLS_OPTIONS),
       initialValue: 'eslint',
     },
     {
@@ -50,7 +50,7 @@ export const vueQuestions: ProjectQuestionsConfig = {
       type: 'select',
       message: 'Which CSS framework would you like to use?',
       field: 'cssFramework',
-      options: toMutableOptions(VUE_CSS_FRAMEWORKS_OPTIONS),
+      options: toMutableOptions(COMMON_CSS_FRAMEWORKS_OPTIONS),
       initialValue: 'tailwindcss',
     },
     {
@@ -58,7 +58,7 @@ export const vueQuestions: ProjectQuestionsConfig = {
       type: 'select',
       message: 'Which CSS preprocessor would you like to use?',
       field: 'cssPreprocessor',
-      options: toMutableOptions(VUE_CSS_PREPROCESSORS_OPTIONS),
+      options: toMutableOptions(COMMON_CSS_PREPROCESSORS_OPTIONS),
       initialValue: 'none',
     },
     {
@@ -80,7 +80,7 @@ export const vueQuestions: ProjectQuestionsConfig = {
       type: 'select',
       message: 'Which HTTP library would you like to use?',
       field: 'httpLibrary',
-      options: toMutableOptions(VUE_HTTP_OPTIONS),
+      options: toMutableOptions(COMMON_HTTP_OPTIONS),
       initialValue: 'axios',
     },
     {
@@ -88,7 +88,7 @@ export const vueQuestions: ProjectQuestionsConfig = {
       type: 'select',
       message: 'Which module path aliasing would you like to use?',
       field: 'modulePathAliasing',
-      options: toMutableOptions(VUE_PATH_ALIASING_OPTIONS),
+      options: toMutableOptions(COMMON_PATH_ALIASING_OPTIONS),
       initialValue: '@',
     },
   ],

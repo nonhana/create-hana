@@ -1,5 +1,5 @@
 import type { NodeProjectConfig, ReactProjectConfig, VueProjectConfig } from './project-configs'
-import type { MainEditor, ViteConfigEditor } from '@/editor'
+import type { ReactMainEditor, ViteConfigEditor, VueMainEditor } from '@/editor'
 import type {
   COMMON_CODE_QUALITY_TOOLS_OPTIONS,
   COMMON_LANGUAGE_OPTIONS,
@@ -31,7 +31,8 @@ export interface ProjectContext {
   /** .js or .ts */
   fileExtension: '.js' | '.ts'
   viteConfigEditor?: InstanceType<typeof ViteConfigEditor>
-  mainEditor?: InstanceType<typeof MainEditor>
+  /** 应用不同特性，共享特性统一编写 */
+  mainEditor?: InstanceType<typeof ReactMainEditor> | InstanceType<typeof VueMainEditor>
 }
 
 export interface PackageJsonConfig {

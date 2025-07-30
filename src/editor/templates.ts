@@ -24,25 +24,3 @@ import router from './router'
 createRoot(document.getElementById('root')!).render(<RouterProvider router={router} />)
 `
 }
-
-export function mainVueTemplate(useRouter?: boolean, usePinia?: boolean) {
-  const imports = ['import { createApp } from \'vue\'', 'import App from \'./App.vue\'']
-  let appChain = 'createApp(App)'
-
-  if (useRouter) {
-    imports.push('import router from \'./router\'')
-    appChain += '.use(router)'
-  }
-
-  if (usePinia) {
-    imports.push('import { createPinia } from \'pinia\'')
-    appChain += '.use(createPinia())'
-  }
-
-  appChain += '.mount(\'#app\')'
-
-  return `${imports.join('\n')}
-
-${appChain}
-`
-}
