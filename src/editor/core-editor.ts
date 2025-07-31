@@ -7,7 +7,7 @@ interface CodeDetail {
 }
 
 export interface CoreEditorContents {
-  viteConfig: CodeDetail
+  viteConfig?: CodeDetail
   main?: CodeDetail
 }
 
@@ -31,7 +31,8 @@ export class CoreEditor {
   }
 
   public getContent(key: EditableFiles): string {
-    if (!this.contents[key]) return ''
+    if (!this.contents[key])
+      return ''
     return recast.print(this.contents[key].ast).code
   }
 }

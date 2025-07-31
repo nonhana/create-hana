@@ -24,3 +24,8 @@ export function createVueMainEditor() {
 export function createVueFileEditor(code: string) {
   return new VueFileEditor(code)
 }
+
+export type ViteConfigEditorType = InstanceType<typeof ViteConfigEditor>
+export type ReactMainEditorType = InstanceType<typeof ReactMainEditor>
+export type VueMainEditorType = InstanceType<typeof VueMainEditor>
+export type VueFileEditorType = InstanceType<typeof VueFileEditor>

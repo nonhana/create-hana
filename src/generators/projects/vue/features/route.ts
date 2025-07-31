@@ -1,6 +1,5 @@
-import type { ProjectContext } from '@/types'
+import type { ProjectContext, VueConfig } from '@/types'
 import { ErrorMessages } from '@/constants/errors'
-import { createAndEditVueFile } from '@/editor/features/helper'
 import { ErrorFactory } from '@/error/factory'
 
 export function generateRoutingLibrary(context: ProjectContext) {
@@ -23,8 +22,8 @@ export function generateRoutingLibrary(context: ProjectContext) {
 
   context.files[`src/router/index${context.fileExtension}`] = generateRouterIndex(alias)
 
-  context.files['src/views/Home.vue'] = createAndEditVueFile(generateHomePage(config.usePinia, alias), config)
-  context.files['src/views/About.vue'] = createAndEditVueFile(generateAboutPage(), config)
+  context.files['src/views/Home.vue'] = generateHomePage(config, alias)
+  context.files['src/views/About.vue'] = generateAboutPage(config)
 }
 
 function generateRouterIndex(pathAlias: string) {
@@ -52,8 +51,8 @@ export default router
 `
 }
 
-function generateHomePage(usePinia?: boolean, pathAlias: string = '..') {
-  const styleScope = `<style scoped>
+function generateHomePage(vueConfig: VueConfig, pathAlias: string) {
+  const styleScope = `<style scoped${vueConfig.cssPreprocessor !== 'none' ? ` lang="${vueConfig.cssPreprocessor}"` : ''}>
 .home {
   text-align: center;
   padding: 2rem;
@@ -75,8 +74,8 @@ a:hover {
 }
 </style>
   `
-  if (usePinia) {
-    return `<script setup>
+  if (vueConfig.usePinia) {
+    return `<script setup${vueConfig.language === 'typescript' ? ' lang="ts"' : ''}>
 import Counter from '${pathAlias}/components/Counter.vue'
 </script>
 
@@ -94,7 +93,7 @@ ${styleScope}
 `
   }
 
-  return `<script setup>
+  return `<script setup${vueConfig.language === 'typescript' ? ' lang="ts"' : ''}>
 // Home page logic here
 </script>
 
@@ -110,8 +109,8 @@ ${styleScope}
 `
 }
 
-function generateAboutPage() {
-  return `<script setup>
+function generateAboutPage(vueConfig: VueConfig) {
+  return `<script setup${vueConfig.language === 'typescript' ? ' lang="ts"' : ''}>
 // About page logic here
 </script>
 
@@ -123,7 +122,7 @@ function generateAboutPage() {
   </div>
 </template>
 
-<style scoped>
+<style scoped${vueConfig.cssPreprocessor !== 'none' ? ` lang="${vueConfig.cssPreprocessor}"` : ''}>
 .about {
   text-align: center;
   padding: 2rem;
