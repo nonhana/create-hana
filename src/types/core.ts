@@ -16,7 +16,7 @@ export type Config = {
   codeQualityTools?: typeof COMMON_CODE_QUALITY_TOOLS_OPTIONS[number]['value']
   codeQualityConfig?: boolean
 } & (
-  | ({ projectType?: undefined })
+  | ({ projectType?: undefined }) // may not be set yet
   | ({ projectType: 'node' } & NodeProjectConfig)
   | ({ projectType: 'react' } & ReactProjectConfig)
   | ({ projectType: 'vue' } & VueProjectConfig)

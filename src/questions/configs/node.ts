@@ -9,7 +9,7 @@ import {
   NODE_BUNDLERS_OPTIONS,
   NODE_TS_RUNTIME_OPTIONS,
   NODE_WEBSERVER_OPTIONS,
-} from '../options/node'
+} from '../options/features/node'
 
 export const nodeQuestions: ProjectQuestionsConfig = {
   projectType: 'node',

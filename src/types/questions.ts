@@ -1,4 +1,4 @@
-import type { AllKeys, Config } from './index'
+import type { AllKeys, Config, MaybePromise } from './index'
 import type { PROJECT_TYPES } from '@/constants/project-types'
 
 export type QuestionType = 'select' | 'multiselect' | 'confirm' | 'text'
@@ -9,7 +9,7 @@ export interface QuestionSituationObj {
   operator?: 'eq' | 'neq' | 'in' | 'notIn'
 }
 
-export type QuestionSituationFn = (config?: Config) => boolean | Promise<boolean>
+export type QuestionSituationFn = (config?: Config) => MaybePromise<boolean>
 
 export type QuestionSituation = QuestionSituationObj | QuestionSituationFn
 

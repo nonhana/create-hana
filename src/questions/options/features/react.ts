@@ -1,9 +1,3 @@
-export const REACT_BUILD_TOOLS_OPTIONS = [
-  { label: 'Vite', value: 'vite' },
-  // { label: 'Rspack', value: 'rspack' },
-  // { label: 'Webpack', value: 'webpack' },
-] as const
-
 export const REACT_ROUTING_LIBRARIES_OPTIONS = [
   { label: 'React Router', value: 'react-router' },
   { label: 'TanStack Router', value: '@tanstack/react-router' },

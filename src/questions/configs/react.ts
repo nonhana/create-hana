@@ -1,12 +1,17 @@
 import type { ProjectQuestionsConfig } from '@/types'
 import { toMutableOptions } from '@/utils/fit-options'
-import { COMMON_CODE_QUALITY_TOOLS_OPTIONS, COMMON_CSS_FRAMEWORKS_OPTIONS, COMMON_CSS_PREPROCESSORS_OPTIONS, COMMON_HTTP_OPTIONS, COMMON_LANGUAGE_OPTIONS, COMMON_MANAGER_OPTIONS, COMMON_PATH_ALIASING_OPTIONS } from '../options/common'
+import { COMMON_CODE_QUALITY_TOOLS_OPTIONS, COMMON_LANGUAGE_OPTIONS, COMMON_MANAGER_OPTIONS, COMMON_PATH_ALIASING_OPTIONS } from '../options/common'
 import {
-  REACT_BUILD_TOOLS_OPTIONS,
   REACT_QUERY_OPTIONS,
   REACT_ROUTING_LIBRARIES_OPTIONS,
   REACT_STATE_MANAGEMENT_OPTIONS,
-} from '../options/react'
+} from '../options/features/react'
+import {
+  FRONTEND_BUILD_TOOLS_OPTIONS,
+  FRONTEND_CSS_FRAMEWORKS_OPTIONS,
+  FRONTEND_CSS_PREPROCESSORS_OPTIONS,
+  FRONTEND_HTTP_OPTIONS,
+} from '../options/frontend'
 
 export const reactQuestions: ProjectQuestionsConfig = {
   projectType: 'react',
@@ -47,7 +52,7 @@ export const reactQuestions: ProjectQuestionsConfig = {
       type: 'select',
       message: 'Which build tool would you like to use?',
       field: 'buildTool',
-      options: toMutableOptions(REACT_BUILD_TOOLS_OPTIONS),
+      options: toMutableOptions(FRONTEND_BUILD_TOOLS_OPTIONS),
       initialValue: 'vite',
     },
     {
@@ -55,7 +60,7 @@ export const reactQuestions: ProjectQuestionsConfig = {
       type: 'select',
       message: 'Which CSS framework would you like to use?',
       field: 'cssFramework',
-      options: toMutableOptions(COMMON_CSS_FRAMEWORKS_OPTIONS),
+      options: toMutableOptions(FRONTEND_CSS_FRAMEWORKS_OPTIONS),
       initialValue: 'tailwindcss',
     },
     {
@@ -63,7 +68,7 @@ export const reactQuestions: ProjectQuestionsConfig = {
       type: 'select',
       message: 'Which CSS preprocessor would you like to use?',
       field: 'cssPreprocessor',
-      options: toMutableOptions(COMMON_CSS_PREPROCESSORS_OPTIONS),
+      options: toMutableOptions(FRONTEND_CSS_PREPROCESSORS_OPTIONS),
       initialValue: 'none',
     },
     {
@@ -87,7 +92,7 @@ export const reactQuestions: ProjectQuestionsConfig = {
       type: 'select',
       message: 'Which HTTP library would you like to use?',
       field: 'httpLibrary',
-      options: toMutableOptions(COMMON_HTTP_OPTIONS),
+      options: toMutableOptions(FRONTEND_HTTP_OPTIONS),
       initialValue: 'axios',
     },
     {
