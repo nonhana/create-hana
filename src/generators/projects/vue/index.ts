@@ -1,4 +1,4 @@
-import type { Generator, VueConfig } from '@/types'
+import type { Generator } from '@/types'
 import { ErrorMessages } from '@/constants/errors'
 import { ErrorFactory } from '@/error/factory'
 import { generateAlias } from '@/generators/projects/common/alias'
@@ -39,11 +39,13 @@ export const vueGenerator: Generator = {
       mainScriptPath: `/src/main${fileExtension}`,
     })
 
-    // 2. Edit .vue files
-    context.files['src/App.vue'] = config.useRouter
-      ? generateAppFileWithRouter(config)
-      : generateAppFile(config)
-    context.files['src/components/Counter.vue'] = generateCounterFile(config)
+    // 2. Generate Vue files
+    const lang = config.language === 'typescript' ? ' lang="ts"' : ''
+    const styleLang = config.cssPreprocessor !== 'none' ? ` lang="${config.cssPreprocessor}"` : ''
+
+    context.files['src/App.vue'] = generateAppFile(lang, styleLang, !!config.useRouter)
+    context.files['src/components/Counter.vue'] = generateCounterFile(lang, styleLang)
+    context.files[`src/main.${fileExtension}`] = generateMainFile(!!config.useRouter, !!config.usePinia)
 
     if (config.language === 'typescript') {
       context.files['src/vite-env.d.ts'] = generateViteEnvFile()
@@ -90,43 +92,34 @@ export const vueGenerator: Generator = {
 
 /* File generators */
 
-function generateAppFile(vueConfig: VueConfig) {
-  return `<script setup${vueConfig.language === 'typescript' ? ' lang="ts"' : ''}>
-import Counter from './components/Counter.vue'
-</script>
-
-<template>
-  <div>
-    <h1>Hello, vite + vue</h1>
-    <Counter />
-  </div>
-</template>
-
-<style${vueConfig.cssPreprocessor !== 'none' ? ` lang="${vueConfig.cssPreprocessor}"` : ''}>
-/* Add your global styles here */
-<style/>
-`
+function generateAppFile(lang: string, styleLang: string, useRouter: boolean) {
+  return `
+<script setup${lang}>
+${useRouter
+    ? `import { RouterView } from 'vue-router'`
+    : `import Counter from './components/Counter.vue'`
 }
-
-function generateAppFileWithRouter(vueConfig: VueConfig) {
-  return `<script setup${vueConfig.language === 'typescript' ? ' lang="ts"' : ''}>
-import { RouterView } from 'vue-router'
 </script>
 
 <template>
   <div>
-    <RouterView />
+    ${
+      useRouter
+        ? '<RouterView />'
+        : `<h1>Hello, vite + vue</h1>
+    <Counter />`
+    }
   </div>
 </template>
 
-<style${vueConfig.cssPreprocessor !== 'none' ? ` lang="${vueConfig.cssPreprocessor}"` : ''}>
+<style${styleLang}>
 /* Add your global styles here */
 </style>
 `
 }
 
-function generateCounterFile(vueConfig: VueConfig) {
-  return `<script setup${vueConfig.language === 'typescript' ? ' lang="ts"' : ''}>
+function generateCounterFile(lang: string, styleLang: string) {
+  return `<script setup${lang}>
 import { ref } from 'vue'
 
 const count = ref(0)
@@ -140,7 +133,7 @@ const count = ref(0)
   </div>
 </template>
 
-<style scoped${vueConfig.cssPreprocessor !== 'none' ? ` lang="${vueConfig.cssPreprocessor}"` : ''}>
+<style scoped${styleLang}>
 div {
   text-align: center;
   padding: 2rem;
@@ -159,5 +152,18 @@ button:hover {
   background-color: #f0f0f0;
 }
 </style>
+`
+}
+
+function generateMainFile(useRouter: boolean, usePinia: boolean) {
+  return `import { createApp } from 'vue'
+import App from './App.vue'
+${useRouter ? 'import router from \'./router\'' : ''}
+${usePinia ? 'import { createPinia } from \'pinia\'' : ''}
+
+const app = createApp(App)
+${usePinia ? 'app.use(createPinia())' : ''}
+${useRouter ? 'app.use(router)' : ''}
+app.mount('#app')
 `
 }

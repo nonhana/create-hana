@@ -1,3 +1,4 @@
+import type { ReactMainEditorType } from '@/editor'
 import type { ProjectContext } from '@/types'
 import { ErrorMessages } from '@/constants/errors'
 import { ErrorFactory } from '@/error/factory'
@@ -16,7 +17,7 @@ export function generateQueryLibrary(context: ProjectContext) {
       packageJson.dependencies['@tanstack/react-query'] = '^5.81.5'
       context.mainEditor!.addImport('main', `import { QueryClient, QueryClientProvider } from '@tanstack/react-query'`)
       context.mainEditor!.addCode('main', `const queryClient = new QueryClient()`)
-      context.mainEditor!.addJsxProvider('QueryClientProvider', { client: 'queryClient' })
+      ;(context.mainEditor! as ReactMainEditorType).addJsxProvider('QueryClientProvider', { client: 'queryClient' })
       break
     }
     case 'swr': {
