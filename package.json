@@ -2,7 +2,7 @@
   "name": "create-hana",
   "type": "module",
   "version": "0.0.5",
-  "packageManager": "pnpm@10.13.1",
+  "packageManager": "pnpm@10.14.0",
   "description": "A modern project scaffolding tool for JS/TS applications",
   "author": "non_hana",
   "license": "MIT",
