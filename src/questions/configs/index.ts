@@ -1,6 +1,7 @@
 import type { QuestionsSetConfig } from '@/types'
 import { PROJECTS } from '@/constants/project-types'
 import { toMutableOptions } from '@/utils/fit-options'
+import { honoQuestions } from './hono'
 import { nodeQuestions } from './node'
 import { reactQuestions } from './react'
 import { vueQuestions } from './vue'
@@ -48,6 +49,7 @@ export const QUESTIONS_CONFIG: QuestionsSetConfig = {
     nodeQuestions,
     reactQuestions,
     vueQuestions,
+    honoQuestions,
   ],
 
   final: [

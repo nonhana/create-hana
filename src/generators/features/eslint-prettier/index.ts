@@ -16,6 +16,10 @@ export const eslintPrettierGenerator: Generator = {
     else if (config.projectType === 'vue') {
       generateVueESLintPrettierConfig(context)
     }
+    // Hono uses Node/Edge runtime; reuse Node config for lint + prettier
+    else if (config.projectType === 'hono') {
+      generateNodeESLintPrettierConfig(context)
+    }
 
     if (config.codeQualityConfig) {
       context.files['.vscode/settings.json'] = generateESLintPrettierVscodeConfig()

@@ -20,6 +20,7 @@ export function addPrettierScripts(context: ProjectContext) {
     'format': 'prettier --write .',
     'format:check': 'prettier --check .',
   })
+  context.files['.prettierignore'] = generatePrettierIgnore()
 }
 
 export function generatePrettierConfig(options: PrettierOptions = {}) {
@@ -60,6 +61,7 @@ export function generatePrettierConfig(options: PrettierOptions = {}) {
       htmlWhitespaceSensitivity: 'css',
       singleAttributePerLine: true,
     },
+    hono: {},
   }
 
   const config = {
@@ -70,5 +72,25 @@ export function generatePrettierConfig(options: PrettierOptions = {}) {
 
   return `/** @type {import("prettier").Config} */
 export default ${JSON.stringify(config, null, 2)}
+`
+}
+
+function generatePrettierIgnore() {
+  return `# Dependencies
+node_modules
+
+# Build output
+dist
+build
+
+# Logs
+*.log
+
+# Coverage
+coverage
+
+# Editor settings
+.vscode
+.idea
 `
 }
