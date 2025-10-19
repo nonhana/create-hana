@@ -1,20 +1,20 @@
 catalog:
-  '@antfu/eslint-config': ^4.16.1
-  '@babel/parser': ^7.28.0
-  '@babel/types': ^7.28.0
+  '@antfu/eslint-config': ^6.0.0
+  '@babel/parser': ^7.28.4
+  '@babel/types': ^7.28.4
   '@clack/prompts': ^0.11.0
-  '@types/node': ^22.15.34
-  '@vitest/ui': ^2.1.9
-  '@vue/compiler-sfc': ^3.5.18
+  '@types/node': ^22.18.11
+  '@vitest/ui': ^3.2.4
+  '@vue/compiler-sfc': ^3.5.22
   cross-spawn: ^7.0.6
-  eslint: ^9.30.0
+  eslint: ^9.38.0
   mri: ^1.2.0
   picocolors: ^1.1.1
   recast: ^0.23.11
-  tsdown: ^0.12.9
-  tsx: ^4.20.3
-  typescript: ^5.8.3
-  vitest: ^2.1.9
+  tsdown: ^0.15.8
+  tsx: ^4.20.6
+  typescript: ^5.9.3
+  vitest: ^3.2.4
 
 onlyBuiltDependencies:
   - esbuild
