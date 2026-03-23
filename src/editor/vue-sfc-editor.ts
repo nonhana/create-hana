@@ -1,6 +1,9 @@
 import type { SFCScriptBlock, SFCStyleBlock } from '@vue/compiler-sfc'
 import { parse as parseVueSFC } from '@vue/compiler-sfc'
 
+const vueSFCStyleReg = /<style[^>]*>/g
+const vueSFCScriptReg = /<script[^>]*>/
+
 export class VueSFCEditor {
   public source: string
   public descriptor: ReturnType<typeof parseVueSFC>['descriptor']
@@ -67,7 +70,7 @@ export class VueSFCEditor {
   }
 
   replaceBlockTag(type: 'style' | 'script', index: number, newTag: string): string {
-    const regex = type === 'style' ? /<style[^>]*>/g : /<script[^>]*>/
+    const regex = type === 'style' ? vueSFCStyleReg : vueSFCScriptReg
     let matchCount = 0
     return this.source.replace(regex, (match) => {
       if (matchCount === index) {
