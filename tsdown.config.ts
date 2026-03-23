@@ -6,7 +6,9 @@ export default defineConfig({
   clean: true,
   target: 'node16',
   minify: true,
-  external: /^node:/,
+  deps: {
+    neverBundle: [/^node:/],
+  },
   shims: true,
   hash: false,
 })
