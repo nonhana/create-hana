@@ -29,7 +29,7 @@
     "test": "vitest run",
     "test:ui": "vitest --ui",
     "test:coverage": "vitest --coverage",
-    "prepublishOnly": "pnpm run build"
+    "prepublishOnly": "pnpm build"
   },
   "dependencies": {
     "@clack/prompts": "catalog:",
@@ -43,6 +43,7 @@
     "@antfu/eslint-config": "catalog:",
     "@babel/parser": "catalog:",
     "@babel/types": "catalog:",
+    "@changesets/cli": "catalog:",
     "@types/node": "catalog:",
     "@vitest/ui": "catalog:",
     "eslint": "catalog:",

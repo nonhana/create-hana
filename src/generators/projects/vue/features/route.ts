@@ -13,9 +13,9 @@ export function generateRoutingLibrary(context: ProjectContext) {
     return
 
   const alias
-  = config.modulePathAliasing && config.modulePathAliasing !== 'none'
-    ? config.modulePathAliasing
-    : '..'
+    = config.modulePathAliasing && config.modulePathAliasing !== 'none'
+      ? config.modulePathAliasing
+      : '..'
 
   packageJson.dependencies = packageJson.dependencies || {}
   packageJson.dependencies['vue-router'] = '^4.5.0'
