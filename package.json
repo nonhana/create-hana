@@ -2,7 +2,7 @@
   "name": "create-hana",
   "type": "module",
   "version": "0.0.5",
-  "packageManager": "pnpm@10.18.3",
+  "packageManager": "pnpm@10.32.1",
   "description": "A modern project scaffolding tool for JS/TS applications",
   "author": "non_hana",
   "license": "MIT",
@@ -29,7 +29,7 @@
     "test": "vitest run",
     "test:ui": "vitest --ui",
     "test:coverage": "vitest --coverage",
-    "prepublishOnly": "pnpm run build"
+    "prepublishOnly": "pnpm build"
   },
   "dependencies": {
     "@clack/prompts": "catalog:",
@@ -43,12 +43,14 @@
     "@antfu/eslint-config": "catalog:",
     "@babel/parser": "catalog:",
     "@babel/types": "catalog:",
+    "@changesets/cli": "catalog:",
     "@types/node": "catalog:",
     "@vitest/ui": "catalog:",
     "eslint": "catalog:",
     "tsdown": "catalog:",
     "tsx": "catalog:",
     "typescript": "catalog:",
+    "vite": "catalog:",
     "vitest": "catalog:"
   }
 }
