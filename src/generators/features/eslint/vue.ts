@@ -53,10 +53,11 @@ import eslintPluginJsonc from 'eslint-plugin-jsonc'
 import eslintPluginVue from 'eslint-plugin-vue'
 import simpleImportSort from 'eslint-plugin-simple-import-sort'
 import eslintPluginYml from 'eslint-plugin-yml'
+import { defineConfig } from 'eslint/config'
 import tseslint from 'typescript-eslint'
 import vueParser from 'vue-eslint-parser'
 
-export default tseslint.config(
+export default defineConfig(
   {
     ignores: [
       'dist/',

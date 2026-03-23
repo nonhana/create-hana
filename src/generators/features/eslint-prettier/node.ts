@@ -57,9 +57,10 @@ import eslintPluginJsonc from 'eslint-plugin-jsonc'
 import pluginN from 'eslint-plugin-n'
 import eslintPluginUnicorn from 'eslint-plugin-unicorn'
 import eslintPluginYml from 'eslint-plugin-yml'
+import { defineConfig } from 'eslint/config'
 import tseslint from 'typescript-eslint'
 
-export default tseslint.config(
+export default defineConfig(
   eslint.configs.recommended,
   tseslint.configs.strict,
   eslintPluginUnicorn.configs.recommended,
