@@ -51,9 +51,8 @@ function generateTsConfigFile() {
       noImplicitReturns: true,
       noFallthroughCasesInSwitch: true,
       forceConsistentCasingInFileNames: true,
-      baseUrl: './',
       paths: {
-        '@/*': ['src/*'],
+        '@/*': ['./src/*'],
       },
       esModuleInterop: true,
       allowSyntheticDefaultImports: true,

@@ -40,9 +40,8 @@ function generateTsConfigFile(config: Config) {
 
   // Add path aliasing support
   if (config.modulePathAliasing && config.modulePathAliasing !== 'none') {
-    tsConfig.compilerOptions.baseUrl = './'
     tsConfig.compilerOptions.paths = {
-      [`${config.modulePathAliasing}/*`]: ['src/*'],
+      [`${config.modulePathAliasing}/*`]: ['./src/*'],
     }
   }
 
