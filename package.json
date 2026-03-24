@@ -14,14 +14,15 @@
     "javascript",
     "nodejs"
   ],
-  "main": "dist/index.js",
+  "main": "dist/index.mjs",
   "bin": {
-    "create-hana": "dist/index.js"
+    "create-hana": "dist/index.mjs"
   },
   "engines": {
     "node": ">=16.0.0"
   },
   "scripts": {
+    "typecheck": "tsc --noEmit",
     "build": "tsdown",
     "dev": "tsx src/index.ts",
     "lint": "eslint .",

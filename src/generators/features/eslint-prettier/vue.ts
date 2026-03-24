@@ -51,10 +51,11 @@ function generateESLintConfig(language: 'typescript' | 'javascript') {
 import eslint from '@eslint/js'
 import eslintConfigPrettier from 'eslint-config-prettier'
 import eslintPluginVue from 'eslint-plugin-vue'
+import { defineConfig } from 'eslint/config'
 import tseslint from 'typescript-eslint'
 import vueParser from 'vue-eslint-parser'
 
-export default tseslint.config(
+export default defineConfig(
   // Global ignores
   {
     ignores: [
@@ -92,7 +93,7 @@ export default tseslint.config(
     },
     rules: {
       // Vue rules - based on official recommendations
-      'vue/multi-word-component-names': 'warn',
+      'vue/multi-word-component-names': 'off',
       'vue/no-reserved-component-names': 'error',
       'vue/component-definition-name-casing': ['error', 'PascalCase'],
       'vue/custom-event-name-casing': ['error', 'camelCase'],
@@ -199,7 +200,7 @@ export default [
     },
     rules: {
       // Vue rules - based on official recommendations
-      'vue/multi-word-component-names': 'warn',
+      'vue/multi-word-component-names': 'off',
       'vue/no-reserved-component-names': 'error',
       'vue/component-definition-name-casing': ['error', 'PascalCase'],
       'vue/custom-event-name-casing': ['error', 'camelCase'],

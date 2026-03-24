@@ -15,7 +15,18 @@ export type Config = {
   pkgManager?: typeof COMMON_MANAGER_OPTIONS[number]['value']
   codeQualityTools?: typeof COMMON_CODE_QUALITY_TOOLS_OPTIONS[number]['value']
   codeQualityConfig?: boolean
-} & (
+}
+& (
+  | { codeQualityTools: 'oxlint-oxfmt', enableTypeAware: boolean }
+  | {
+    codeQualityTools?: Exclude<
+        typeof COMMON_CODE_QUALITY_TOOLS_OPTIONS[number]['value'],
+        'oxlint-oxfmt'
+    >
+    enableTypeAware?: never
+  }
+)
+& (
   | ({ projectType?: undefined }) // may not be set yet
   | ({ projectType: 'node' } & NodeProjectConfig)
   | ({ projectType: 'react' } & ReactProjectConfig)
@@ -23,14 +34,14 @@ export type Config = {
   | ({ projectType: 'hono' } & HonoProjectConfig)
 )
 
-// specific project config
+// specific config
 export type NodeConfig = Config & { projectType: 'node' }
 export type ReactConfig = Config & { projectType: 'react' }
 export type VueConfig = Config & { projectType: 'vue' }
 export type HonoConfig = Config & { projectType: 'hono' }
 
-export interface ProjectContext {
-  config: Config
+export interface ProjectContext<C extends Config = Config> {
+  config: C
   projectDir: string
   cwd: string
   packageJson: PackageJsonConfig
@@ -62,8 +73,8 @@ export interface PackageJsonConfig {
   [key: string]: any
 }
 
-export interface Generator {
-  generate: (context: ProjectContext) => Promise<void> | void
+export interface Generator<C extends Config = Config> {
+  generate: (context: ProjectContext<C>) => Promise<void> | void
 }
 
 export interface PackageManager {

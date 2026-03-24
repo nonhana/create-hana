@@ -1,6 +1,10 @@
 import type { ProjectQuestionsConfig } from '@/types'
 import { toMutableOptions } from '@/utils/fit-options'
-import { COMMON_CODE_QUALITY_TOOLS_OPTIONS, COMMON_LANGUAGE_OPTIONS, COMMON_MANAGER_OPTIONS, COMMON_PATH_ALIASING_OPTIONS } from '../options/common'
+import {
+  COMMON_LANGUAGE_OPTIONS,
+  COMMON_MANAGER_OPTIONS,
+  COMMON_PATH_ALIASING_OPTIONS,
+} from '../options/common'
 import {
   REACT_QUERY_OPTIONS,
   REACT_ROUTING_LIBRARIES_OPTIONS,
@@ -12,6 +16,7 @@ import {
   FRONTEND_CSS_PREPROCESSORS_OPTIONS,
   FRONTEND_HTTP_OPTIONS,
 } from '../options/frontend'
+import { codeQualityQuestions } from './feature/code-quality'
 
 export const reactQuestions: ProjectQuestionsConfig = {
   projectType: 'react',
@@ -32,21 +37,10 @@ export const reactQuestions: ProjectQuestionsConfig = {
       options: toMutableOptions(COMMON_MANAGER_OPTIONS),
       initialValue: 'pnpm',
     },
-    {
-      id: 'codeQuality',
-      type: 'select',
-      message: 'Which code quality tools would you like to use?',
-      field: 'codeQualityTools',
-      options: toMutableOptions(COMMON_CODE_QUALITY_TOOLS_OPTIONS),
-      initialValue: 'eslint',
-    },
-    {
-      id: 'codeQualityConfig',
-      type: 'confirm',
-      message: 'Would you like to configure code quality tools for VSCode?',
-      field: 'codeQualityConfig',
-      initialValue: true,
-    },
+
+    // features
+    ...codeQualityQuestions,
+
     {
       id: 'buildTool',
       type: 'select',

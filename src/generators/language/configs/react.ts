@@ -45,9 +45,8 @@ function generateTsConfigFile(config: Config) {
   }
 
   if (config.modulePathAliasing && config.modulePathAliasing !== 'none') {
-    tsConfig.compilerOptions.baseUrl = './'
     tsConfig.compilerOptions.paths = {
-      [`${config.modulePathAliasing}/*`]: ['src/*'],
+      [`${config.modulePathAliasing}/*`]: ['./src/*'],
     }
   }
 

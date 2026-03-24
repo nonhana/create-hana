@@ -5,13 +5,13 @@ import {
   COMMON_MANAGER_OPTIONS,
   COMMON_PATH_ALIASING_OPTIONS,
 } from '../options/common'
-import { VUE_CODE_QUALITY_TOOLS_OPTIONS } from '../options/features/vue'
 import {
   FRONTEND_BUILD_TOOLS_OPTIONS,
   FRONTEND_CSS_FRAMEWORKS_OPTIONS,
   FRONTEND_CSS_PREPROCESSORS_OPTIONS,
   FRONTEND_HTTP_OPTIONS,
 } from '../options/frontend'
+import { codeQualityQuestions } from './feature/code-quality'
 
 export const vueQuestions: ProjectQuestionsConfig = {
   projectType: 'vue',
@@ -32,21 +32,10 @@ export const vueQuestions: ProjectQuestionsConfig = {
       options: toMutableOptions(COMMON_MANAGER_OPTIONS),
       initialValue: 'pnpm',
     },
-    {
-      id: 'codeQuality',
-      type: 'select',
-      message: 'Which code quality tools would you like to use?',
-      field: 'codeQualityTools',
-      options: toMutableOptions(VUE_CODE_QUALITY_TOOLS_OPTIONS),
-      initialValue: 'eslint',
-    },
-    {
-      id: 'codeQualityConfig',
-      type: 'confirm',
-      message: 'Would you like to configure code quality tools for VSCode?',
-      field: 'codeQualityConfig',
-      initialValue: true,
-    },
+
+    // features
+    ...codeQualityQuestions,
+
     {
       id: 'buildTool',
       type: 'select',
