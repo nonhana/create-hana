@@ -1,7 +1,6 @@
 import type { ProjectQuestionsConfig } from '@/types'
 import { toMutableOptions } from '@/utils/fit-options'
 import {
-  COMMON_CODE_QUALITY_TOOLS_OPTIONS,
   COMMON_LANGUAGE_OPTIONS,
   COMMON_MANAGER_OPTIONS,
 } from '../options/common'
@@ -10,6 +9,7 @@ import {
   NODE_TS_RUNTIME_OPTIONS,
   NODE_WEBSERVER_OPTIONS,
 } from '../options/features/node'
+import { codeQualityQuestions } from './feature/code-quality'
 
 export const nodeQuestions: ProjectQuestionsConfig = {
   projectType: 'node',
@@ -30,29 +30,10 @@ export const nodeQuestions: ProjectQuestionsConfig = {
       options: toMutableOptions(COMMON_MANAGER_OPTIONS),
       initialValue: 'pnpm',
     },
-    {
-      id: 'codeQuality',
-      type: 'select',
-      message: 'Which code quality tools would you like to use?',
-      field: 'codeQualityTools',
-      options: toMutableOptions(COMMON_CODE_QUALITY_TOOLS_OPTIONS),
-      initialValue: 'none',
-    },
-    {
-      id: 'codeQualityConfig',
-      type: 'confirm',
-      message: 'Would you like to configure code quality tools for VSCode?',
-      field: 'codeQualityConfig',
-      initialValue: false,
-      when: {
-        type: 'cascade',
-        situation: [{
-          field: 'codeQualityTools',
-          value: 'none',
-          operator: 'neq',
-        }],
-      },
-    },
+
+    // features
+    ...codeQualityQuestions,
+
     {
       id: 'webserver',
       type: 'select',

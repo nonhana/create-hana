@@ -1,5 +1,6 @@
 import type {
   Config,
+  MaybeGetterOptions,
   QuestionConfig,
   QuestionSituationObj,
   QuestionsSetConfig,
@@ -66,7 +67,7 @@ export class QuestionEngine {
         case 'select':
           answer = await prompts.select({
             message: question.message,
-            options: question.options,
+            options: this.parseOptions(question.options),
             initialValue: question.initialValue || question.defaultValue,
           })
           break
@@ -74,7 +75,7 @@ export class QuestionEngine {
         case 'multiselect':
           answer = await prompts.multiselect({
             message: question.message,
-            options: question.options,
+            options: this.parseOptions(question.options),
             initialValues: question.initialValues || question.defaultValue || [],
             required: question.min !== undefined ? question.min > 0 : false,
           })
@@ -122,6 +123,13 @@ export class QuestionEngine {
         { questionId: question.id, questionType: question.type },
       )
     }
+  }
+
+  // parse options
+  private parseOptions(optionSource: MaybeGetterOptions) {
+    return typeof optionSource === 'function'
+      ? optionSource(this.config)
+      : optionSource
   }
 
   // special case handler for some questions

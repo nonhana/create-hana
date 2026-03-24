@@ -6,7 +6,7 @@ import { mainReactRouterProviderTemplate, mainReactTemplate, viteTemplate } from
 import { ErrorFactory } from '@/error/factory'
 import { ErrorHandler } from '@/error/handler'
 import { viteGenerator } from '@/generators/build-tools'
-import { biomeGenerator, eslintGenerator, eslintPrettierGenerator, oxlintPrettierGenerator } from '@/generators/features'
+import { biomeGenerator, eslintGenerator, eslintPrettierGenerator, oxlintOxfmtGenerator } from '@/generators/features'
 import { languageGenerator } from '@/generators/language'
 import { honoGenerator, nodeGenerator, reactGenerator, vueGenerator } from '@/generators/projects'
 import { initGitRepository } from '@/handlers/git'
@@ -78,7 +78,11 @@ async function initializeProjectContext(config: Config, cwd: string) {
     throw ErrorFactory.validation(ErrorMessages.validation.projectTypeRequired())
 
   // Global editor context
-  if (config.projectType !== 'node' && config.buildTool === 'vite') {
+  if (
+    config.projectType !== 'node'
+    && config.projectType !== 'hono'
+    && config.buildTool === 'vite'
+  ) {
     context.viteConfigEditor = createViteConfigEditor(viteTemplate())
   }
   if (config.projectType === 'react') {
@@ -130,8 +134,8 @@ async function runGenerators(context: ProjectContext) {
       case 'biome':
         biomeGenerator.generate(context)
         break
-      case 'oxlint-prettier':
-        oxlintPrettierGenerator.generate(context)
+      case 'oxlint-oxfmt':
+        oxlintOxfmtGenerator.generate(context)
         break
     }
   }

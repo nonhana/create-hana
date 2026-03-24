@@ -29,6 +29,8 @@ export interface QuestionOption {
   description?: string
 }
 
+export type MaybeGetterOptions = QuestionOption[] | ((config: Config) => QuestionOption[])
+
 export interface BaseQuestionConfig {
   id: string
   type: QuestionType
@@ -40,13 +42,13 @@ export interface BaseQuestionConfig {
 
 export interface SelectQuestionConfig extends BaseQuestionConfig {
   type: 'select'
-  options: QuestionOption[]
+  options: MaybeGetterOptions
   initialValue?: any
 }
 
 export interface MultiSelectQuestionConfig extends BaseQuestionConfig {
   type: 'multiselect'
-  options: QuestionOption[]
+  options: MaybeGetterOptions
   initialValues?: any[]
   min?: number
   max?: number
