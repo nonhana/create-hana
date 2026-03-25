@@ -30,7 +30,7 @@
     "test": "vitest run",
     "test:ui": "vitest --ui",
     "test:coverage": "vitest --coverage",
-    "prepublishOnly": "pnpm build"
+    "prepack": "pnpm build"
   },
   "dependencies": {
     "@clack/prompts": "catalog:",
