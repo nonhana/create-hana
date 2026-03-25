@@ -124,7 +124,7 @@ describe('project Generation Integration', () => {
     const packageJson = await readPackageJson(projectDir)
 
     expect(existsSync(join(projectDir, 'src/main.tsx'))).toBe(true)
-    expect(existsSync(join(projectDir, 'src/app.tsx'))).toBe(true)
+    expect(existsSync(join(projectDir, 'src/App.tsx'))).toBe(true)
     expect(existsSync(join(projectDir, 'vite.config.ts'))).toBe(true)
     expect(packageJson.dependencies).toHaveProperty('react')
     expect(packageJson.dependencies).toHaveProperty('react-dom')

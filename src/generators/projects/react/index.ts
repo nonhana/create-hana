@@ -30,7 +30,7 @@ export const reactGenerator: Generator = {
     }
 
     // 1. Generate src directory structure
-    const appFileName = `src/app${fileExtension}x`
+    const appFileName = `src/App${fileExtension}x`
     // if routing library is react-router or tanstack-router, we use <RouterProvider /> instead of <App />
     if (config.routingLibrary === 'wouter' || config.routingLibrary === 'none') {
       context.files[appFileName] = generateAppFile(config.routingLibrary)
