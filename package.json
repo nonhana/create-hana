@@ -6,6 +6,17 @@
   "description": "A modern project scaffolding tool for JS/TS applications",
   "author": "non_hana",
   "license": "MIT",
+  "publishConfig": {
+    "access": "public"
+  },
+  "homepage": "https://github.com/nonhana/create-hana#readme",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/nonhana/create-hana.git"
+  },
+  "bugs": {
+    "url": "https://github.com/nonhana/create-hana/issues"
+  },
   "keywords": [
     "cli",
     "scaffold",
@@ -18,6 +29,11 @@
   "bin": {
     "create-hana": "dist/index.mjs"
   },
+  "files": [
+    "LICENSE",
+    "README.md",
+    "dist"
+  ],
   "engines": {
     "node": ">=16.0.0"
   },
