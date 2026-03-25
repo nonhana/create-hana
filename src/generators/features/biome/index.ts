@@ -1,5 +1,5 @@
 import type { Generator } from '@/types'
-import { addDependencies, addScripts } from '@/utils/package-json'
+import { addDependencyPreset, addScripts } from '@/utils/package-json'
 import { generateNodeBiomeConfig } from './node'
 import { generateReactBiomeConfig } from './react'
 
@@ -7,9 +7,7 @@ export const biomeGenerator: Generator = {
   generate(context) {
     const { config } = context
 
-    addDependencies(context.packageJson, {
-      '@biomejs/biome': '^1.9.4',
-    }, 'devDependencies')
+    addDependencyPreset(context.packageJson, 'feature.code-quality.biome')
 
     addScripts(context.packageJson, {
       'lint': 'biome lint src/',

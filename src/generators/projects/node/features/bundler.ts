@@ -1,7 +1,7 @@
 import type { ProjectContext } from '@/types'
 import { ErrorMessages } from '@/constants/errors'
 import { ErrorFactory } from '@/error/factory'
-import { addDependencies, addScripts } from '@/utils/package-json'
+import { addDependencyPreset, addScripts } from '@/utils/package-json'
 
 export function generateBundlerConfig(context: ProjectContext) {
   const { config } = context
@@ -27,10 +27,7 @@ export function generateBundlerConfig(context: ProjectContext) {
 function generateTsupConfig(context: ProjectContext) {
   const { packageJson } = context
 
-  addDependencies(packageJson, {
-    'tsup': '^8.5.0',
-    '@swc/core': '^1.11.31',
-  }, 'devDependencies')
+  addDependencyPreset(packageJson, 'feature.node.bundler.tsup')
 
   addScripts(packageJson, {
     'build': 'tsup',
@@ -55,9 +52,7 @@ function generateTsupConfig(context: ProjectContext) {
 function generateTsdownConfig(context: ProjectContext) {
   const { packageJson } = context
 
-  addDependencies(packageJson, {
-    tsdown: '^0.12.6',
-  }, 'devDependencies')
+  addDependencyPreset(packageJson, 'feature.node.bundler.tsdown')
 
   addScripts(packageJson, {
     'build': 'tsdown',

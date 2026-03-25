@@ -1,7 +1,7 @@
 import type { ProjectContext } from '@/types'
 import { ErrorMessages } from '@/constants/errors'
 import { ErrorFactory } from '@/error/factory'
-import { addDependencies, addScripts } from '@/utils/package-json'
+import { addDependencyPreset, addScripts } from '@/utils/package-json'
 
 export function generateReactESLintConfig(context: ProjectContext) {
   const { config } = context
@@ -12,29 +12,12 @@ export function generateReactESLintConfig(context: ProjectContext) {
 
   const language = config.language || 'typescript'
 
-  const commonDeps: Record<string, string> = {
-    'eslint': '^9.30.1',
-    '@eslint/js': '^9.30.1',
-    'eslint-plugin-react': '^7.37.5',
-    'eslint-plugin-react-hooks': '^5.2.0',
-    'eslint-plugin-react-refresh': '^0.4.20',
-    'eslint-plugin-simple-import-sort': '^12.1.1',
-    'eslint-plugin-jsonc': '^2.20.1',
-    'eslint-plugin-yml': '^1.18.0',
-    'typescript-eslint': '^8.36.0',
-    '@eslint/markdown': '^6.6.0',
-  }
-
-  let eslintDeps: Record<string, string>
-
-  if (language === 'typescript') {
-    eslintDeps = { ...commonDeps }
-  }
-  else {
-    eslintDeps = { ...commonDeps, globals: '^16.3.0' }
-  }
-
-  addDependencies(context.packageJson, eslintDeps, 'devDependencies')
+  addDependencyPreset(
+    context.packageJson,
+    language === 'typescript'
+      ? 'feature.eslint.react.typescript'
+      : 'feature.eslint.react.javascript',
+  )
 
   addScripts(context.packageJson, {
     'lint': 'eslint .',
@@ -50,13 +33,13 @@ function generateESLintConfig(language: 'typescript' | 'javascript') {
 
 import eslint from '@eslint/js'
 import markdown from '@eslint/markdown'
+import { defineConfig } from 'eslint/config'
 import eslintPluginJsonc from 'eslint-plugin-jsonc'
 import reactPlugin from 'eslint-plugin-react'
 import reactHooks from 'eslint-plugin-react-hooks'
 import reactRefresh from 'eslint-plugin-react-refresh'
 import simpleImportSort from 'eslint-plugin-simple-import-sort'
 import eslintPluginYml from 'eslint-plugin-yml'
-import { defineConfig } from 'eslint/config'
 import tseslint from 'typescript-eslint'
 
 export default defineConfig(
@@ -157,6 +140,7 @@ export default defineConfig(
 
 import eslint from '@eslint/js'
 import markdown from '@eslint/markdown'
+import { defineConfig } from 'eslint/config'
 import eslintPluginJsonc from 'eslint-plugin-jsonc'
 import simpleImportSort from 'eslint-plugin-simple-import-sort'
 import eslintPluginYml from 'eslint-plugin-yml'
@@ -164,7 +148,6 @@ import reactPlugin from 'eslint-plugin-react'
 import reactHooks from 'eslint-plugin-react-hooks'
 import reactRefresh from 'eslint-plugin-react-refresh'
 import globals from 'globals'
-import { defineConfig } from 'eslint/config'
 import tseslint from 'typescript-eslint'
 
 export default defineConfig(

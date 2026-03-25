@@ -1,21 +1,19 @@
-import type { Config, Generator, NodeConfig, ProjectContext, ReactConfig } from '@/types'
-import { addDependencies, addScripts } from '@/utils/package-json'
+import type { Config, Generator } from '@/types'
+import { addDependencyPreset, addScripts } from '@/utils/package-json'
 import { generateNodeOxlintOxfmtConfig } from './node'
 import { generateReactOxlintOxfmtConfig } from './react'
 
-export type OxlintOxfmtConfig = Extract<Config, { codeQualityTools: 'oxlint-oxfmt' }>
-export type NodeOxlintOxfmtConfig = Extract<NodeConfig, { codeQualityTools: 'oxlint-oxfmt' }>
-export type ReactOxlintOxfmtConfig = Extract<ReactConfig, { codeQualityTools: 'oxlint-oxfmt' }>
-
-export const oxlintOxfmtGenerator: Generator<OxlintOxfmtConfig> = {
+export const oxlintOxfmtGenerator: Generator<
+  Extract<Config, { codeQualityTools: 'oxlint-oxfmt' }>
+> = {
   generate(context) {
     const { config, packageJson } = context
 
-    addDependencies(packageJson, {
-      oxlint: '^1.56.0',
-      oxfmt: '^0.41.0',
-      ...(config.enableTypeAware && { 'oxlint-tsgolint': '^0.17.2' }),
-    }, 'devDependencies')
+    addDependencyPreset(packageJson, 'feature.code-quality.oxlint-oxfmt.base')
+
+    if (config.enableTypeAware) {
+      addDependencyPreset(packageJson, 'feature.code-quality.oxlint-oxfmt.type-aware')
+    }
 
     addScripts(packageJson, {
       'lint': 'oxlint',
@@ -24,25 +22,17 @@ export const oxlintOxfmtGenerator: Generator<OxlintOxfmtConfig> = {
       'fmt:check': 'oxfmt --check',
     })
 
-    if (isNode(context)) {
-      generateNodeOxlintOxfmtConfig(context)
+    if (config.projectType === 'node') {
+      generateNodeOxlintOxfmtConfig(context as any)
     }
-    else if (isReact(context)) {
-      generateReactOxlintOxfmtConfig(context)
+    else if (config.projectType === 'react') {
+      generateReactOxlintOxfmtConfig(context as any)
     }
 
     if (config.codeQualityConfig) {
       context.files['.vscode/settings.json'] = generateOxlintOxfmtVscConfig()
     }
   },
-}
-
-function isNode(context: ProjectContext<OxlintOxfmtConfig>): context is ProjectContext<NodeOxlintOxfmtConfig> {
-  return context.config.projectType === 'node'
-}
-
-function isReact(context: ProjectContext<OxlintOxfmtConfig>): context is ProjectContext<ReactOxlintOxfmtConfig> {
-  return context.config.projectType === 'react'
 }
 
 function generateOxlintOxfmtVscConfig() {

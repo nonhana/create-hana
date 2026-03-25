@@ -1,5 +1,6 @@
 import type { ProjectContext } from '@/types'
 import { describe, expect, it } from 'vitest'
+import { resolveDependencyPreset } from '@/dependencies'
 import { languageGenerator } from '../language'
 
 describe('languageGenerator', () => {
@@ -25,10 +26,7 @@ describe('languageGenerator', () => {
     expect(context.fileExtension).toBe('.ts')
 
     // Check TypeScript dependencies are added
-    expect(context.packageJson.devDependencies).toEqual({
-      'typescript': 'latest',
-      '@types/node': 'latest',
-    })
+    expect(context.packageJson.devDependencies).toEqual(resolveDependencyPreset('lang.typescript.base').devDependencies)
 
     // Check TypeScript scripts are added
     expect(context.packageJson.scripts).toEqual({

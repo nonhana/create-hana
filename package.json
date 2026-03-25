@@ -44,6 +44,7 @@
     "lint": "eslint .",
     "lint:fix": "eslint . --fix",
     "test": "vitest run",
+    "test:smoke": "tsx scripts/smoke-test.ts",
     "test:ui": "vitest --ui",
     "test:coverage": "vitest --coverage",
     "prepack": "pnpm build"

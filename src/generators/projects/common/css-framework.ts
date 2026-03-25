@@ -1,6 +1,7 @@
 import type { ProjectContext } from '@/types'
 import { ErrorMessages } from '@/constants/errors'
 import { ErrorFactory } from '@/error/factory'
+import { addDependencyPreset } from '@/utils/package-json'
 
 export function generateCssFramework(context: ProjectContext) {
   const { config, packageJson } = context
@@ -12,10 +13,9 @@ export function generateCssFramework(context: ProjectContext) {
 
   switch (config.cssFramework) {
     case 'tailwindcss': {
-      packageJson.devDependencies = packageJson.devDependencies || {}
-      packageJson.devDependencies.tailwindcss = '^4.1.11'
+      addDependencyPreset(packageJson, 'feature.css-framework.tailwind.base')
       if (config.buildTool === 'vite') {
-        packageJson.devDependencies['@tailwindcss/vite'] = '^4.1.11'
+        addDependencyPreset(packageJson, 'feature.css-framework.tailwind.vite')
         context.files['src/styles/global.css'] = `@import "tailwindcss";`
         context.viteConfigEditor!.addImport(
           'viteConfig',
@@ -27,8 +27,7 @@ export function generateCssFramework(context: ProjectContext) {
       break
     }
     case 'unocss': {
-      packageJson.devDependencies = packageJson.devDependencies || {}
-      packageJson.devDependencies.unocss = '^66.3.3'
+      addDependencyPreset(packageJson, 'feature.css-framework.unocss.vite')
       if (config.buildTool === 'vite') {
         context.files['uno.config.ts'] = generateUnoCssConfig()
         context.viteConfigEditor!.addImport(

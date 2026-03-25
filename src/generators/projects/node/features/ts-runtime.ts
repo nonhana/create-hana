@@ -1,6 +1,7 @@
 import type { ProjectContext } from '@/types'
 import { ErrorMessages } from '@/constants/errors'
 import { ErrorFactory } from '@/error/factory'
+import { addDependencyPreset } from '@/utils/package-json'
 
 export function generateTypeScriptRuntime(context: ProjectContext) {
   const { config, packageJson } = context
@@ -13,24 +14,21 @@ export function generateTypeScriptRuntime(context: ProjectContext) {
 
   switch (runtime) {
     case 'tsx': {
-      packageJson.devDependencies = packageJson.devDependencies || {}
-      packageJson.devDependencies.tsx = '^4.19.4'
+      addDependencyPreset(packageJson, 'feature.node.runtime.tsx')
       packageJson.scripts = packageJson.scripts || {}
       packageJson.scripts.dev = 'tsx src/index.ts'
       packageJson.scripts['dev:watch'] = 'tsx src/index.ts --watch'
       break
     }
     case 'ts-node': {
-      packageJson.devDependencies = packageJson.devDependencies || {}
-      packageJson.devDependencies['ts-node'] = '^10.9.2'
+      addDependencyPreset(packageJson, 'feature.node.runtime.ts-node')
       packageJson.scripts = packageJson.scripts || {}
       packageJson.scripts.dev = 'ts-node src/index.ts'
       packageJson.scripts['dev:watch'] = 'ts-node src/index.ts --watch'
       break
     }
     case 'esno': {
-      packageJson.devDependencies = packageJson.devDependencies || {}
-      packageJson.devDependencies.esno = '^4.8.0'
+      addDependencyPreset(packageJson, 'feature.node.runtime.esno')
       packageJson.scripts = packageJson.scripts || {}
       packageJson.scripts.dev = 'esno src/index.ts'
       packageJson.scripts['dev:watch'] = 'esno src/index.ts --watch'

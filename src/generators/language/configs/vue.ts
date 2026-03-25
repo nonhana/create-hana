@@ -1,17 +1,12 @@
 import type { Config, ProjectContext } from '@/types'
 import { ErrorMessages } from '@/constants/errors'
 import { ErrorFactory } from '@/error/factory'
-import { addDependencies } from '@/utils/package-json'
+import { addDependencyPreset } from '@/utils/package-json'
 
 export function generateVueTSConfig(context: ProjectContext) {
   const { config, packageJson } = context
 
-  addDependencies(packageJson, {
-    'typescript': 'latest',
-    '@types/node': 'latest',
-    '@vue/tsconfig': '^0.7.0',
-    'vue-tsc': 'latest',
-  }, 'devDependencies')
+  addDependencyPreset(packageJson, 'lang.typescript.vue')
 
   context.files['tsconfig.json'] = generateTsConfigFile(config)
 }

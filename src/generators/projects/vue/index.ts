@@ -5,7 +5,7 @@ import { generateAlias } from '@/generators/projects/common/alias'
 import { generateCssFramework } from '@/generators/projects/common/css-framework'
 import { generateCssPreprocessor } from '@/generators/projects/common/css-preprocessor'
 import { generateHttpLibrary } from '@/generators/projects/common/http'
-import { addDependencies } from '@/utils/package-json'
+import { addDependencyPreset } from '@/utils/package-json'
 import { generateGitignore, generateHanaLogo, generateReadmeTemplate, generateSPAHtmlTemplate, generateViteEnvFile } from '@/utils/template'
 import { generateRoutingLibrary } from './features/route'
 import { generateStateManagement } from './features/state-management'
@@ -20,12 +20,10 @@ export const vueGenerator: Generator = {
 
     const projectName = config.targetDir || 'hana-project'
 
-    addDependencies(packageJson, {
-      vue: '^3.5.18',
-    })
+    addDependencyPreset(packageJson, 'project.vue.base')
 
     if (config.buildTool === 'vite') {
-      addDependencies(packageJson, { '@vitejs/plugin-vue': '^6.0.0' }, 'devDependencies')
+      addDependencyPreset(packageJson, 'build.vite.vue')
       context.viteConfigEditor!.addImport('viteConfig', `import vue from '@vitejs/plugin-vue'`)
       context.viteConfigEditor!.addVitePlugin(`vue()`)
     }
@@ -45,7 +43,7 @@ export const vueGenerator: Generator = {
 
     context.files['src/App.vue'] = generateAppFile(lang, styleLang, !!config.useRouter)
     context.files['src/components/Counter.vue'] = generateCounterFile(lang, styleLang)
-    context.files[`src/main.${fileExtension}`] = generateMainFile(!!config.useRouter, !!config.usePinia)
+    context.files[`src/main${fileExtension}`] = generateMainFile(!!config.useRouter, !!config.usePinia)
 
     if (config.language === 'typescript') {
       context.files['src/vite-env.d.ts'] = generateViteEnvFile()

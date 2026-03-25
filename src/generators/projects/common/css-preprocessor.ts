@@ -1,6 +1,7 @@
 import type { ProjectContext } from '@/types'
 import { ErrorMessages } from '@/constants/errors'
 import { ErrorFactory } from '@/error/factory'
+import { addDependencyPreset } from '@/utils/package-json'
 
 export function generateCssPreprocessor(context: ProjectContext) {
   const { config, packageJson } = context
@@ -11,13 +12,11 @@ export function generateCssPreprocessor(context: ProjectContext) {
 
   switch (config.cssPreprocessor) {
     case 'less': {
-      packageJson.devDependencies = packageJson.devDependencies || {}
-      packageJson.devDependencies.less = '^4.3.0'
+      addDependencyPreset(packageJson, 'feature.css-preprocessor.less')
       break
     }
     case 'scss': {
-      packageJson.devDependencies = packageJson.devDependencies || {}
-      packageJson.devDependencies.sass = '^1.89.2'
+      addDependencyPreset(packageJson, 'feature.css-preprocessor.scss')
       break
     }
   }

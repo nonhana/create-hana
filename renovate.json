@@ -1,0 +1,202 @@
+{
+  "$schema": "https://docs.renovatebot.com/renovate-schema.json",
+  "extends": [
+    "config:recommended"
+  ],
+  "timezone": "Asia/Shanghai",
+  "schedule": [
+    "every weekend"
+  ],
+  "labels": [
+    "dependencies"
+  ],
+  "rangeStrategy": "replace",
+  "separateMajorMinor": true,
+  "regexManagers": [
+    {
+      "fileMatch": [
+        "^src/dependencies/registry\\.ts$"
+      ],
+      "matchStrings": [
+        "[A-Za-z0-9_@./'\"-]+:\\s*createManagedDependency\\(\\{[\\s\\S]*?packageName:\\s*'(?<depName>[^']+)'\\s*,[\\s\\S]*?version:\\s*'(?<currentValue>[^']+)'"
+      ],
+      "datasourceTemplate": "npm"
+    }
+  ],
+  "packageRules": [
+    {
+      "matchManagers": [
+        "npm"
+      ],
+      "groupName": "repo development dependencies"
+    },
+    {
+      "matchManagers": [
+        "regex"
+      ],
+      "matchFileNames": [
+        "src/dependencies/registry.ts"
+      ],
+      "matchPackageNames": [
+        "eslint",
+        "@eslint/js",
+        "@eslint/markdown",
+        "eslint-plugin-react",
+        "eslint-plugin-react-hooks",
+        "eslint-plugin-react-refresh",
+        "eslint-plugin-jsx-a11y",
+        "eslint-plugin-simple-import-sort",
+        "eslint-plugin-jsonc",
+        "eslint-plugin-yml",
+        "eslint-plugin-n",
+        "eslint-plugin-unicorn",
+        "eslint-plugin-vue",
+        "vue-eslint-parser",
+        "typescript-eslint",
+        "eslint-config-prettier"
+      ],
+      "groupName": "template eslint ecosystem"
+    },
+    {
+      "matchManagers": [
+        "regex"
+      ],
+      "matchFileNames": [
+        "src/dependencies/registry.ts"
+      ],
+      "matchPackageNames": [
+        "vite",
+        "@vitejs/plugin-react",
+        "@vitejs/plugin-vue",
+        "tailwindcss",
+        "@tailwindcss/vite",
+        "unocss"
+      ],
+      "groupName": "template vite ecosystem"
+    },
+    {
+      "matchManagers": [
+        "regex"
+      ],
+      "matchFileNames": [
+        "src/dependencies/registry.ts"
+      ],
+      "matchPackageNames": [
+        "hono",
+        "hono-zod-openapi",
+        "zod-openapi",
+        "zod",
+        "valibot",
+        "yup",
+        "wrangler",
+        "prisma",
+        "@prisma/client",
+        "drizzle",
+        "kysely",
+        "lucia",
+        "next-auth"
+      ],
+      "groupName": "template hono ecosystem"
+    },
+    {
+      "matchManagers": [
+        "regex"
+      ],
+      "matchFileNames": [
+        "src/dependencies/registry.ts"
+      ],
+      "matchPackageNames": [
+        "react",
+        "react-dom",
+        "@types/react",
+        "@types/react-dom",
+        "vue",
+        "@vue/tsconfig",
+        "vue-tsc",
+        "react-router",
+        "@tanstack/react-router",
+        "wouter",
+        "@tanstack/react-query",
+        "swr",
+        "zustand",
+        "jotai",
+        "mobx",
+        "@reduxjs/toolkit",
+        "react-redux",
+        "pinia",
+        "vue-router",
+        "axios",
+        "ky"
+      ],
+      "groupName": "template frontend ecosystem"
+    },
+    {
+      "matchManagers": [
+        "regex"
+      ],
+      "matchFileNames": [
+        "src/dependencies/registry.ts"
+      ],
+      "matchPackageNames": [
+        "typescript",
+        "@types/node",
+        "@types/express",
+        "tsx",
+        "ts-node",
+        "esno",
+        "express",
+        "fastify",
+        "tsup",
+        "@swc/core",
+        "tsdown",
+        "prettier",
+        "@trivago/prettier-plugin-sort-imports",
+        "@biomejs/biome",
+        "oxlint",
+        "oxfmt",
+        "oxlint-tsgolint",
+        "vitest",
+        "jest"
+      ],
+      "groupName": "template tooling and backend ecosystem"
+    },
+    {
+      "matchManagers": [
+        "regex"
+      ],
+      "matchFileNames": [
+        "src/dependencies/registry.ts"
+      ],
+      "matchPackageNames": [
+        "@types/node",
+        "@types/express",
+        "globals",
+        "less",
+        "sass",
+        "axios",
+        "ky",
+        "tsx",
+        "ts-node",
+        "esno"
+      ],
+      "matchUpdateTypes": [
+        "patch"
+      ],
+      "automerge": true,
+      "groupName": "low-risk template patch updates"
+    },
+    {
+      "matchManagers": [
+        "regex"
+      ],
+      "matchFileNames": [
+        "src/dependencies/registry.ts"
+      ],
+      "matchUpdateTypes": [
+        "major"
+      ],
+      "automerge": false,
+      "groupName": "template major updates"
+    }
+  ]
+}

@@ -1,13 +1,10 @@
 import type { ProjectContext } from '@/types'
-import { addDependencies, addScripts } from '@/utils/package-json'
+import { addDependencyPreset, addScripts } from '@/utils/package-json'
 
 export function generateNodeTSConfig(context: ProjectContext) {
   const { packageJson } = context
 
-  addDependencies(packageJson, {
-    'typescript': 'latest',
-    '@types/node': 'latest',
-  }, 'devDependencies')
+  addDependencyPreset(packageJson, 'lang.typescript.base')
 
   addScripts(packageJson, {
     'build': 'tsc',
@@ -41,6 +38,7 @@ function generateTsConfigFile() {
       module: 'NodeNext',
       moduleResolution: 'NodeNext',
       lib: ['ES2022'],
+      rootDir: './src',
       outDir: './dist',
       declaration: true,
       declarationMap: true,

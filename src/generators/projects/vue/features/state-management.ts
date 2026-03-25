@@ -1,9 +1,10 @@
 import type { ProjectContext } from '@/types'
 import { ErrorMessages } from '@/constants/errors'
 import { ErrorFactory } from '@/error/factory'
+import { addDependencyPreset } from '@/utils/package-json'
 
 export function generateStateManagement(context: ProjectContext) {
-  const { config, packageJson } = context
+  const { config } = context
   if (!config.projectType)
     throw ErrorFactory.validation(ErrorMessages.validation.projectTypeRequired())
   if (config.projectType !== 'vue')
@@ -13,8 +14,6 @@ export function generateStateManagement(context: ProjectContext) {
     return
 
   const fileExtension = context.fileExtension
-
-  packageJson.dependencies = packageJson.dependencies || {}
 
   const generatePiniaStore = () => {
     return `import { ref } from 'vue'
@@ -35,7 +34,7 @@ export const useCounterStore = defineStore('counter', () => {
 `
   }
 
-  packageJson.dependencies.pinia = '^3.0.0'
+  addDependencyPreset(context.packageJson, 'feature.vue.state.pinia')
 
   context.files[`src/stores/counter${fileExtension}`] = generatePiniaStore()
 }

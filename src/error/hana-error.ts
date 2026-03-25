@@ -2,11 +2,11 @@ import type { ErrorCategory, ErrorContext } from '@/types/error'
 import { ErrorSeverity } from '@/types/error'
 
 export class HanaError extends Error {
+  public override readonly cause?: Error | undefined
   public readonly code: string
   public readonly category: ErrorCategory
   public readonly severity: ErrorSeverity
   public readonly details?: Record<string, any> | undefined
-  public readonly cause?: Error | undefined
 
   constructor(context: ErrorContext) {
     super(context.message)

@@ -1,15 +1,12 @@
 import type { Config, ProjectContext } from '@/types'
 import { ErrorMessages } from '@/constants/errors'
 import { ErrorFactory } from '@/error/factory'
-import { addDependencies } from '@/utils/package-json'
+import { addDependencyPreset } from '@/utils/package-json'
 
 export function generateReactTSConfig(context: ProjectContext) {
   const { config, packageJson } = context
 
-  addDependencies(packageJson, {
-    'typescript': 'latest',
-    '@types/node': 'latest',
-  }, 'devDependencies')
+  addDependencyPreset(packageJson, 'lang.typescript.base')
 
   context.files['tsconfig.json'] = generateTsConfigFile(config)
 }

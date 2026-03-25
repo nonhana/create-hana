@@ -1,11 +1,9 @@
 import type { Generator } from '@/types'
-import { addDependencies, addScripts } from '@/utils/package-json'
+import { addDependencyPreset, addScripts } from '@/utils/package-json'
 
 export const viteGenerator: Generator = {
   generate(context) {
-    addDependencies(context.packageJson, {
-      vite: '^7.0.0',
-    })
+    addDependencyPreset(context.packageJson, 'build.vite.base')
 
     addScripts(context.packageJson, {
       dev: 'vite',

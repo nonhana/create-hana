@@ -1,7 +1,7 @@
 import type { ProjectContext } from '@/types'
 import { ErrorMessages } from '@/constants/errors'
 import { ErrorFactory } from '@/error/factory'
-import { addDependencies, addScripts } from '@/utils/package-json'
+import { addDependencyPreset, addScripts } from '@/utils/package-json'
 import { addPrettierDependencies, addPrettierScripts, generatePrettierConfig } from '../prettier'
 
 export function generateVueESLintPrettierConfig(context: ProjectContext) {
@@ -13,25 +13,12 @@ export function generateVueESLintPrettierConfig(context: ProjectContext) {
 
   const language = config.language || 'typescript'
 
-  const commonEslintDeps: Record<string, string> = {
-    'eslint': '^9.30.1',
-    '@eslint/js': '^9.30.1',
-    'eslint-plugin-vue': '^9.32.0',
-    'vue-eslint-parser': '^9.4.3',
-    'eslint-config-prettier': '^10.1.5',
-    'typescript-eslint': '^8.36.0',
-  }
-
-  let eslintDeps: Record<string, string>
-
-  if (language === 'typescript') {
-    eslintDeps = { ...commonEslintDeps }
-  }
-  else {
-    eslintDeps = { ...commonEslintDeps, globals: '^16.3.0' }
-  }
-
-  addDependencies(context.packageJson, eslintDeps, 'devDependencies')
+  addDependencyPreset(
+    context.packageJson,
+    language === 'typescript'
+      ? 'feature.eslint-prettier.vue.typescript'
+      : 'feature.eslint-prettier.vue.javascript',
+  )
 
   addScripts(context.packageJson, {
     'lint': 'eslint .',
