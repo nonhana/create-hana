@@ -5,7 +5,7 @@ import { generateAlias } from '@/generators/projects/common/alias'
 import { generateCssFramework } from '@/generators/projects/common/css-framework'
 import { generateCssPreprocessor } from '@/generators/projects/common/css-preprocessor'
 import { generateHttpLibrary } from '@/generators/projects/common/http'
-import { addDependencies } from '@/utils/package-json'
+import { addDependencyPreset } from '@/utils/package-json'
 import { generateGitignore, generateHanaLogo, generateReadmeTemplate, generateSPAHtmlTemplate, generateViteEnvFile } from '@/utils/template'
 import { generateQueryLibrary } from './features/query'
 import { generateRoutingLibrary } from './features/route'
@@ -21,21 +21,16 @@ export const reactGenerator: Generator = {
 
     const projectName = config.targetDir || 'hana-project'
 
-    addDependencies(packageJson, {
-      'react': '^19.1.0',
-      'react-dom': '^19.1.0',
-      '@types/react': '^19.1.8',
-      '@types/react-dom': '^19.1.6',
-    })
+    addDependencyPreset(packageJson, 'project.react.base')
 
     if (config.buildTool === 'vite') {
-      addDependencies(packageJson, { '@vitejs/plugin-react': '^4.6.0' })
+      addDependencyPreset(packageJson, 'build.vite.react')
       context.viteConfigEditor!.addImport('viteConfig', `import react from '@vitejs/plugin-react'`)
       context.viteConfigEditor!.addVitePlugin(`react()`)
     }
 
     // 1. Generate src directory structure
-    const appFileName = `src/app${fileExtension}x`
+    const appFileName = `src/App${fileExtension}x`
     // if routing library is react-router or tanstack-router, we use <RouterProvider /> instead of <App />
     if (config.routingLibrary === 'wouter' || config.routingLibrary === 'none') {
       context.files[appFileName] = generateAppFile(config.routingLibrary)
@@ -104,6 +99,7 @@ export const reactGenerator: Generator = {
 function generateAppFile(type: string) {
   if (type === 'wouter') {
     return `import { Route } from 'wouter'
+
 import { Home } from './pages/home'
 
 export default function App() {

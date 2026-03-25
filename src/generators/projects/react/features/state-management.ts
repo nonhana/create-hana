@@ -2,17 +2,16 @@ import type { ReactMainEditorType } from '@/editor'
 import type { ProjectContext } from '@/types'
 import { ErrorMessages } from '@/constants/errors'
 import { ErrorFactory } from '@/error/factory'
+import { addDependencyPreset } from '@/utils/package-json'
 
 export function generateStateManagement(context: ProjectContext) {
-  const { config, packageJson } = context
+  const { config } = context
   if (!config.projectType)
     throw ErrorFactory.validation(ErrorMessages.validation.projectTypeRequired())
   if (config.projectType !== 'react')
     throw ErrorFactory.validation(ErrorMessages.validation.invalidProjectType(config.projectType))
 
   const language = config.language ?? 'typescript'
-
-  packageJson.dependencies = packageJson.dependencies || {}
 
   // Zustand Generator
   const generateZustandStore = (language: 'typescript' | 'javascript') => {
@@ -99,23 +98,22 @@ export const store = configureStore({
 
   switch (config.stateManagement) {
     case 'zustand': {
-      packageJson.dependencies.zustand = '^5.0.6'
+      addDependencyPreset(context.packageJson, 'feature.react.state.zustand')
       context.files[`src/stores/counter${context.fileExtension}`] = generateZustandStore(language)
       break
     }
     case 'jotai': {
-      packageJson.dependencies.jotai = '^2.12.5'
+      addDependencyPreset(context.packageJson, 'feature.react.state.jotai')
       context.files[`src/atoms/counter${context.fileExtension}`] = generateJotaiStore()
       break
     }
     case 'mobx': {
-      packageJson.dependencies.mobx = '^6.13.7'
+      addDependencyPreset(context.packageJson, 'feature.react.state.mobx')
       context.files[`src/stores/counter${context.fileExtension}`] = generateMobxStore()
       break
     }
     case 'redux': {
-      packageJson.dependencies['@reduxjs/toolkit'] = '^2.8.2'
-      packageJson.dependencies['react-redux'] = '^9.2.0'
+      addDependencyPreset(context.packageJson, 'feature.react.state.redux')
       context.files[`src/stores/modules/counter${context.fileExtension}`] = generateReduxCounter()
       context.files[`src/stores/index${context.fileExtension}`] = generateReduxStore()
       context.mainEditor!.addImport('main', `import { Provider } from 'react-redux'`)

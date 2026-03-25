@@ -1,4 +1,5 @@
 import type { PackageJsonConfig } from '@/types'
+import { resolveDependencyPreset, resolveManagedDependencies } from '@/dependencies'
 
 export function mergePackageJson(...configs: Partial<PackageJsonConfig>[]) {
   const result: PackageJsonConfig = {
@@ -42,6 +43,28 @@ export function addDependencies(
     packageJson[type] = {}
   }
   Object.assign(packageJson[type]!, dependencies)
+}
+
+function applyResolvedDependencies(packageJson: PackageJsonConfig, resolvedDependencies: ReturnType<typeof resolveManagedDependencies>) {
+  if (resolvedDependencies.dependencies) {
+    addDependencies(packageJson, resolvedDependencies.dependencies, 'dependencies')
+  }
+
+  if (resolvedDependencies.devDependencies) {
+    addDependencies(packageJson, resolvedDependencies.devDependencies, 'devDependencies')
+  }
+
+  if (resolvedDependencies.peerDependencies) {
+    addDependencies(packageJson, resolvedDependencies.peerDependencies, 'peerDependencies')
+  }
+}
+
+export function addManagedDependencies(packageJson: PackageJsonConfig, dependencyKeys: readonly string[]) {
+  applyResolvedDependencies(packageJson, resolveManagedDependencies(dependencyKeys))
+}
+
+export function addDependencyPreset(packageJson: PackageJsonConfig, presetKey: string) {
+  applyResolvedDependencies(packageJson, resolveDependencyPreset(presetKey))
 }
 
 export function addScripts(packageJson: PackageJsonConfig, scripts: Record<string, string>) {

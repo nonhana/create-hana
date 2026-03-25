@@ -1,0 +1,40 @@
+name: Template Smoke
+
+on:
+  push:
+    branches: [master]
+    paths:
+      - src/core/generator.ts
+      - src/dependencies/**
+      - src/generators/**
+      - src/utils/package-json.ts
+      - scripts/smoke-test.ts
+      - .github/workflows/template-smoke.yml
+  pull_request:
+    branches: [master]
+    paths:
+      - src/core/generator.ts
+      - src/dependencies/**
+      - src/generators/**
+      - src/utils/package-json.ts
+      - scripts/smoke-test.ts
+      - .github/workflows/template-smoke.yml
+
+jobs:
+  smoke:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v6.0.2
+
+      - uses: pnpm/action-setup@v5.0.0
+
+      - uses: actions/setup-node@v6.3.0
+        with:
+          node-version: 24
+          cache: pnpm
+
+      - name: Install workspace dependencies
+        run: pnpm install
+
+      - name: Run template smoke tests
+        run: pnpm test:smoke

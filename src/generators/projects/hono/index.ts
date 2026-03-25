@@ -1,133 +1,129 @@
-import type { Generator, ProjectContext } from '@/types'
+import type { Generator, HonoConfig, ProjectContext } from '@/types'
 import { ErrorMessages } from '@/constants/errors'
 import { ErrorFactory } from '@/error/factory'
-import { addDependencies, addScripts } from '@/utils/package-json'
+import { addDependencyPreset, addScripts } from '@/utils/package-json'
 import { generateGitignore, generateReadmeTemplate } from '@/utils/template'
+
+type HonoProjectContext = ProjectContext<HonoConfig>
 
 export const honoGenerator: Generator = {
   generate(context) {
-    const { config, packageJson } = context
+    const { config } = context
     if (!config.projectType)
       throw ErrorFactory.validation(ErrorMessages.validation.projectTypeRequired())
     if (config.projectType !== 'hono')
       throw ErrorFactory.validation(ErrorMessages.validation.invalidProjectType(config.projectType))
 
+    const honoContext = context as HonoProjectContext
+    const { packageJson } = honoContext
     const projectName = config.targetDir || 'hono-app'
 
-    // base deps
-    addDependencies(packageJson, {
-      hono: '^4.6.10',
-    })
+    addDependencyPreset(packageJson, 'project.hono.base')
 
     // runtime specific deps & scripts
-    configureRuntime(context)
+    configureRuntime(honoContext)
 
     // purpose templates
-    generatePurposeTemplates(context)
+    generatePurposeTemplates(honoContext)
 
     // validation
-    configureValidation(context)
+    configureValidation(honoContext)
 
     // openapi if zod
     if (config.openapi && config.validationLibrary === 'zod') {
-      addDependencies(packageJson, {
-        'hono-zod-openapi': '^0.16.3',
-        'zod-openapi': '^3.0.0',
-      })
+      addDependencyPreset(packageJson, 'feature.hono.openapi.zod')
     }
 
     // database
-    configureDatabase(context)
+    configureDatabase(honoContext)
 
     // auth
-    configureAuth(context)
+    configureAuth(honoContext)
 
     // middlewares
-    configureMiddlewares(context)
+    configureMiddlewares(honoContext)
 
     // testing
-    configureTesting(context)
+    configureTesting(honoContext)
 
     // root files
-    context.files['.gitignore'] = generateGitignore()
-    context.files['README.md'] = generateReadmeTemplate(
+    honoContext.files['.gitignore'] = generateGitignore()
+    honoContext.files['README.md'] = generateReadmeTemplate(
       'hono',
       projectName,
       'A Hono.js project',
     )
 
     // package json basic
-    context.packageJson.name = projectName
-    context.packageJson.description = 'A Hono.js project'
-    context.packageJson.version = '1.0.0'
-    context.packageJson.license = 'MIT'
-    context.packageJson.engines = {
+    honoContext.packageJson.name = projectName
+    honoContext.packageJson.description = 'A Hono.js project'
+    honoContext.packageJson.version = '1.0.0'
+    honoContext.packageJson.license = 'MIT'
+    honoContext.packageJson.engines = {
       node: '>=18.12.0',
     }
   },
 }
 
-function configureRuntime(context: ProjectContext) {
+function configureRuntime(context: HonoProjectContext) {
   const { config, packageJson, fileExtension } = context
 
   switch (config.runtime) {
     case 'node': {
-      addDependencies(packageJson, { 'hono/serve': '*' })
+      addDependencyPreset(packageJson, 'feature.hono.runtime.node')
       addScripts(packageJson, {
-        dev: `tsx src/server.${fileExtension}`,
+        dev: `tsx src/server${fileExtension}`,
         start: `node dist/server.js`,
       })
-      // ts runtime helper for dev
-      addDependencies(packageJson, { tsx: 'latest' }, 'devDependencies')
 
-      context.files[`src/server.${fileExtension}`] = generateNodeServerFile()
-      context.files[`src/app.${fileExtension}`] = generateAppFile()
+      context.files[`src/server${fileExtension}`] = generateNodeServerFile()
+      context.files[`src/app${fileExtension}`] = generateAppFile()
       break
     }
     case 'cloudflare-workers': {
-      addDependencies(packageJson, { wrangler: 'latest' }, 'devDependencies')
+      addDependencyPreset(packageJson, 'feature.hono.runtime.cloudflare-workers')
       addScripts(packageJson, {
         dev: 'wrangler dev',
         start: 'wrangler start',
       })
-      context.files[`src/index.${fileExtension}`] = generateCfWorkerEntry()
+      context.files[`src/index${fileExtension}`] = generateCfWorkerEntry()
       context.files[`wrangler.toml`] = generateWranglerToml()
       break
     }
     case 'bun': {
       addScripts(packageJson, {
-        dev: `bun run src/server.${fileExtension}`,
+        dev: `bun run src/server${fileExtension}`,
         start: `bun run dist/server.js`,
       })
-      context.files[`src/server.${fileExtension}`] = generateNodeServerFile()
-      context.files[`src/app.${fileExtension}`] = generateAppFile()
+      context.files[`src/server${fileExtension}`] = generateNodeServerFile()
+      context.files[`src/app${fileExtension}`] = generateAppFile()
       break
     }
     case 'deno': {
       addScripts(packageJson, {
-        dev: `deno run -A src/server.${fileExtension}`,
+        dev: `deno run -A src/server${fileExtension}`,
       })
-      context.files[`src/server.${fileExtension}`] = generateDenoServerFile()
-      context.files[`src/app.${fileExtension}`] = generateAppFile()
+      context.files[`src/server${fileExtension}`] = generateDenoServerFile()
+      context.files[`src/app${fileExtension}`] = generateAppFile()
       break
     }
     case 'vercel': {
-      context.files[`api/index.${fileExtension}`] = generateVercelEdgeEntry()
+      context.files[`api/index${fileExtension}`] = generateVercelEdgeEntry()
       context.files['vercel.json'] = generateVercelJson()
       break
     }
     case 'other':
     default: {
-      context.files[`src/index.${fileExtension}`] = generateGenericEntryFile()
+      context.files[`src/index${fileExtension}`] = generateGenericEntryFile()
       break
     }
   }
 }
 
-function generatePurposeTemplates(context: ProjectContext) {
+function generatePurposeTemplates(context: HonoProjectContext) {
   const { config, fileExtension } = context
   if (config.purpose === 'rest') {
-    context.files[`src/routes/index.${fileExtension}`] = `import { Hono } from 'hono'
+    context.files[`src/routes/index${fileExtension}`] = `import { Hono } from 'hono'
 
 export const router = new Hono()
 
@@ -139,88 +135,77 @@ router.post('/users', async c => {
 `
   }
   else if (config.purpose === 'rpc') {
-    context.files[`src/routes/rpc.${fileExtension}`] = `import { Hono } from 'hono'
+    context.files[`src/routes/rpc${fileExtension}`] = `import { Hono } from 'hono'
 export const router = new Hono()
 router.get('/ping', c => c.json({ ok: true }))
 `
   }
   else if (config.purpose === 'ssr') {
-    context.files[`src/views/index.${fileExtension}x`] = `export default function Page() { return <div>Hello Hono SSR</div> }`
+    context.files[`src/views/index${fileExtension}x`] = `export default function Page() { return <div>Hello Hono SSR</div> }`
   }
 }
 
-function configureValidation(context: ProjectContext) {
+function configureValidation(context: HonoProjectContext) {
   const { config, packageJson } = context
   switch (config.validationLibrary) {
     case 'zod':
-      addDependencies(packageJson, { zod: '^3.23.8' })
+      addDependencyPreset(packageJson, 'feature.hono.validation.zod')
       break
     case 'valibot':
-      addDependencies(packageJson, { valibot: 'latest' })
+      addDependencyPreset(packageJson, 'feature.hono.validation.valibot')
       break
     case 'yup':
-      addDependencies(packageJson, { yup: 'latest' })
+      addDependencyPreset(packageJson, 'feature.hono.validation.yup')
       break
   }
 }
 
-function configureDatabase(context: ProjectContext) {
-  const { config, packageJson } = context
+function configureDatabase(context: HonoProjectContext) {
+  const { config } = context
   switch (config.database) {
     case 'prisma':
-      addDependencies(packageJson, { 'prisma': 'latest', '@prisma/client': 'latest' }, 'devDependencies')
+      addDependencyPreset(context.packageJson, 'feature.hono.database.prisma')
       context.files['prisma/schema.prisma'] = `datasource db { provider = "postgresql" url = env("DATABASE_URL") }
 generator client { provider = "prisma-client-js" }`
       break
     case 'drizzle':
-      addDependencies(packageJson, { drizzle: 'latest' })
+      addDependencyPreset(context.packageJson, 'feature.hono.database.drizzle')
       context.files['drizzle.config.ts'] = `export default { schema: './src/db/schema.ts' }`
       context.files['src/db/schema.ts'] = `// define drizzle schema here`
       break
     case 'kysely':
-      addDependencies(packageJson, { kysely: 'latest' })
+      addDependencyPreset(context.packageJson, 'feature.hono.database.kysely')
       break
   }
 }
 
-function configureAuth(context: ProjectContext) {
-  const { config, packageJson } = context
+function configureAuth(context: HonoProjectContext) {
+  const { config } = context
   switch (config.auth) {
-    case 'jwt':
-      addDependencies(packageJson, { 'hono/jwt': '*' })
-      break
     case 'lucia':
-      addDependencies(packageJson, { lucia: 'latest' })
+      addDependencyPreset(context.packageJson, 'feature.hono.auth.lucia')
       break
     case 'authjs':
-      addDependencies(packageJson, { 'next-auth': 'latest' })
-      break
-    case 'basic':
-      addDependencies(packageJson, { 'hono/basic-auth': '*' })
+      addDependencyPreset(context.packageJson, 'feature.hono.auth.authjs')
       break
   }
 }
 
-function configureMiddlewares(context: ProjectContext) {
-  const { config, packageJson } = context
-  const selected = config.middlewares || []
-  if (selected.includes('cors'))
-    addDependencies(packageJson, { 'hono/cors': '*' })
-  if (selected.includes('secure-headers'))
-    addDependencies(packageJson, { 'hono/secure-headers': '*' })
-  if (selected.includes('rate-limiter'))
-    addDependencies(packageJson, { 'hono/rate-limit': '*' })
-  if (selected.includes('logger'))
-    addDependencies(packageJson, { 'hono/logger': '*' })
-}
+function configureMiddlewares(_context: HonoProjectContext) {}
 
-function configureTesting(context: ProjectContext) {
+function configureTesting(context: HonoProjectContext) {
   const { config, packageJson } = context
   if (config.testFramework === 'vitest') {
-    addDependencies(packageJson, { vitest: 'latest' }, 'devDependencies')
+    addDependencyPreset(packageJson, 'feature.hono.testing.vitest')
+    addScripts(packageJson, {
+      test: 'vitest run --passWithNoTests',
+    })
   }
   else if (config.testFramework === 'jest') {
-    addDependencies(packageJson, { jest: 'latest' }, 'devDependencies')
+    addDependencyPreset(packageJson, 'feature.hono.testing.jest')
+    addScripts(packageJson, {
+      test: 'jest --passWithNoTests',
+    })
   }
 }
 
@@ -234,7 +219,7 @@ app.get('/', c => c.text('Hello Hono'))
 }
 
 function generateNodeServerFile() {
-  return `import { serve } from 'hono/serve'
+  return `import { serve } from '@hono/node-server'
 import { app } from './app'
 
 serve(app)
@@ -276,4 +261,15 @@ const app = new Hono()
 app.get('/', c => c.text('Hello from Vercel Edge + Hono'))
 export default app
 `
+}
+
+function generateVercelJson() {
+  return JSON.stringify({
+    version: 2,
+    functions: {
+      'api/index.ts': {
+        runtime: 'edge',
+      },
+    },
+  }, null, 2)
 }

@@ -1,7 +1,7 @@
 import type { ProjectContext } from '@/types'
 import { ErrorMessages } from '@/constants/errors'
 import { ErrorFactory } from '@/error/factory'
-import { addDependencies, addScripts } from '@/utils/package-json'
+import { addDependencyPreset, addScripts } from '@/utils/package-json'
 import { addPrettierDependencies, addPrettierScripts, generatePrettierConfig } from '../prettier'
 
 export function generateReactESLintPrettierConfig(context: ProjectContext) {
@@ -13,24 +13,12 @@ export function generateReactESLintPrettierConfig(context: ProjectContext) {
 
   const language = config.language || 'typescript'
 
-  const commonEslintDeps: Record<string, string> = {
-    'eslint': '^9.30.1',
-    '@eslint/js': '^9.30.1',
-    'eslint-plugin-react': '^7.37.5',
-    'eslint-plugin-react-hooks': '^5.2.0',
-    'eslint-plugin-react-refresh': '^0.4.20',
-    'eslint-plugin-jsx-a11y': '^6.10.2',
-    'eslint-config-prettier': '^10.1.5',
-    'globals': '^16.3.0',
-  }
-
-  const eslintDeps: Record<string, string> = { ...commonEslintDeps }
-
-  if (language === 'typescript') {
-    eslintDeps['typescript-eslint'] = '^8.33.1'
-  }
-
-  addDependencies(context.packageJson, eslintDeps, 'devDependencies')
+  addDependencyPreset(
+    context.packageJson,
+    language === 'typescript'
+      ? 'feature.eslint-prettier.react.typescript'
+      : 'feature.eslint-prettier.react.javascript',
+  )
 
   addScripts(context.packageJson, {
     'lint': 'eslint .',

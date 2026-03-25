@@ -135,7 +135,7 @@ async function runGenerators(context: ProjectContext) {
         biomeGenerator.generate(context)
         break
       case 'oxlint-oxfmt':
-        oxlintOxfmtGenerator.generate(context)
+        oxlintOxfmtGenerator.generate(context as any)
         break
     }
   }

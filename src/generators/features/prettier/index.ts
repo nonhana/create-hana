@@ -1,6 +1,6 @@
 import type { PROJECT_TYPES } from '@/constants/project-types'
 import type { ProjectContext } from '@/types'
-import { addDependencies, addScripts } from '@/utils/package-json'
+import { addDependencyPreset, addScripts } from '@/utils/package-json'
 
 export interface PrettierOptions {
   projectType?: 'node' | 'react' | 'vue'
@@ -9,10 +9,7 @@ export interface PrettierOptions {
 }
 
 export function addPrettierDependencies(context: ProjectContext) {
-  addDependencies(context.packageJson, {
-    'prettier': '^3.5.3',
-    '@trivago/prettier-plugin-sort-imports': '^5.2.2',
-  }, 'devDependencies')
+  addDependencyPreset(context.packageJson, 'feature.code-quality.prettier')
 }
 
 export function addPrettierScripts(context: ProjectContext) {

@@ -1,6 +1,7 @@
 import type { ProjectContext } from '@/types'
 import { ErrorMessages } from '@/constants/errors'
 import { ErrorFactory } from '@/error/factory'
+import { addDependencyPreset } from '@/utils/package-json'
 
 export function generateWebServerSetup(context: ProjectContext) {
   const { config, fileExtension } = context
@@ -20,14 +21,10 @@ export function generateWebServerSetup(context: ProjectContext) {
 }
 
 function generateExpressSetup(context: ProjectContext, fileExtension: string) {
-  const { packageJson } = context
-
-  packageJson.dependencies = packageJson.dependencies || {}
-  packageJson.dependencies.express = '^5.1.0'
+  addDependencyPreset(context.packageJson, 'feature.node.webserver.express')
 
   if (fileExtension === '.ts') {
-    packageJson.devDependencies = packageJson.devDependencies || {}
-    packageJson.devDependencies['@types/express'] = '^5.0.3'
+    addDependencyPreset(context.packageJson, 'feature.node.webserver.express.typescript')
   }
 
   const serverContent = generateExpressServer()
@@ -36,10 +33,7 @@ function generateExpressSetup(context: ProjectContext, fileExtension: string) {
 }
 
 function generateFastifySetup(context: ProjectContext, fileExtension: string) {
-  const { packageJson } = context
-
-  packageJson.dependencies = packageJson.dependencies || {}
-  packageJson.dependencies.fastify = '^5.3.3'
+  addDependencyPreset(context.packageJson, 'feature.node.webserver.fastify')
 
   const serverContent = generateFastifyServer()
 
@@ -54,7 +48,7 @@ const port = process.env.PORT ?? '3000'
 
 app.use(express.json())
 
-app.get('/', (req, res) => {
+app.get('/', (_req, res) => {
   res.json({ message: 'Hello from Express!' })
 })
 
@@ -71,7 +65,7 @@ const fastify = Fastify({
   logger: true,
 })
 
-fastify.get('/', async (request, reply) => {
+fastify.get('/', async (_request, _reply) => {
   return { message: 'Hello from Fastify!' }
 })
 

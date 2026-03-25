@@ -1,19 +1,18 @@
 import type { ProjectContext } from '@/types'
 import { ErrorMessages } from '@/constants/errors'
 import { ErrorFactory } from '@/error/factory'
+import { addDependencyPreset } from '@/utils/package-json'
 
 export function generateHttpLibrary(context: ProjectContext) {
-  const { config, packageJson } = context
+  const { config } = context
   if (!config.projectType)
     throw ErrorFactory.validation(ErrorMessages.validation.projectTypeRequired())
   if (config.projectType !== 'react' && config.projectType !== 'vue')
     throw ErrorFactory.validation(ErrorMessages.validation.invalidProjectType(config.projectType))
 
-  packageJson.dependencies = packageJson.dependencies || {}
-
   switch (config.httpLibrary) {
     case 'axios': {
-      packageJson.dependencies.axios = '^1.10.0'
+      addDependencyPreset(context.packageJson, 'feature.http.axios')
       context.files[`src/service/index${context.fileExtension}`] = generateAxiosService(config.language ?? 'typescript')
       if (config.language === 'typescript') {
         context.files[`src/service/types${context.fileExtension}`] = generateAxiosTypes()
@@ -21,7 +20,7 @@ export function generateHttpLibrary(context: ProjectContext) {
       break
     }
     case 'ky': {
-      packageJson.dependencies.ky = '^1.8.1'
+      addDependencyPreset(context.packageJson, 'feature.http.ky')
       context.files[`src/service/index${context.fileExtension}`] = generateKyService(config.language ?? 'typescript')
       if (config.language === 'typescript') {
         context.files[`src/service/types${context.fileExtension}`] = generateKyTypes()

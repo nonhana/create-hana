@@ -1,8 +1,9 @@
-import type { NodeOxlintOxfmtConfig } from '.'
-import type { ProjectContext } from '@/types'
+import type { Config, ProjectContext } from '@/types'
 import { generateOxfmtConfig } from '../oxfmt'
 
-export function generateNodeOxlintOxfmtConfig(context: ProjectContext<NodeOxlintOxfmtConfig>) {
+export function generateNodeOxlintOxfmtConfig(context: ProjectContext<
+  Extract<Config, { projectType: 'node', codeQualityTools: 'oxlint-oxfmt' }>
+>) {
   const { config } = context
 
   const language = config.language || 'typescript'

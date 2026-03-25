@@ -1,9 +1,10 @@
 import type { ProjectContext, VueConfig } from '@/types'
 import { ErrorMessages } from '@/constants/errors'
 import { ErrorFactory } from '@/error/factory'
+import { addDependencyPreset } from '@/utils/package-json'
 
 export function generateRoutingLibrary(context: ProjectContext) {
-  const { config, packageJson } = context
+  const { config } = context
   if (!config.projectType)
     throw ErrorFactory.validation(ErrorMessages.validation.projectTypeRequired())
   if (config.projectType !== 'vue')
@@ -17,8 +18,7 @@ export function generateRoutingLibrary(context: ProjectContext) {
       ? config.modulePathAliasing
       : '..'
 
-  packageJson.dependencies = packageJson.dependencies || {}
-  packageJson.dependencies['vue-router'] = '^4.5.0'
+  addDependencyPreset(context.packageJson, 'feature.vue.router')
 
   context.files[`src/router/index${context.fileExtension}`] = generateRouterIndex(alias)
 

@@ -1,6 +1,6 @@
 import type { PackageJsonConfig } from '@/types'
 import { describe, expect, it } from 'vitest'
-import { addDependencies, addScripts, mergePackageJson, sortPackageJson } from '../package-json'
+import { addDependencies, addDependencyPreset, addManagedDependencies, addScripts, mergePackageJson, sortPackageJson } from '../package-json'
 
 describe('package-json utils', () => {
   describe('mergePackageJson', () => {
@@ -95,6 +95,42 @@ describe('package-json utils', () => {
       expect(packageJson.dependencies).toEqual({
         react: '^18.0.0',
         vue: '^3.0.0',
+      })
+    })
+  })
+
+  describe('managed dependencies', () => {
+    it('should add managed dependencies across scopes', () => {
+      const packageJson: PackageJsonConfig = {
+        name: 'test',
+        version: '1.0.0',
+      }
+
+      addManagedDependencies(packageJson, ['react', '@types/react'])
+
+      expect(packageJson.dependencies).toEqual({
+        react: '^19.1.0',
+      })
+      expect(packageJson.devDependencies).toEqual({
+        '@types/react': '^19.1.8',
+      })
+    })
+
+    it('should add a dependency preset', () => {
+      const packageJson: PackageJsonConfig = {
+        name: 'test',
+        version: '1.0.0',
+      }
+
+      addDependencyPreset(packageJson, 'project.react.base')
+
+      expect(packageJson.dependencies).toEqual({
+        'react': '^19.1.0',
+        'react-dom': '^19.1.0',
+      })
+      expect(packageJson.devDependencies).toEqual({
+        '@types/react': '^19.1.8',
+        '@types/react-dom': '^19.1.6',
       })
     })
   })

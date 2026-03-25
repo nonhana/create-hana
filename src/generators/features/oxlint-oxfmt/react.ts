@@ -1,8 +1,9 @@
-import type { ReactOxlintOxfmtConfig } from '.'
-import type { ProjectContext } from '@/types'
+import type { Config, ProjectContext } from '@/types'
 import { generateOxfmtConfig } from '../oxfmt'
 
-export function generateReactOxlintOxfmtConfig(context: ProjectContext<ReactOxlintOxfmtConfig>) {
+export function generateReactOxlintOxfmtConfig(context: ProjectContext<
+  Extract<Config, { projectType: 'react', codeQualityTools: 'oxlint-oxfmt' }>
+>) {
   const { config } = context
 
   const language = config.language || 'typescript'

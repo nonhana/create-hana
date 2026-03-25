@@ -1,39 +1,24 @@
 import type { ProjectContext } from '@/types'
 import { ErrorMessages } from '@/constants/errors'
 import { ErrorFactory } from '@/error/factory'
-import { addDependencies, addScripts } from '@/utils/package-json'
+import { addDependencyPreset, addScripts } from '@/utils/package-json'
 import { addPrettierDependencies, addPrettierScripts, generatePrettierConfig } from '../prettier'
 
 export function generateNodeESLintPrettierConfig(context: ProjectContext) {
   const { config } = context
   if (!config.projectType)
     throw ErrorFactory.validation(ErrorMessages.validation.projectTypeRequired())
-  if (config.projectType !== 'node')
+  if (config.projectType !== 'node' && config.projectType !== 'hono')
     throw ErrorFactory.validation(ErrorMessages.validation.invalidProjectType(config.projectType))
 
   const language = config.language || 'typescript'
 
-  const commonEslintDeps: Record<string, string> = {
-    'eslint': '^9.30.1',
-    '@eslint/js': '^9.30.1',
-    'eslint-plugin-n': '^17.19.0',
-    'eslint-plugin-unicorn': '^59.0.1',
-    '@eslint/markdown': '^6.6.0',
-    'eslint-plugin-jsonc': '^2.20.1',
-    'eslint-plugin-yml': '^1.18.0',
-    'eslint-config-prettier': '^10.1.5',
-  }
-
-  const eslintDeps: Record<string, string> = { ...commonEslintDeps }
-
-  if (language === 'typescript') {
-    eslintDeps['typescript-eslint'] = '^8.33.1'
-  }
-  else {
-    eslintDeps.globals = '^16.3.0'
-  }
-
-  addDependencies(context.packageJson, eslintDeps, 'devDependencies')
+  addDependencyPreset(
+    context.packageJson,
+    language === 'typescript'
+      ? 'feature.eslint-prettier.node.typescript'
+      : 'feature.eslint-prettier.node.javascript',
+  )
 
   addScripts(context.packageJson, {
     'lint': 'eslint .',
@@ -61,6 +46,9 @@ import { defineConfig } from 'eslint/config'
 import tseslint from 'typescript-eslint'
 
 export default defineConfig(
+  {
+    ignores: ['dist/', 'build/', 'node_modules/', 'coverage/'],
+  },
   eslint.configs.recommended,
   tseslint.configs.strict,
   eslintPluginUnicorn.configs.recommended,
@@ -89,6 +77,9 @@ import eslintPluginYml from 'eslint-plugin-yml'
 import globals from 'globals'
 
 export default [
+  {
+    ignores: ['dist/', 'build/', 'node_modules/', 'coverage/'],
+  },
   eslint.configs.recommended,
   pluginN.configs['flat/recommended-module'],
   eslintPluginUnicorn.configs.recommended,
