@@ -20,7 +20,7 @@ const PATCH_AND_MINOR = {
 export const dependencyRegistry = validateDependencyRegistry({
   'typescript': createManagedDependency({
     packageName: 'typescript',
-    version: '5.9.3',
+    version: '6.0.2',
     prefix: '^',
     scope: 'devDependencies',
     risk: 'medium',
@@ -60,7 +60,7 @@ export const dependencyRegistry = validateDependencyRegistry({
   }),
   'vite': createManagedDependency({
     packageName: 'vite',
-    version: '7.0.0',
+    version: '8.0.3',
     prefix: '^',
     scope: 'devDependencies',
     risk: 'high',
@@ -70,7 +70,7 @@ export const dependencyRegistry = validateDependencyRegistry({
   }),
   '@vitejs/plugin-react': createManagedDependency({
     packageName: '@vitejs/plugin-react',
-    version: '4.6.0',
+    version: '6.0.1',
     prefix: '^',
     scope: 'devDependencies',
     risk: 'high',
@@ -160,7 +160,7 @@ export const dependencyRegistry = validateDependencyRegistry({
   }),
   'hono-zod-openapi': createManagedDependency({
     packageName: 'hono-zod-openapi',
-    version: '0.16.3',
+    version: '1.1.1',
     prefix: '^',
     scope: 'dependencies',
     risk: 'high',
@@ -170,7 +170,7 @@ export const dependencyRegistry = validateDependencyRegistry({
   }),
   'zod-openapi': createManagedDependency({
     packageName: 'zod-openapi',
-    version: '3.0.0',
+    version: '5.4.6',
     prefix: '^',
     scope: 'dependencies',
     risk: 'medium',
@@ -180,7 +180,7 @@ export const dependencyRegistry = validateDependencyRegistry({
   }),
   'zod': createManagedDependency({
     packageName: 'zod',
-    version: '3.23.8',
+    version: '4.3.6',
     prefix: '^',
     scope: 'dependencies',
     risk: 'medium',
@@ -210,7 +210,7 @@ export const dependencyRegistry = validateDependencyRegistry({
   }),
   'prisma': createManagedDependency({
     packageName: 'prisma',
-    version: '6.16.2',
+    version: '7.5.0',
     prefix: '^',
     scope: 'devDependencies',
     risk: 'high',
@@ -220,7 +220,7 @@ export const dependencyRegistry = validateDependencyRegistry({
   }),
   '@prisma/client': createManagedDependency({
     packageName: '@prisma/client',
-    version: '6.16.2',
+    version: '7.5.0',
     prefix: '^',
     scope: 'dependencies',
     risk: 'high',
@@ -230,7 +230,7 @@ export const dependencyRegistry = validateDependencyRegistry({
   }),
   'drizzle': createManagedDependency({
     packageName: 'drizzle',
-    version: '0.44.5',
+    version: '1.4.0',
     prefix: '^',
     scope: 'dependencies',
     risk: 'medium',
@@ -300,7 +300,7 @@ export const dependencyRegistry = validateDependencyRegistry({
   }),
   'eslint': createManagedDependency({
     packageName: 'eslint',
-    version: '9.30.1',
+    version: '10.1.0',
     prefix: '^',
     scope: 'devDependencies',
     risk: 'high',
@@ -310,7 +310,7 @@ export const dependencyRegistry = validateDependencyRegistry({
   }),
   '@eslint/js': createManagedDependency({
     packageName: '@eslint/js',
-    version: '9.30.1',
+    version: '10.0.1',
     prefix: '^',
     scope: 'devDependencies',
     risk: 'high',
@@ -320,7 +320,7 @@ export const dependencyRegistry = validateDependencyRegistry({
   }),
   '@eslint/markdown': createManagedDependency({
     packageName: '@eslint/markdown',
-    version: '6.6.0',
+    version: '7.5.1',
     prefix: '^',
     scope: 'devDependencies',
     risk: 'medium',
@@ -340,7 +340,7 @@ export const dependencyRegistry = validateDependencyRegistry({
   }),
   'eslint-plugin-react-hooks': createManagedDependency({
     packageName: 'eslint-plugin-react-hooks',
-    version: '5.2.0',
+    version: '7.0.1',
     prefix: '^',
     scope: 'devDependencies',
     risk: 'medium',
@@ -380,7 +380,7 @@ export const dependencyRegistry = validateDependencyRegistry({
   }),
   'eslint-plugin-jsonc': createManagedDependency({
     packageName: 'eslint-plugin-jsonc',
-    version: '2.20.1',
+    version: '3.1.2',
     prefix: '^',
     scope: 'devDependencies',
     risk: 'medium',
@@ -390,7 +390,7 @@ export const dependencyRegistry = validateDependencyRegistry({
   }),
   'eslint-plugin-yml': createManagedDependency({
     packageName: 'eslint-plugin-yml',
-    version: '1.18.0',
+    version: '3.3.1',
     prefix: '^',
     scope: 'devDependencies',
     risk: 'medium',
@@ -410,7 +410,7 @@ export const dependencyRegistry = validateDependencyRegistry({
   }),
   'eslint-plugin-unicorn': createManagedDependency({
     packageName: 'eslint-plugin-unicorn',
-    version: '59.0.1',
+    version: '63.0.0',
     prefix: '^',
     scope: 'devDependencies',
     risk: 'medium',
@@ -420,7 +420,7 @@ export const dependencyRegistry = validateDependencyRegistry({
   }),
   'eslint-plugin-vue': createManagedDependency({
     packageName: 'eslint-plugin-vue',
-    version: '9.32.0',
+    version: '10.8.0',
     prefix: '^',
     scope: 'devDependencies',
     risk: 'high',
@@ -430,7 +430,7 @@ export const dependencyRegistry = validateDependencyRegistry({
   }),
   'vue-eslint-parser': createManagedDependency({
     packageName: 'vue-eslint-parser',
-    version: '9.4.3',
+    version: '10.4.0',
     prefix: '^',
     scope: 'devDependencies',
     risk: 'high',
@@ -450,7 +450,7 @@ export const dependencyRegistry = validateDependencyRegistry({
   }),
   'globals': createManagedDependency({
     packageName: 'globals',
-    version: '16.3.0',
+    version: '17.4.0',
     prefix: '^',
     scope: 'devDependencies',
     risk: 'low',
@@ -470,7 +470,7 @@ export const dependencyRegistry = validateDependencyRegistry({
   }),
   '@trivago/prettier-plugin-sort-imports': createManagedDependency({
     packageName: '@trivago/prettier-plugin-sort-imports',
-    version: '5.2.2',
+    version: '6.0.2',
     prefix: '^',
     scope: 'devDependencies',
     risk: 'medium',
@@ -490,7 +490,7 @@ export const dependencyRegistry = validateDependencyRegistry({
   }),
   '@biomejs/biome': createManagedDependency({
     packageName: '@biomejs/biome',
-    version: '1.9.4',
+    version: '2.4.9',
     prefix: '^',
     scope: 'devDependencies',
     risk: 'medium',
@@ -710,7 +710,7 @@ export const dependencyRegistry = validateDependencyRegistry({
   }),
   'vue-router': createManagedDependency({
     packageName: 'vue-router',
-    version: '4.5.0',
+    version: '5.0.4',
     prefix: '^',
     scope: 'dependencies',
     risk: 'high',
