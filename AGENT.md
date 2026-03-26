@@ -9,7 +9,6 @@ This document is for agents and LLMs working inside `packages/create-hana`.
 - `node`
 - `react`
 - `vue`
-- `hono`
 
 The package is configuration-driven. It asks interactive questions, builds a typed `Config`, mutates a shared `ProjectContext`, and finally writes generated files to disk.
 
@@ -255,6 +254,7 @@ Observed project conventions:
 - trailing commas where formatter allows
 - short guard clauses over nested conditionals
 - inline `if` without braces is common for single statements
+- write simple and clear comments where appropriate.
 
 ### Package mutation style
 
@@ -304,7 +304,6 @@ Useful test targets:
 
 - `saveEditors(...)` in `src/core/generator.ts` currently persists only Vite config and React main. If you add more editor-managed files, update this function.
 - Vue generation currently writes `src/main.*` directly from string templates rather than through `VueMainEditor`.
-- Hono support is more template-driven and less editor-driven than React/Vue.
 - Not every project/tooling matrix is equally mature. Before extending a combination, trace whether the corresponding generator branch actually exists.
 - `removeExistFolder` is enforced both by a conditional question and a special-case runtime check in `QuestionEngine`.
 
@@ -313,15 +312,7 @@ Useful test targets:
 As of 2026-03-25, the local baseline is:
 
 - `pnpm test`: passing
-- `pnpm typecheck`: failing
-
-The current typecheck failures are existing code issues in the repository, mainly around:
-
-- `src/core/generator.ts` narrowing into the `oxlint-oxfmt` generator
-- `src/generators/projects/hono/index.ts` config typing and a missing `generateVercelJson`
-- `src/error/hana-error.ts` needing an `override` modifier on `cause`
-
-Do not assume a clean `tsc --noEmit` baseline before making changes. If your work touches those areas, account for pre-existing failures separately from your own diff.
+- `pnpm typecheck`: passing
 
 ## Recommended Change Workflow For Agents
 
