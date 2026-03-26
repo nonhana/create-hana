@@ -8,7 +8,7 @@ export function generateNodeESLintPrettierConfig(context: ProjectContext) {
   const { config } = context
   if (!config.projectType)
     throw ErrorFactory.validation(ErrorMessages.validation.projectTypeRequired())
-  if (config.projectType !== 'node' && config.projectType !== 'hono')
+  if (config.projectType !== 'node')
     throw ErrorFactory.validation(ErrorMessages.validation.invalidProjectType(config.projectType))
 
   const language = config.language || 'typescript'

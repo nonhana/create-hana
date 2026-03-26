@@ -58,7 +58,6 @@ export function generatePrettierConfig(options: PrettierOptions = {}) {
       htmlWhitespaceSensitivity: 'css',
       singleAttributePerLine: true,
     },
-    hono: {},
   }
 
   const config = {

@@ -175,43 +175,4 @@ describe('project Generation Integration', () => {
     expect(packageJson.scripts).toHaveProperty('lint')
     expect(packageJson.scripts).toHaveProperty('format')
   }, 60000)
-
-  it('should generate hono + typescript + node runtime + zod + vitest + cors without hono pseudo deps', async () => {
-    const config: Config = {
-      targetDir: 'hono-node-zod',
-      projectType: 'hono',
-      language: 'typescript',
-      pkgManager: 'pnpm',
-      runtime: 'node',
-      purpose: 'rest',
-      validationLibrary: 'zod',
-      openapi: false,
-      database: 'none',
-      auth: 'none',
-      middlewares: ['cors'],
-      modulePathAliasing: 'none',
-      testFramework: 'vitest',
-      git: false,
-    }
-
-    await generateProject(config, TEST_DIR)
-
-    const projectDir = join(TEST_DIR, 'hono-node-zod')
-    const packageJson = await readPackageJson(projectDir)
-    const dependencyKeys = [
-      ...Object.keys(packageJson.dependencies || {}),
-      ...Object.keys(packageJson.devDependencies || {}),
-    ]
-
-    expect(existsSync(join(projectDir, 'src/server.ts'))).toBe(true)
-    expect(packageJson.dependencies).toHaveProperty('hono')
-    expect(packageJson.dependencies).toHaveProperty('@hono/node-server')
-    expect(packageJson.dependencies).toHaveProperty('zod')
-    expect(packageJson.devDependencies).toHaveProperty('tsx')
-    expect(packageJson.devDependencies).toHaveProperty('vitest')
-    expect(packageJson.scripts).toHaveProperty('dev')
-    expect(packageJson.scripts).toHaveProperty('start')
-    expect(packageJson.scripts).toHaveProperty('test')
-    expect(dependencyKeys.some((key: string) => key.startsWith('hono/'))).toBe(false)
-  }, 60000)
 })

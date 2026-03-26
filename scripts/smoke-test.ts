@@ -80,26 +80,6 @@ const smokeCases: SmokeCase[] = [
       installDeps: false,
     },
   },
-  {
-    name: 'hono-node-zod',
-    config: {
-      targetDir: 'hono-node-zod',
-      projectType: 'hono',
-      language: 'typescript',
-      pkgManager: 'pnpm',
-      runtime: 'node',
-      purpose: 'rest',
-      validationLibrary: 'zod',
-      openapi: false,
-      database: 'none',
-      auth: 'none',
-      middlewares: ['cors'],
-      modulePathAliasing: 'none',
-      testFramework: 'vitest',
-      git: false,
-      installDeps: false,
-    },
-  },
 ]
 
 function run(command: string, args: string[], cwd: string) {

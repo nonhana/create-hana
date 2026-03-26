@@ -1,4 +1,4 @@
-import type { HonoProjectConfig, NodeProjectConfig, ReactProjectConfig, VueProjectConfig } from './project-configs'
+import type { NodeProjectConfig, ReactProjectConfig, VueProjectConfig } from './project-configs'
 import type { ReactMainEditorType, ViteConfigEditorType, VueMainEditorType } from '@/editor'
 import type {
   COMMON_CODE_QUALITY_TOOLS_OPTIONS,
@@ -31,14 +31,12 @@ export type Config = {
   | ({ projectType: 'node' } & NodeProjectConfig)
   | ({ projectType: 'react' } & ReactProjectConfig)
   | ({ projectType: 'vue' } & VueProjectConfig)
-  | ({ projectType: 'hono' } & HonoProjectConfig)
 )
 
 // specific config
 export type NodeConfig = Config & { projectType: 'node' }
 export type ReactConfig = Config & { projectType: 'react' }
 export type VueConfig = Config & { projectType: 'vue' }
-export type HonoConfig = Config & { projectType: 'hono' }
 
 export interface ProjectContext<C extends Config = Config> {
   config: C

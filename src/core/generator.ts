@@ -8,7 +8,7 @@ import { ErrorHandler } from '@/error/handler'
 import { viteGenerator } from '@/generators/build-tools'
 import { biomeGenerator, eslintGenerator, eslintPrettierGenerator, oxlintOxfmtGenerator } from '@/generators/features'
 import { languageGenerator } from '@/generators/language'
-import { honoGenerator, nodeGenerator, reactGenerator, vueGenerator } from '@/generators/projects'
+import { nodeGenerator, reactGenerator, vueGenerator } from '@/generators/projects'
 import { initGitRepository } from '@/handlers/git'
 import { installDependencies } from '@/handlers/package-manager'
 import { removeIfExists, writeProjectFiles } from '@/utils/file-system'
@@ -80,7 +80,6 @@ async function initializeProjectContext(config: Config, cwd: string) {
   // Global editor context
   if (
     config.projectType !== 'node'
-    && config.projectType !== 'hono'
     && config.buildTool === 'vite'
   ) {
     context.viteConfigEditor = createViteConfigEditor(viteTemplate())
@@ -118,9 +117,6 @@ async function runGenerators(context: ProjectContext) {
       viteGenerator.generate(context)
     }
     vueGenerator.generate(context)
-  }
-  else if (config.projectType === 'hono') {
-    honoGenerator.generate(context)
   }
 
   if (config.codeQualityTools) {
