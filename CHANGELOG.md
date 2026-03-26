@@ -1,5 +1,11 @@
 # create-hana
 
+## 0.2.0
+
+### Minor Changes
+
+- 346abe8: Introduce a managed template dependency registry with preset-based resolution, migrate generators away from hard-coded package versions, remove invalid `hono/*` pseudo dependencies from generated `package.json`, and add template smoke-test CI plus Renovate support for registry-managed updates.
+
 ## 0.1.0
 
 ### Minor Changes
