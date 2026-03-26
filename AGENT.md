@@ -255,6 +255,7 @@ Observed project conventions:
 - trailing commas where formatter allows
 - short guard clauses over nested conditionals
 - inline `if` without braces is common for single statements
+- write simple and clear comments where appropriate.
 
 ### Package mutation style
 
