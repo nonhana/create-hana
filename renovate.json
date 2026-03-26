@@ -12,10 +12,11 @@
   ],
   "rangeStrategy": "replace",
   "separateMajorMinor": true,
-  "regexManagers": [
+  "customManagers": [
     {
-      "fileMatch": [
-        "^src/dependencies/registry\\.ts$"
+      "customType": "regex",
+      "managerFilePatterns": [
+        "/^src/dependencies/registry\\.ts$/"
       ],
       "matchStrings": [
         "[A-Za-z0-9_@./'\"-]+:\\s*createManagedDependency\\(\\{[\\s\\S]*?packageName:\\s*'(?<depName>[^']+)'\\s*,[\\s\\S]*?version:\\s*'(?<currentValue>[^']+)'"
@@ -32,7 +33,7 @@
     },
     {
       "matchManagers": [
-        "regex"
+        "custom.regex"
       ],
       "matchFileNames": [
         "src/dependencies/registry.ts"
@@ -59,7 +60,7 @@
     },
     {
       "matchManagers": [
-        "regex"
+        "custom.regex"
       ],
       "matchFileNames": [
         "src/dependencies/registry.ts"
@@ -76,7 +77,7 @@
     },
     {
       "matchManagers": [
-        "regex"
+        "custom.regex"
       ],
       "matchFileNames": [
         "src/dependencies/registry.ts"
@@ -100,7 +101,7 @@
     },
     {
       "matchManagers": [
-        "regex"
+        "custom.regex"
       ],
       "matchFileNames": [
         "src/dependencies/registry.ts"
@@ -132,7 +133,7 @@
     },
     {
       "matchManagers": [
-        "regex"
+        "custom.regex"
       ],
       "matchFileNames": [
         "src/dependencies/registry.ts"
@@ -162,7 +163,7 @@
     },
     {
       "matchManagers": [
-        "regex"
+        "custom.regex"
       ],
       "matchFileNames": [
         "src/dependencies/registry.ts"
@@ -187,7 +188,7 @@
     },
     {
       "matchManagers": [
-        "regex"
+        "custom.regex"
       ],
       "matchFileNames": [
         "src/dependencies/registry.ts"
