@@ -14,7 +14,7 @@ export interface CoreEditorContents {
 export type EditableFiles = keyof CoreEditorContents
 
 type CoreEditorOptions = {
-  [K in EditableFiles]?: string
+  [K in EditableFiles]?: string // source code for each editable file
 }
 
 export class CoreEditor {
