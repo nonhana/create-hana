@@ -3,6 +3,7 @@ import * as recast from 'recast'
 import { ErrorMessages } from '@/constants/errors'
 import { ErrorFactory } from '@/error/factory'
 import { parser } from '@/utils/parser'
+import { printAst } from '@/utils/recast'
 
 export interface IViteFeature {
   addVitePlugin: (pluginCode: string) => this
@@ -67,7 +68,7 @@ export function withViteFeature<T extends new (...args: any[]) => CoreEditor>(Ba
       }
 
       // 更新源代码和 AST
-      this.contents.viteConfig.source = recast.print(ast).code
+      this.contents.viteConfig.source = printAst(ast)
       this.contents.viteConfig.ast = recast.parse(this.contents.viteConfig.source, { parser })
 
       return this
@@ -184,7 +185,7 @@ export function withViteFeature<T extends new (...args: any[]) => CoreEditor>(Ba
       }
 
       // 更新源代码和 AST
-      this.contents.viteConfig.source = recast.print(ast).code
+      this.contents.viteConfig.source = printAst(ast)
       this.contents.viteConfig.ast = recast.parse(this.contents.viteConfig.source, { parser })
 
       return this

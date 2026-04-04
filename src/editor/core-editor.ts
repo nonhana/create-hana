@@ -1,5 +1,6 @@
 import * as recast from 'recast'
 import { parser } from '@/utils/parser'
+import { printAst } from '@/utils/recast'
 
 interface CodeDetail {
   source: string
@@ -33,6 +34,6 @@ export class CoreEditor {
   public getContent(key: EditableFiles): string {
     if (!this.contents[key])
       return ''
-    return recast.print(this.contents[key].ast).code
+    return printAst(this.contents[key].ast)
   }
 }

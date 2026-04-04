@@ -2,6 +2,7 @@ import type { CoreEditor } from '../core-editor'
 import * as recast from 'recast'
 import { ErrorMessages } from '@/constants/errors'
 import { ErrorFactory } from '@/error/factory'
+import { printAst } from '@/utils/recast'
 
 export interface IJsxProviderFeature {
   addJsxProvider: (componentName: string, props?: Record<string, string>) => this
@@ -65,7 +66,7 @@ export function withJsxProviderFeature<T extends new (...args: any[]) => CoreEdi
       })
 
       if (this.contents.main) {
-        this.contents.main.source = recast.print(this.contents.main.ast).code
+        this.contents.main.source = printAst(this.contents.main.ast)
       }
 
       return this
