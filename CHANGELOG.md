@@ -1,5 +1,12 @@
 # create-hana
 
+## 0.2.1
+
+### Patch Changes
+
+- 38e225f: Adjust the way Recast outputs the code; the default is to output single quotes.
+- 38e225f: Fixed the undefined issue caused by the main editor not being created when creating a Vue project.
+
 ## 0.2.0
 
 ### Minor Changes
