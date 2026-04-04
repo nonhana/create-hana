@@ -20,7 +20,7 @@ const PATCH_AND_MINOR = {
 export const dependencyRegistry = validateDependencyRegistry({
   'typescript': createManagedDependency({
     packageName: 'typescript',
-    version: '6.0.2',
+    version: '5.9.3',
     prefix: '^',
     scope: 'devDependencies',
     risk: 'medium',
@@ -480,7 +480,7 @@ export const dependencyRegistry = validateDependencyRegistry({
   }),
   'oxlint-tsgolint': createManagedDependency({
     packageName: 'oxlint-tsgolint',
-    version: '0.17.2',
+    version: '0.19.0',
     prefix: '^',
     scope: 'devDependencies',
     risk: 'high',
