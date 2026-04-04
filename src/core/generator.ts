@@ -1,7 +1,7 @@
 import type { Config, ProjectContext } from '@/types'
 import { join } from 'node:path'
 import { ErrorMessages } from '@/constants/errors'
-import { createReactMainEditor, createViteConfigEditor } from '@/editor'
+import { createReactMainEditor, createViteConfigEditor, createVueMainEditor } from '@/editor'
 import { mainReactRouterProviderTemplate, mainReactTemplate, viteTemplate } from '@/editor/templates'
 import { ErrorFactory } from '@/error/factory'
 import { ErrorHandler } from '@/error/handler'
@@ -92,6 +92,9 @@ async function initializeProjectContext(config: Config, cwd: string) {
       context.mainEditor = createReactMainEditor(mainReactTemplate(context.fileExtension))
     }
   }
+  if (config.projectType === 'vue') {
+    context.mainEditor = createVueMainEditor()
+  }
 
   return context
 }
@@ -148,6 +151,9 @@ function saveEditors(context: ProjectContext) {
 
   if (context.config.projectType === 'react' && context.mainEditor) {
     context.files[`src/main${context.fileExtension}x`] = context.mainEditor.getContent('main')
+  }
+  else if (context.config.projectType === 'vue' && context.mainEditor) {
+    context.files[`src/main${context.fileExtension}`] = context.mainEditor.getContent('main')
   }
 }
 

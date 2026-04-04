@@ -1,3 +1,4 @@
+import type { VueMainEditorType } from '@/editor'
 import type { Generator } from '@/types'
 import { ErrorMessages } from '@/constants/errors'
 import { ErrorFactory } from '@/error/factory'
@@ -43,7 +44,10 @@ export const vueGenerator: Generator = {
 
     context.files['src/App.vue'] = generateAppFile(lang, styleLang, !!config.useRouter)
     context.files['src/components/Counter.vue'] = generateCounterFile(lang, styleLang)
-    context.files[`src/main${fileExtension}`] = generateMainFile(!!config.useRouter, !!config.usePinia)
+    ;(context.mainEditor as VueMainEditorType).configureVueApp({
+      useRouter: config.useRouter,
+      usePinia: config.usePinia,
+    })
 
     if (config.language === 'typescript') {
       context.files['src/vite-env.d.ts'] = generateViteEnvFile()
@@ -150,18 +154,5 @@ button:hover {
   background-color: #f0f0f0;
 }
 </style>
-`
-}
-
-function generateMainFile(useRouter: boolean, usePinia: boolean) {
-  return `import { createApp } from 'vue'
-import App from './App.vue'
-${useRouter ? 'import router from \'./router\'' : ''}
-${usePinia ? 'import { createPinia } from \'pinia\'' : ''}
-
-const app = createApp(App)
-${usePinia ? 'app.use(createPinia())' : ''}
-${useRouter ? 'app.use(router)' : ''}
-app.mount('#app')
 `
 }

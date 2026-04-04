@@ -175,4 +175,44 @@ describe('project Generation Integration', () => {
     expect(packageJson.scripts).toHaveProperty('lint')
     expect(packageJson.scripts).toHaveProperty('format')
   }, 60000)
+
+  it('should generate vue + vite feature combinations that modify main entry', async () => {
+    const config: Config = {
+      targetDir: 'vue-vite-feature-combo',
+      projectType: 'vue',
+      language: 'typescript',
+      pkgManager: 'pnpm',
+      buildTool: 'vite',
+      codeQualityTools: 'eslint-prettier',
+      useRouter: true,
+      usePinia: true,
+      cssFramework: 'unocss',
+      cssPreprocessor: 'none',
+      httpLibrary: 'ky',
+      modulePathAliasing: '@',
+      git: false,
+    }
+
+    await generateProject(config, TEST_DIR)
+
+    const projectDir = join(TEST_DIR, 'vue-vite-feature-combo')
+    const packageJson = await readPackageJson(projectDir)
+    const mainFile = await readFile(join(projectDir, 'src/main.ts'), 'utf8')
+    const viteConfig = await readFile(join(projectDir, 'vite.config.ts'), 'utf8')
+
+    expect(mainFile).toContain(`import 'virtual:uno.css'`)
+    expect(mainFile).toContain(`import router from './router'`)
+    expect(mainFile).toContain(`import { createPinia } from 'pinia'`)
+    expect(mainFile).toContain(`createApp(App).use(createPinia()).use(router).mount('#app')`)
+
+    expect(viteConfig).toContain(`import UnoCSS from 'unocss/vite'`)
+    expect(viteConfig).toContain(`import path from 'node:path'`)
+    expect(viteConfig).toContain(`vue()`)
+    expect(viteConfig).toContain(`UnoCSS()`)
+    expect(viteConfig).toContain(`'@': path.resolve(__dirname, "src")`)
+
+    expect(packageJson.dependencies).toHaveProperty('pinia')
+    expect(packageJson.dependencies).toHaveProperty('vue-router')
+    expect(packageJson.dependencies).toHaveProperty('ky')
+  }, 60000)
 })

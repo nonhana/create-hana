@@ -169,7 +169,7 @@ export default defineConfig({})`,
         const generatedCode = editor.getContent('viteConfig')
         expect(generatedCode).toContain('resolve: {')
         expect(generatedCode).toContain('alias: {')
-        expect(generatedCode).toContain('"@": path.resolve(__dirname, "src")')
+        expect(generatedCode).toContain('\'@\': path.resolve(__dirname, "src")')
       })
 
       it('应该在已有 resolve 配置中添加 alias', () => {
@@ -187,7 +187,7 @@ export default defineConfig({
         const generatedCode = editor.getContent('viteConfig')
         expect(generatedCode).toContain('extensions: [')
         expect(generatedCode).toContain('alias: {')
-        expect(generatedCode).toContain('"@": path.resolve(__dirname, "src")')
+        expect(generatedCode).toContain('\'@\': path.resolve(__dirname, "src")')
       })
 
       it('应该在已有 alias 配置中添加新别名', () => {
@@ -207,7 +207,7 @@ export default defineConfig({
         const generatedCode = editor.getContent('viteConfig')
         expect(generatedCode).toContain('resolve: {')
         expect(generatedCode).toContain('alias: {')
-        expect(generatedCode).toContain('"@": path.resolve(__dirname, "src")')
+        expect(generatedCode).toContain('\'@\': path.resolve(__dirname, "src")')
         // 原有的 @utils 应该保持原来的字符串格式
         expect(generatedCode).toContain('\'@utils\': \'path.resolve(__dirname, "src/utils")\'')
         // 或者可以接受任何包含 @utils 和 src/utils 的格式
@@ -225,9 +225,9 @@ export default defineConfig({
         const generatedCode = editor.getContent('viteConfig')
         expect(generatedCode).toContain('resolve: {')
         expect(generatedCode).toContain('alias: {')
-        expect(generatedCode).toContain('"@": path.resolve(__dirname, "src")')
-        expect(generatedCode).toContain('"@components": path.resolve(__dirname, "src/components")')
-        expect(generatedCode).toContain('"@utils": path.resolve(__dirname, "src/utils")')
+        expect(generatedCode).toContain('\'@\': path.resolve(__dirname, "src")')
+        expect(generatedCode).toContain('\'@components\': path.resolve(__dirname, "src/components")')
+        expect(generatedCode).toContain('\'@utils\': path.resolve(__dirname, "src/utils")')
       })
 
       it('应该跳过已存在的别名', () => {
@@ -259,8 +259,8 @@ export default defineConfig({
         const generatedCode = editor.getContent('viteConfig')
         expect(generatedCode).toContain('resolve: {')
         expect(generatedCode).toContain('alias: {')
-        expect(generatedCode).toContain('"@": path.resolve(__dirname, "src")')
-        expect(generatedCode).toContain('"@components": path.resolve(__dirname, "src/components")')
+        expect(generatedCode).toContain('\'@\': path.resolve(__dirname, "src")')
+        expect(generatedCode).toContain('\'@components\': path.resolve(__dirname, "src/components")')
       })
 
       it('应该支持与 addVitePlugin 的链式调用', () => {
@@ -321,7 +321,7 @@ export default defineConfig({
         expect(generatedCode).toContain('build: {')
         expect(generatedCode).toContain('resolve: {')
         expect(generatedCode).toContain('alias: {')
-        expect(generatedCode).toContain('"@": path.resolve(__dirname, "src")')
+        expect(generatedCode).toContain('\'@\': path.resolve(__dirname, "src")')
       })
 
       it('应该处理复杂的别名值表达式', () => {
@@ -344,7 +344,7 @@ export default defineConfig({
         const generatedCode = editor.getContent('viteConfig')
         expect(generatedCode).toContain('path.resolve(__dirname, "src")')
         expect(generatedCode).toContain('path.join(process.cwd(), "src", "api")')
-        expect(generatedCode).toContain('"./src/assets"')
+        expect(generatedCode).toContain('\'./src/assets\'')
       })
     })
   })
