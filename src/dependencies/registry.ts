@@ -150,7 +150,7 @@ export const dependencyRegistry = validateDependencyRegistry({
   }),
   'valibot': createManagedDependency({
     packageName: 'valibot',
-    version: '1.1.0',
+    version: '1.3.1',
     prefix: '^',
     scope: 'dependencies',
     risk: 'medium',
@@ -170,7 +170,7 @@ export const dependencyRegistry = validateDependencyRegistry({
   }),
   'prisma': createManagedDependency({
     packageName: 'prisma',
-    version: '7.5.0',
+    version: '7.6.0',
     prefix: '^',
     scope: 'devDependencies',
     risk: 'high',
@@ -180,7 +180,7 @@ export const dependencyRegistry = validateDependencyRegistry({
   }),
   '@prisma/client': createManagedDependency({
     packageName: '@prisma/client',
-    version: '7.5.0',
+    version: '7.6.0',
     prefix: '^',
     scope: 'dependencies',
     risk: 'high',
@@ -200,7 +200,7 @@ export const dependencyRegistry = validateDependencyRegistry({
   }),
   'kysely': createManagedDependency({
     packageName: 'kysely',
-    version: '0.28.8',
+    version: '0.28.15',
     prefix: '^',
     scope: 'dependencies',
     risk: 'medium',
@@ -220,7 +220,7 @@ export const dependencyRegistry = validateDependencyRegistry({
   }),
   'next-auth': createManagedDependency({
     packageName: 'next-auth',
-    version: '4.24.11',
+    version: '4.24.13',
     prefix: '^',
     scope: 'dependencies',
     risk: 'high',
@@ -250,7 +250,7 @@ export const dependencyRegistry = validateDependencyRegistry({
   }),
   'wrangler': createManagedDependency({
     packageName: 'wrangler',
-    version: '4.38.0',
+    version: '4.80.0',
     prefix: '^',
     scope: 'devDependencies',
     risk: 'high',
