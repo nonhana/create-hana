@@ -230,7 +230,7 @@ export const dependencyRegistry = validateDependencyRegistry({
   }),
   'vitest': createManagedDependency({
     packageName: 'vitest',
-    version: '4.1.0',
+    version: '4.1.2',
     prefix: '^',
     scope: 'devDependencies',
     risk: 'medium',
@@ -240,7 +240,7 @@ export const dependencyRegistry = validateDependencyRegistry({
   }),
   'jest': createManagedDependency({
     packageName: 'jest',
-    version: '30.1.3',
+    version: '30.3.0',
     prefix: '^',
     scope: 'devDependencies',
     risk: 'medium',
@@ -420,7 +420,7 @@ export const dependencyRegistry = validateDependencyRegistry({
   }),
   'prettier': createManagedDependency({
     packageName: 'prettier',
-    version: '3.5.3',
+    version: '3.8.1',
     prefix: '^',
     scope: 'devDependencies',
     risk: 'medium',
@@ -450,7 +450,7 @@ export const dependencyRegistry = validateDependencyRegistry({
   }),
   '@biomejs/biome': createManagedDependency({
     packageName: '@biomejs/biome',
-    version: '2.4.9',
+    version: '2.4.10',
     prefix: '^',
     scope: 'devDependencies',
     risk: 'medium',
@@ -460,7 +460,7 @@ export const dependencyRegistry = validateDependencyRegistry({
   }),
   'oxlint': createManagedDependency({
     packageName: 'oxlint',
-    version: '1.56.0',
+    version: '1.58.0',
     prefix: '^',
     scope: 'devDependencies',
     risk: 'medium',
@@ -470,7 +470,7 @@ export const dependencyRegistry = validateDependencyRegistry({
   }),
   'oxfmt': createManagedDependency({
     packageName: 'oxfmt',
-    version: '0.41.0',
+    version: '0.43.0',
     prefix: '^',
     scope: 'devDependencies',
     risk: 'medium',
@@ -480,7 +480,7 @@ export const dependencyRegistry = validateDependencyRegistry({
   }),
   'oxlint-tsgolint': createManagedDependency({
     packageName: 'oxlint-tsgolint',
-    version: '0.19.0',
+    version: '0.20.0',
     prefix: '^',
     scope: 'devDependencies',
     risk: 'high',
@@ -710,7 +710,7 @@ export const dependencyRegistry = validateDependencyRegistry({
   }),
   'express': createManagedDependency({
     packageName: 'express',
-    version: '5.1.0',
+    version: '5.2.1',
     prefix: '^',
     scope: 'dependencies',
     risk: 'medium',
@@ -730,7 +730,7 @@ export const dependencyRegistry = validateDependencyRegistry({
   }),
   'fastify': createManagedDependency({
     packageName: 'fastify',
-    version: '5.3.3',
+    version: '5.8.4',
     prefix: '^',
     scope: 'dependencies',
     risk: 'medium',
@@ -740,7 +740,7 @@ export const dependencyRegistry = validateDependencyRegistry({
   }),
   'tsup': createManagedDependency({
     packageName: 'tsup',
-    version: '8.5.0',
+    version: '8.5.1',
     prefix: '^',
     scope: 'devDependencies',
     risk: 'medium',
@@ -750,7 +750,7 @@ export const dependencyRegistry = validateDependencyRegistry({
   }),
   '@swc/core': createManagedDependency({
     packageName: '@swc/core',
-    version: '1.11.31',
+    version: '1.15.24',
     prefix: '^',
     scope: 'devDependencies',
     risk: 'medium',
@@ -760,7 +760,7 @@ export const dependencyRegistry = validateDependencyRegistry({
   }),
   'tsdown': createManagedDependency({
     packageName: 'tsdown',
-    version: '0.12.6',
+    version: '0.21.7',
     prefix: '^',
     scope: 'devDependencies',
     risk: 'medium',
