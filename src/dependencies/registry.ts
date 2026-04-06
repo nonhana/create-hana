@@ -30,7 +30,7 @@ export const dependencyRegistry = validateDependencyRegistry({
   }),
   '@types/node': createManagedDependency({
     packageName: '@types/node',
-    version: '25.5.0',
+    version: '25.5.2',
     prefix: '^',
     scope: 'devDependencies',
     risk: 'low',
@@ -720,7 +720,7 @@ export const dependencyRegistry = validateDependencyRegistry({
   }),
   '@types/express': createManagedDependency({
     packageName: '@types/express',
-    version: '5.0.3',
+    version: '5.0.6',
     prefix: '^',
     scope: 'devDependencies',
     risk: 'low',
