@@ -260,7 +260,7 @@ export const dependencyRegistry = validateDependencyRegistry({
   }),
   'eslint': createManagedDependency({
     packageName: 'eslint',
-    version: '10.1.0',
+    version: '10.2.0',
     prefix: '^',
     scope: 'devDependencies',
     risk: 'high',
@@ -310,7 +310,7 @@ export const dependencyRegistry = validateDependencyRegistry({
   }),
   'eslint-plugin-react-refresh': createManagedDependency({
     packageName: 'eslint-plugin-react-refresh',
-    version: '0.4.20',
+    version: '0.5.2',
     prefix: '^',
     scope: 'devDependencies',
     risk: 'medium',
@@ -360,7 +360,7 @@ export const dependencyRegistry = validateDependencyRegistry({
   }),
   'eslint-plugin-n': createManagedDependency({
     packageName: 'eslint-plugin-n',
-    version: '17.19.0',
+    version: '17.24.0',
     prefix: '^',
     scope: 'devDependencies',
     risk: 'medium',
@@ -400,7 +400,7 @@ export const dependencyRegistry = validateDependencyRegistry({
   }),
   'typescript-eslint': createManagedDependency({
     packageName: 'typescript-eslint',
-    version: '8.36.0',
+    version: '8.58.0',
     prefix: '^',
     scope: 'devDependencies',
     risk: 'high',
@@ -440,7 +440,7 @@ export const dependencyRegistry = validateDependencyRegistry({
   }),
   'eslint-config-prettier': createManagedDependency({
     packageName: 'eslint-config-prettier',
-    version: '10.1.5',
+    version: '10.1.8',
     prefix: '^',
     scope: 'devDependencies',
     risk: 'medium',
