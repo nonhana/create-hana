@@ -520,7 +520,7 @@ export const dependencyRegistry = validateDependencyRegistry({
   }),
   'less': createManagedDependency({
     packageName: 'less',
-    version: '4.3.0',
+    version: '4.6.4',
     prefix: '^',
     scope: 'devDependencies',
     risk: 'low',
