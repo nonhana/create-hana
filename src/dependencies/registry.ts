@@ -530,7 +530,7 @@ export const dependencyRegistry = validateDependencyRegistry({
   }),
   'sass': createManagedDependency({
     packageName: 'sass',
-    version: '1.89.2',
+    version: '1.99.0',
     prefix: '^',
     scope: 'devDependencies',
     risk: 'low',
