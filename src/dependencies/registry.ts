@@ -60,7 +60,7 @@ export const dependencyRegistry = validateDependencyRegistry({
   }),
   'vite': createManagedDependency({
     packageName: 'vite',
-    version: '8.0.5',
+    version: '8.0.8',
     prefix: '^',
     scope: 'devDependencies',
     risk: 'high',
@@ -510,7 +510,7 @@ export const dependencyRegistry = validateDependencyRegistry({
   }),
   'unocss': createManagedDependency({
     packageName: 'unocss',
-    version: '66.6.7',
+    version: '66.6.8',
     prefix: '^',
     scope: 'devDependencies',
     risk: 'high',
