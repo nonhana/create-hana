@@ -400,7 +400,7 @@ export const dependencyRegistry = validateDependencyRegistry({
   }),
   'typescript-eslint': createManagedDependency({
     packageName: 'typescript-eslint',
-    version: '8.58.0',
+    version: '8.58.1',
     prefix: '^',
     scope: 'devDependencies',
     risk: 'high',
