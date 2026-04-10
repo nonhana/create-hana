@@ -30,7 +30,7 @@ export const dependencyRegistry = validateDependencyRegistry({
   }),
   '@types/node': createManagedDependency({
     packageName: '@types/node',
-    version: '25.5.2',
+    version: '25.6.0',
     prefix: '^',
     scope: 'devDependencies',
     risk: 'low',
@@ -230,7 +230,7 @@ export const dependencyRegistry = validateDependencyRegistry({
   }),
   'vitest': createManagedDependency({
     packageName: 'vitest',
-    version: '4.1.2',
+    version: '4.1.4',
     prefix: '^',
     scope: 'devDependencies',
     risk: 'medium',
@@ -420,7 +420,7 @@ export const dependencyRegistry = validateDependencyRegistry({
   }),
   'prettier': createManagedDependency({
     packageName: 'prettier',
-    version: '3.8.1',
+    version: '3.8.2',
     prefix: '^',
     scope: 'devDependencies',
     risk: 'medium',
@@ -450,7 +450,7 @@ export const dependencyRegistry = validateDependencyRegistry({
   }),
   '@biomejs/biome': createManagedDependency({
     packageName: '@biomejs/biome',
-    version: '2.4.10',
+    version: '2.4.11',
     prefix: '^',
     scope: 'devDependencies',
     risk: 'medium',
@@ -460,7 +460,7 @@ export const dependencyRegistry = validateDependencyRegistry({
   }),
   'oxlint': createManagedDependency({
     packageName: 'oxlint',
-    version: '1.58.0',
+    version: '1.59.0',
     prefix: '^',
     scope: 'devDependencies',
     risk: 'medium',
@@ -470,7 +470,7 @@ export const dependencyRegistry = validateDependencyRegistry({
   }),
   'oxfmt': createManagedDependency({
     packageName: 'oxfmt',
-    version: '0.43.0',
+    version: '0.44.0',
     prefix: '^',
     scope: 'devDependencies',
     risk: 'medium',
