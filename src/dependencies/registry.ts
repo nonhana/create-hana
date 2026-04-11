@@ -170,7 +170,7 @@ export const dependencyRegistry = validateDependencyRegistry({
   }),
   'prisma': createManagedDependency({
     packageName: 'prisma',
-    version: '7.6.0',
+    version: '7.7.0',
     prefix: '^',
     scope: 'devDependencies',
     risk: 'high',
@@ -180,7 +180,7 @@ export const dependencyRegistry = validateDependencyRegistry({
   }),
   '@prisma/client': createManagedDependency({
     packageName: '@prisma/client',
-    version: '7.6.0',
+    version: '7.7.0',
     prefix: '^',
     scope: 'dependencies',
     risk: 'high',
@@ -200,7 +200,7 @@ export const dependencyRegistry = validateDependencyRegistry({
   }),
   'kysely': createManagedDependency({
     packageName: 'kysely',
-    version: '0.28.15',
+    version: '0.28.16',
     prefix: '^',
     scope: 'dependencies',
     risk: 'medium',
@@ -250,7 +250,7 @@ export const dependencyRegistry = validateDependencyRegistry({
   }),
   'wrangler': createManagedDependency({
     packageName: 'wrangler',
-    version: '4.80.0',
+    version: '4.81.1',
     prefix: '^',
     scope: 'devDependencies',
     risk: 'high',
