@@ -410,7 +410,7 @@ export const dependencyRegistry = validateDependencyRegistry({
   }),
   'globals': createManagedDependency({
     packageName: 'globals',
-    version: '17.4.0',
+    version: '17.5.0',
     prefix: '^',
     scope: 'devDependencies',
     risk: 'low',
