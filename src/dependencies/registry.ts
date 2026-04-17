@@ -260,7 +260,7 @@ export const dependencyRegistry = validateDependencyRegistry({
   }),
   'eslint': createManagedDependency({
     packageName: 'eslint',
-    version: '10.2.0',
+    version: '10.2.1',
     prefix: '^',
     scope: 'devDependencies',
     risk: 'high',
@@ -300,7 +300,7 @@ export const dependencyRegistry = validateDependencyRegistry({
   }),
   'eslint-plugin-react-hooks': createManagedDependency({
     packageName: 'eslint-plugin-react-hooks',
-    version: '7.0.1',
+    version: '7.1.1',
     prefix: '^',
     scope: 'devDependencies',
     risk: 'medium',
@@ -400,7 +400,7 @@ export const dependencyRegistry = validateDependencyRegistry({
   }),
   'typescript-eslint': createManagedDependency({
     packageName: 'typescript-eslint',
-    version: '8.58.0',
+    version: '8.58.2',
     prefix: '^',
     scope: 'devDependencies',
     risk: 'high',
