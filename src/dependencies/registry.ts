@@ -90,7 +90,7 @@ export const dependencyRegistry = validateDependencyRegistry({
   }),
   'react': createManagedDependency({
     packageName: 'react',
-    version: '19.2.4',
+    version: '19.2.5',
     prefix: '^',
     scope: 'dependencies',
     risk: 'high',
@@ -100,7 +100,7 @@ export const dependencyRegistry = validateDependencyRegistry({
   }),
   'react-dom': createManagedDependency({
     packageName: 'react-dom',
-    version: '19.2.4',
+    version: '19.2.5',
     prefix: '^',
     scope: 'dependencies',
     risk: 'high',
@@ -540,7 +540,7 @@ export const dependencyRegistry = validateDependencyRegistry({
   }),
   'axios': createManagedDependency({
     packageName: 'axios',
-    version: '1.14.0',
+    version: '1.15.0',
     prefix: '^',
     scope: 'dependencies',
     risk: 'low',
@@ -560,7 +560,7 @@ export const dependencyRegistry = validateDependencyRegistry({
   }),
   'react-router': createManagedDependency({
     packageName: 'react-router',
-    version: '7.14.0',
+    version: '7.14.1',
     prefix: '^',
     scope: 'dependencies',
     risk: 'high',
@@ -570,7 +570,7 @@ export const dependencyRegistry = validateDependencyRegistry({
   }),
   '@tanstack/react-router': createManagedDependency({
     packageName: '@tanstack/react-router',
-    version: '1.168.10',
+    version: '1.168.23',
     prefix: '^',
     scope: 'dependencies',
     risk: 'high',
@@ -590,7 +590,7 @@ export const dependencyRegistry = validateDependencyRegistry({
   }),
   '@tanstack/react-query': createManagedDependency({
     packageName: '@tanstack/react-query',
-    version: '5.96.2',
+    version: '5.99.1',
     prefix: '^',
     scope: 'dependencies',
     risk: 'medium',
@@ -620,7 +620,7 @@ export const dependencyRegistry = validateDependencyRegistry({
   }),
   'jotai': createManagedDependency({
     packageName: 'jotai',
-    version: '2.19.0',
+    version: '2.19.1',
     prefix: '^',
     scope: 'dependencies',
     risk: 'medium',
