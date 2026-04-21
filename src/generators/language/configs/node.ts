@@ -60,8 +60,6 @@ function generateTsConfigFile() {
     },
     include: [
       'src/**/*.ts',
-      '*.config.ts',
-      'scripts/**/*.ts',
     ],
     exclude: [
       'node_modules',
