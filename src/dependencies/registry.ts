@@ -20,7 +20,7 @@ const PATCH_AND_MINOR = {
 export const dependencyRegistry = validateDependencyRegistry({
   'typescript': createManagedDependency({
     packageName: 'typescript',
-    version: '5.9.3',
+    version: '6.0.3',
     prefix: '^',
     scope: 'devDependencies',
     risk: 'medium',
@@ -280,7 +280,7 @@ export const dependencyRegistry = validateDependencyRegistry({
   }),
   '@eslint/markdown': createManagedDependency({
     packageName: '@eslint/markdown',
-    version: '7.5.1',
+    version: '8.0.1',
     prefix: '^',
     scope: 'devDependencies',
     risk: 'medium',
@@ -330,7 +330,7 @@ export const dependencyRegistry = validateDependencyRegistry({
   }),
   'eslint-plugin-simple-import-sort': createManagedDependency({
     packageName: 'eslint-plugin-simple-import-sort',
-    version: '12.1.1',
+    version: '13.0.0',
     prefix: '^',
     scope: 'devDependencies',
     risk: 'low',
@@ -370,7 +370,7 @@ export const dependencyRegistry = validateDependencyRegistry({
   }),
   'eslint-plugin-unicorn': createManagedDependency({
     packageName: 'eslint-plugin-unicorn',
-    version: '63.0.0',
+    version: '64.0.0',
     prefix: '^',
     scope: 'devDependencies',
     risk: 'medium',
@@ -550,7 +550,7 @@ export const dependencyRegistry = validateDependencyRegistry({
   }),
   'ky': createManagedDependency({
     packageName: 'ky',
-    version: '1.14.3',
+    version: '2.0.2',
     prefix: '^',
     scope: 'dependencies',
     risk: 'low',
