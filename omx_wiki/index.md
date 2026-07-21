@@ -1,9 +1,12 @@
 # Wiki Index
 
-> 3 pages | Last updated: 2026-07-14T08:48:13.597Z
+> 6 pages | Last updated: 2026-07-20T10:12:44.640Z
 
 ## architecture
 
+- [Effect vNext Delivery Plan](effect-vnext-delivery-plan.md) — # Effect vNext Delivery Plan
+- [Effect vNext Domain Model](effect-vnext-domain-model.md) — # Effect vNext Domain Model
+- [Effect vNext Refactor Design](effect-vnext-refactor-design.md) — # Effect vNext Refactor Design
 - [Generation Architecture](generation-architecture.md) — # Generation Architecture
 
 ## convention
