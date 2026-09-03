@@ -20,7 +20,7 @@ const PATCH_AND_MINOR = {
 export const dependencyRegistry = validateDependencyRegistry({
   'typescript': createManagedDependency({
     packageName: 'typescript',
-    version: '5.9.3',
+    version: '7.0.2',
     prefix: '^',
     scope: 'devDependencies',
     risk: 'medium',
@@ -30,7 +30,7 @@ export const dependencyRegistry = validateDependencyRegistry({
   }),
   '@types/node': createManagedDependency({
     packageName: '@types/node',
-    version: '25.5.2',
+    version: '26.4.1',
     prefix: '^',
     scope: 'devDependencies',
     risk: 'low',
@@ -230,7 +230,7 @@ export const dependencyRegistry = validateDependencyRegistry({
   }),
   'vitest': createManagedDependency({
     packageName: 'vitest',
-    version: '4.1.2',
+    version: '5.0.0',
     prefix: '^',
     scope: 'devDependencies',
     risk: 'medium',
@@ -280,7 +280,7 @@ export const dependencyRegistry = validateDependencyRegistry({
   }),
   '@eslint/markdown': createManagedDependency({
     packageName: '@eslint/markdown',
-    version: '7.5.1',
+    version: '8.0.3',
     prefix: '^',
     scope: 'devDependencies',
     risk: 'medium',
@@ -330,7 +330,7 @@ export const dependencyRegistry = validateDependencyRegistry({
   }),
   'eslint-plugin-simple-import-sort': createManagedDependency({
     packageName: 'eslint-plugin-simple-import-sort',
-    version: '12.1.1',
+    version: '14.0.0',
     prefix: '^',
     scope: 'devDependencies',
     risk: 'low',
@@ -360,7 +360,7 @@ export const dependencyRegistry = validateDependencyRegistry({
   }),
   'eslint-plugin-n': createManagedDependency({
     packageName: 'eslint-plugin-n',
-    version: '17.24.0',
+    version: '18.3.0',
     prefix: '^',
     scope: 'devDependencies',
     risk: 'medium',
@@ -370,7 +370,7 @@ export const dependencyRegistry = validateDependencyRegistry({
   }),
   'eslint-plugin-unicorn': createManagedDependency({
     packageName: 'eslint-plugin-unicorn',
-    version: '63.0.0',
+    version: '74.0.0',
     prefix: '^',
     scope: 'devDependencies',
     risk: 'medium',
@@ -480,7 +480,7 @@ export const dependencyRegistry = validateDependencyRegistry({
   }),
   'oxlint-tsgolint': createManagedDependency({
     packageName: 'oxlint-tsgolint',
-    version: '0.20.0',
+    version: '7.0.2001',
     prefix: '^',
     scope: 'devDependencies',
     risk: 'high',
@@ -550,7 +550,7 @@ export const dependencyRegistry = validateDependencyRegistry({
   }),
   'ky': createManagedDependency({
     packageName: 'ky',
-    version: '1.14.3',
+    version: '2.1.0',
     prefix: '^',
     scope: 'dependencies',
     risk: 'low',
@@ -560,7 +560,7 @@ export const dependencyRegistry = validateDependencyRegistry({
   }),
   'react-router': createManagedDependency({
     packageName: 'react-router',
-    version: '7.14.0',
+    version: '8.3.1',
     prefix: '^',
     scope: 'dependencies',
     risk: 'high',
@@ -630,7 +630,7 @@ export const dependencyRegistry = validateDependencyRegistry({
   }),
   'mobx': createManagedDependency({
     packageName: 'mobx',
-    version: '6.15.0',
+    version: '7.0.3',
     prefix: '^',
     scope: 'dependencies',
     risk: 'medium',
@@ -660,7 +660,7 @@ export const dependencyRegistry = validateDependencyRegistry({
   }),
   'pinia': createManagedDependency({
     packageName: 'pinia',
-    version: '3.0.4',
+    version: '4.0.3',
     prefix: '^',
     scope: 'dependencies',
     risk: 'high',
