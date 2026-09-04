@@ -260,7 +260,7 @@ export const dependencyRegistry = validateDependencyRegistry({
   }),
   'eslint': createManagedDependency({
     packageName: 'eslint',
-    version: '10.2.0',
+    version: '10.10.0',
     prefix: '^',
     scope: 'devDependencies',
     risk: 'high',
@@ -300,7 +300,7 @@ export const dependencyRegistry = validateDependencyRegistry({
   }),
   'eslint-plugin-react-hooks': createManagedDependency({
     packageName: 'eslint-plugin-react-hooks',
-    version: '7.0.1',
+    version: '7.1.1',
     prefix: '^',
     scope: 'devDependencies',
     risk: 'medium',
@@ -310,7 +310,7 @@ export const dependencyRegistry = validateDependencyRegistry({
   }),
   'eslint-plugin-react-refresh': createManagedDependency({
     packageName: 'eslint-plugin-react-refresh',
-    version: '0.5.2',
+    version: '0.5.6',
     prefix: '^',
     scope: 'devDependencies',
     risk: 'medium',
@@ -340,7 +340,7 @@ export const dependencyRegistry = validateDependencyRegistry({
   }),
   'eslint-plugin-jsonc': createManagedDependency({
     packageName: 'eslint-plugin-jsonc',
-    version: '3.1.2',
+    version: '3.4.2',
     prefix: '^',
     scope: 'devDependencies',
     risk: 'medium',
@@ -350,7 +350,7 @@ export const dependencyRegistry = validateDependencyRegistry({
   }),
   'eslint-plugin-yml': createManagedDependency({
     packageName: 'eslint-plugin-yml',
-    version: '3.3.1',
+    version: '3.8.1',
     prefix: '^',
     scope: 'devDependencies',
     risk: 'medium',
@@ -380,7 +380,7 @@ export const dependencyRegistry = validateDependencyRegistry({
   }),
   'eslint-plugin-vue': createManagedDependency({
     packageName: 'eslint-plugin-vue',
-    version: '10.8.0',
+    version: '10.10.0',
     prefix: '^',
     scope: 'devDependencies',
     risk: 'high',
@@ -390,7 +390,7 @@ export const dependencyRegistry = validateDependencyRegistry({
   }),
   'vue-eslint-parser': createManagedDependency({
     packageName: 'vue-eslint-parser',
-    version: '10.4.0',
+    version: '10.4.1',
     prefix: '^',
     scope: 'devDependencies',
     risk: 'high',
@@ -400,7 +400,7 @@ export const dependencyRegistry = validateDependencyRegistry({
   }),
   'typescript-eslint': createManagedDependency({
     packageName: 'typescript-eslint',
-    version: '8.58.0',
+    version: '8.69.0',
     prefix: '^',
     scope: 'devDependencies',
     risk: 'high',
