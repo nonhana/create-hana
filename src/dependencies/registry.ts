@@ -60,7 +60,7 @@ export const dependencyRegistry = validateDependencyRegistry({
   }),
   'vite': createManagedDependency({
     packageName: 'vite',
-    version: '8.0.5',
+    version: '8.2.2',
     prefix: '^',
     scope: 'devDependencies',
     risk: 'high',
@@ -70,7 +70,7 @@ export const dependencyRegistry = validateDependencyRegistry({
   }),
   '@vitejs/plugin-react': createManagedDependency({
     packageName: '@vitejs/plugin-react',
-    version: '6.0.1',
+    version: '6.1.1',
     prefix: '^',
     scope: 'devDependencies',
     risk: 'high',
@@ -80,7 +80,7 @@ export const dependencyRegistry = validateDependencyRegistry({
   }),
   '@vitejs/plugin-vue': createManagedDependency({
     packageName: '@vitejs/plugin-vue',
-    version: '6.0.5',
+    version: '6.0.8',
     prefix: '^',
     scope: 'devDependencies',
     risk: 'high',
@@ -490,7 +490,7 @@ export const dependencyRegistry = validateDependencyRegistry({
   }),
   'tailwindcss': createManagedDependency({
     packageName: 'tailwindcss',
-    version: '4.2.2',
+    version: '4.3.3',
     prefix: '^',
     scope: 'devDependencies',
     risk: 'high',
@@ -500,7 +500,7 @@ export const dependencyRegistry = validateDependencyRegistry({
   }),
   '@tailwindcss/vite': createManagedDependency({
     packageName: '@tailwindcss/vite',
-    version: '4.2.2',
+    version: '4.3.3',
     prefix: '^',
     scope: 'devDependencies',
     risk: 'high',
@@ -510,7 +510,7 @@ export const dependencyRegistry = validateDependencyRegistry({
   }),
   'unocss': createManagedDependency({
     packageName: 'unocss',
-    version: '66.6.7',
+    version: '66.10.0',
     prefix: '^',
     scope: 'devDependencies',
     risk: 'high',
