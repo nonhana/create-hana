@@ -50,7 +50,7 @@ export const dependencyRegistry = validateDependencyRegistry({
   }),
   'vue-tsc': createManagedDependency({
     packageName: 'vue-tsc',
-    version: '3.2.6',
+    version: '3.3.11',
     prefix: '^',
     scope: 'devDependencies',
     risk: 'medium',
@@ -90,7 +90,7 @@ export const dependencyRegistry = validateDependencyRegistry({
   }),
   'react': createManagedDependency({
     packageName: 'react',
-    version: '19.2.4',
+    version: '19.2.8',
     prefix: '^',
     scope: 'dependencies',
     risk: 'high',
@@ -100,7 +100,7 @@ export const dependencyRegistry = validateDependencyRegistry({
   }),
   'react-dom': createManagedDependency({
     packageName: 'react-dom',
-    version: '19.2.4',
+    version: '19.2.8',
     prefix: '^',
     scope: 'dependencies',
     risk: 'high',
@@ -110,7 +110,7 @@ export const dependencyRegistry = validateDependencyRegistry({
   }),
   '@types/react': createManagedDependency({
     packageName: '@types/react',
-    version: '19.2.14',
+    version: '19.2.18',
     prefix: '^',
     scope: 'devDependencies',
     risk: 'medium',
@@ -120,7 +120,7 @@ export const dependencyRegistry = validateDependencyRegistry({
   }),
   '@types/react-dom': createManagedDependency({
     packageName: '@types/react-dom',
-    version: '19.2.3',
+    version: '19.2.7',
     prefix: '^',
     scope: 'devDependencies',
     risk: 'medium',
@@ -130,7 +130,7 @@ export const dependencyRegistry = validateDependencyRegistry({
   }),
   'vue': createManagedDependency({
     packageName: 'vue',
-    version: '3.5.32',
+    version: '3.5.42',
     prefix: '^',
     scope: 'dependencies',
     risk: 'high',
@@ -540,7 +540,7 @@ export const dependencyRegistry = validateDependencyRegistry({
   }),
   'axios': createManagedDependency({
     packageName: 'axios',
-    version: '1.14.0',
+    version: '1.20.0',
     prefix: '^',
     scope: 'dependencies',
     risk: 'low',
@@ -560,7 +560,7 @@ export const dependencyRegistry = validateDependencyRegistry({
   }),
   'react-router': createManagedDependency({
     packageName: 'react-router',
-    version: '7.14.0',
+    version: '7.18.3',
     prefix: '^',
     scope: 'dependencies',
     risk: 'high',
@@ -570,7 +570,7 @@ export const dependencyRegistry = validateDependencyRegistry({
   }),
   '@tanstack/react-router': createManagedDependency({
     packageName: '@tanstack/react-router',
-    version: '1.168.10',
+    version: '1.170.32',
     prefix: '^',
     scope: 'dependencies',
     risk: 'high',
@@ -580,7 +580,7 @@ export const dependencyRegistry = validateDependencyRegistry({
   }),
   'wouter': createManagedDependency({
     packageName: 'wouter',
-    version: '3.9.0',
+    version: '3.11.0',
     prefix: '^',
     scope: 'dependencies',
     risk: 'medium',
@@ -590,7 +590,7 @@ export const dependencyRegistry = validateDependencyRegistry({
   }),
   '@tanstack/react-query': createManagedDependency({
     packageName: '@tanstack/react-query',
-    version: '5.96.2',
+    version: '5.102.8',
     prefix: '^',
     scope: 'dependencies',
     risk: 'medium',
@@ -600,7 +600,7 @@ export const dependencyRegistry = validateDependencyRegistry({
   }),
   'swr': createManagedDependency({
     packageName: 'swr',
-    version: '2.4.1',
+    version: '2.5.1',
     prefix: '^',
     scope: 'dependencies',
     risk: 'medium',
@@ -610,7 +610,7 @@ export const dependencyRegistry = validateDependencyRegistry({
   }),
   'zustand': createManagedDependency({
     packageName: 'zustand',
-    version: '5.0.12',
+    version: '5.0.15',
     prefix: '^',
     scope: 'dependencies',
     risk: 'medium',
@@ -620,7 +620,7 @@ export const dependencyRegistry = validateDependencyRegistry({
   }),
   'jotai': createManagedDependency({
     packageName: 'jotai',
-    version: '2.19.0',
+    version: '2.20.3',
     prefix: '^',
     scope: 'dependencies',
     risk: 'medium',
@@ -630,7 +630,7 @@ export const dependencyRegistry = validateDependencyRegistry({
   }),
   'mobx': createManagedDependency({
     packageName: 'mobx',
-    version: '6.15.0',
+    version: '6.16.1',
     prefix: '^',
     scope: 'dependencies',
     risk: 'medium',
@@ -640,7 +640,7 @@ export const dependencyRegistry = validateDependencyRegistry({
   }),
   '@reduxjs/toolkit': createManagedDependency({
     packageName: '@reduxjs/toolkit',
-    version: '2.11.2',
+    version: '2.12.0',
     prefix: '^',
     scope: 'dependencies',
     risk: 'medium',
@@ -650,7 +650,7 @@ export const dependencyRegistry = validateDependencyRegistry({
   }),
   'react-redux': createManagedDependency({
     packageName: 'react-redux',
-    version: '9.2.0',
+    version: '9.3.0',
     prefix: '^',
     scope: 'dependencies',
     risk: 'medium',
@@ -670,7 +670,7 @@ export const dependencyRegistry = validateDependencyRegistry({
   }),
   'vue-router': createManagedDependency({
     packageName: 'vue-router',
-    version: '5.0.4',
+    version: '5.3.1',
     prefix: '^',
     scope: 'dependencies',
     risk: 'high',
