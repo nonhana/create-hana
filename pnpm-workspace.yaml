@@ -15,8 +15,8 @@ catalog:
   eslint: ^10.1.0
   mri: ^1.2.0
   picocolors: ^1.1.1
-  recast: ^0.23.11
-  tsdown: ^0.21.4
+  recast: ^0.24.0
+  tsdown: ^0.23.0
   tsx: ^4.21.0
   typescript: ^6.0.0
   vite: ^8.0.1
